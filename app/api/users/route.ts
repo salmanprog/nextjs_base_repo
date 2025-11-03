@@ -11,12 +11,12 @@ interface DecodedToken {
 }
 
 // Helper to get user from request
-function getUserFromRequest(req: Request): DecodedToken | null {
+async function getUserFromRequest(req: Request): Promise<DecodedToken | null> {
   const authHeader = req.headers.get("Authorization");
   if (!authHeader) return null;
 
-  const token = authHeader.split(" ")[1];
-  const decoded = verifyToken(token);
+  const token = authHeader.split(" ")["1"];
+  const decoded = await verifyToken(token); // ✅ await here
   if (!decoded || typeof decoded === "string") return null;
 
   return decoded as DecodedToken;
@@ -38,22 +38,20 @@ export async function POST(req: Request) {
   const controller = new UsersController(data);
   return controller.store(data);
 }
-
-// GET route - protected (requires JWT)
 export async function GET(req: Request) {
-  const user = getUserFromRequest(req);
-  // if (!user) {
-  //   return new Response(
-  //     JSON.stringify({
-  //       code: 401,
-  //       message: "Authorization failed",
-  //       data: { authorization: "Missing or invalid token" },
-  //     }),
-  //     { status: 401, headers: { "Content-Type": "application/json" } }
-  //   );
-  // }
+  const user = await getUserFromRequest(req);
 
-  // Convert JWT id (string) to number for Prisma
-  const controller = new UsersController({ id: Number(user?.id) });
+  if (!user) {
+    return new Response(
+      JSON.stringify({
+        code: 401,
+        message: "Authorization failed",
+        data: { authorization: "Missing or invalid token" },
+      }),
+      { status: 401, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  const controller = new UsersController({ id: Number(user.id) });
   return controller.index();
 }

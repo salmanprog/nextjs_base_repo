@@ -67,12 +67,13 @@ export default class UsersController extends RestController<
   }
 
   protected async beforeUpdate(): Promise<void | NextResponse> {
+    
     const userId = this.data?.id;
     if (!userId) return this.sendError("User ID is missing", {}, 400);
 
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) return this.sendError("User not found", {}, 404);
-
+    
     const image = this.data?.image;
     if (image && !/\.(jpg|jpeg|png)$/i.test(image)) {
       return this.sendError("Invalid image format", { image: "Only JPG/PNG allowed" }, 422);
@@ -81,5 +82,35 @@ export default class UsersController extends RestController<
 
   protected async afterUpdate(record: ExtendedUser): Promise<ExtendedUser> {
     return record;
+  }
+
+  protected async beforeDestroy(): Promise<void | NextResponse> {
+    
+  }
+
+  async login(email: string, password: string): Promise<NextResponse> {
+    try {
+      const user = await prisma.user.findUnique({ where: { email }, include: {userRole: true,apiTokens: true,}, });
+      if (!user) {
+        return this.sendError("Invalid credentials", {login_error: "Credentials are not match in our records."}, 401);
+      }
+      const bcrypt = await import("bcryptjs");
+      const isValid = await bcrypt.compare(password, user.password || "");
+
+      if (!isValid) {
+        return this.sendError("Invalid credentials", {password_error: "Password does not match."}, 401);
+      }
+
+      await createUserToken(
+        user.id,
+        "web"
+      );
+      const loginuser = await prisma.user.findUnique({ where: { email }, include: {userRole: true,apiTokens: true,}, });
+      const extendedUser = loginuser as ExtendedUser;
+
+      return this.__sendResponse(200, "Login successful", extendedUser);
+    } catch (err) {
+      return this.sendError((err as Error).message, {}, 500);
+    }
   }
 }

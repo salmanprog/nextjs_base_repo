@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse,NextRequest } from "next/server";
 import * as yup from "yup";
 
 /**
@@ -19,8 +19,11 @@ export default abstract class Controller {
   protected __params?: Record<string, string | number>;
   protected __resource = "";
 
-  constructor() {
+  constructor(req?: NextRequest) {
     this.__is_error = false;
+    if (req) {
+      this.__request = req;
+    }
   }
 
   // ----------------- VALIDATION -----------------

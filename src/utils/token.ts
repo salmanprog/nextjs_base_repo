@@ -7,8 +7,10 @@ export async function createUserToken(
   ip?: string,
   userAgent?: string
 ) {
-  const token = signToken({ userId });
-
+  const token = await signToken({ id: Number(userId) });
+  await prisma.userApiToken.deleteMany({
+    where: { userId },
+  });
   const savedToken = await prisma.userApiToken.create({
     data: {
       userId,
@@ -18,7 +20,6 @@ export async function createUserToken(
       user_agent: userAgent,
     },
   });
-
   return savedToken;
 }
 

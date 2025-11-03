@@ -27,7 +27,6 @@ export default class UserResource extends BaseResource<ExtendedUser> {
         id: token.id,
         apiToken: token.api_token,
         deviceType: token.device_type,
-        createdAt: token.created_at,
       })) ?? [],
     };
   }

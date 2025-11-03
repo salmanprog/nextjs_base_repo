@@ -6,7 +6,6 @@ export default class UserHook {
     query: Prisma.UserFindManyArgs,
     request?: Record<string, unknown>
   ): Promise<Prisma.UserFindManyArgs> {
-
     query.include = {
       userRole: true,
       apiTokens: true,
@@ -35,38 +34,19 @@ export default class UserHook {
   static async showQueryHook(
     query: Prisma.UserFindUniqueArgs
   ): Promise<Prisma.UserFindUniqueArgs> {
-
     query.include = {
-      userRole: {
-        select: { title: true, slug: true },
-      },
-      apiTokens: {
-        select: {
-          api_token: true,
-          device_type: true,
-          created_at: true,
-        },
-      },
+      userRole: true,
+      apiTokens: true,
     };
-
-    query.where = { ...query.where, deletedAt: null };
+    query.where = { ...query.where, deletedAt: null,userGroupId: 2 };
 
     return query;
   }
 
   static async beforeCreateHook(
-    data: Prisma.UserCreateInput
-  ): Promise<Prisma.UserCreateInput> {
-   
-    // if (!data.slug && data.name) {
-    //   data.slug = data.name.toLowerCase().replace(/\s+/g, "-");
-    // }
-
-    // if (!data.username) {
-    //   data.username =
-    //     "user_" + Math.random().toString(36).substring(2, 8).toUpperCase();
-    // }
-
+  data: Prisma.UserCreateInput & { userGroupId?: number }
+): Promise<Prisma.UserCreateInput & { userGroupId?: number }> { 
+   data.userGroupId = 2;
     return data;
   }
 }

@@ -1,17 +1,20 @@
-import jwt, { SignOptions, JwtPayload, Secret } from "jsonwebtoken";
+// utils/jwt.ts
+import { SignJWT, jwtVerify, JWTPayload } from "jose";
 
-const SECRET_KEY: Secret = process.env.JWT_SECRET || "supersecretkey123";
-const DEFAULT_EXPIRES_IN = "7d" as unknown as SignOptions["expiresIn"];
+const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
-export const signToken = (payload: object, expiresIn = DEFAULT_EXPIRES_IN): string => {
-  const options: SignOptions = { expiresIn };
-  return jwt.sign(payload, SECRET_KEY, options);
-};
-
-export const verifyToken = (token: string): string | JwtPayload | null => {
+export async function signToken(payload: object) {
+  return new SignJWT(payload as JWTPayload)
+    .setProtectedHeader({ alg: "HS256" })
+    .setExpirationTime("7d")
+    .sign(secret);
+}
+export async function verifyToken(token: string) {
   try {
-    return jwt.verify(token, SECRET_KEY);
-  } catch {
+    const { payload } = await jwtVerify(token, secret);
+    return payload;
+  } catch (err) {
+    console.error("JWT verification failed:", err);
     return null;
   }
-};
+}

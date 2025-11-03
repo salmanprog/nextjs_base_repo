@@ -12,6 +12,7 @@ type PrismaCompatibleModel = {
 export interface QueryHook<TQuery = Record<string, unknown>, TRequest = Record<string, unknown>> {
   indexQueryHook?(query: TQuery, request?: TRequest): Promise<TQuery>;
   showQueryHook?(query: TQuery, request?: TRequest): Promise<TQuery>;
+  beforeCreateHook?(query: TQuery, request?: TRequest): Promise<TQuery>;
 }
 
 export default abstract class RestController<
@@ -102,6 +103,7 @@ export default abstract class RestController<
   const actionMap: Record<string, keyof THook> = {
     index: "indexQueryHook",
     show: "showQueryHook",
+    beforeCreate: "beforeCreateHook",
     // add more mappings if needed
   };
 
@@ -120,20 +122,18 @@ export default abstract class RestController<
     try {
       await this.beforeIndex();
       let query: Record<string, unknown> = {};
+      const requestData: Record<string, unknown> = this.__request
+        ? {
+            query: Object.fromEntries(new URL(this.__request.url).searchParams),
+            headers: Object.fromEntries(this.__request.headers.entries()),
+            method: this.__request.method,
+          }
+        : {};
+      query = await this.getQueryHook("index", query, requestData);
 
-    const requestData: Record<string, unknown> = this.__request
-      ? {
-          query: Object.fromEntries(new URL(this.__request.url).searchParams),
-          headers: Object.fromEntries(this.__request.headers.entries()),
-          method: this.__request.method,
-        }
-      : {};
-
-    query = await this.getQueryHook("index", query, requestData);
-
-    const records = (await this.model.findMany(query)) as TEntity[];
-      const processed = await this.afterIndex(records);
-      return this.__sendResponse(200, this.messages.list, processed);
+      const records = (await this.model.findMany(query)) as TEntity[];
+        const processed = await this.afterIndex(records);
+        return this.__sendResponse(200, this.messages.list, processed);
     } catch (err) {
       return this.sendError((err as Error).message, {}, 500);
     }
@@ -146,10 +146,31 @@ export default abstract class RestController<
       return this.sendError("Validation failed", validation.errors ?? {}, 422);
 
     try {
-      const beforeResponse = await this.beforeStore();
-      if (beforeResponse) return beforeResponse;
+        const beforeResponse = await this.beforeStore();
+        if (beforeResponse) return beforeResponse;
+        const requestData: Record<string, unknown> = this.__request
+          ? {
+              query: Object.fromEntries(new URL(this.__request.url).searchParams),
+              headers: Object.fromEntries(this.__request.headers.entries()),
+              method: this.__request.method,
+            }
+          : {};
+        const hookData = await this.getQueryHook("beforeCreate", {}, requestData);
+        delete hookData.id;
+        const finalData = { ...data, ...hookData };
+        const create = (await this.model.create?.({ data: finalData })) as TEntity;
+        let query: Record<string, unknown> = {};
 
-      const record = (await this.model.create?.({ data })) as TEntity;
+        const requestDataShow: Record<string, unknown> = this.__request
+          ? {
+              query: Object.fromEntries(new URL(this.__request.url).searchParams),
+              headers: Object.fromEntries(this.__request.headers.entries()),
+              method: this.__request.method,
+            }
+          : {};
+      query = await this.getQueryHook("show", query, requestDataShow);
+      query.where = { ...(query.where || {}), id: Number(create.id) };
+      const record = (await this.model.findUnique?.(query)) as TEntity;
       const processed = await this.afterStore(record);
       return this.__sendResponse(201, this.messages.store, processed);
     } catch (err) {
@@ -160,7 +181,17 @@ export default abstract class RestController<
   async show(id: number): Promise<NextResponse> {
     try {
       await this.beforeShow();
-      const record = (await this.model.findUnique?.({ where: { id } })) as TEntity | null;
+      let query: Record<string, unknown> = {};
+        const requestDataShow: Record<string, unknown> = this.__request
+          ? {
+              query: Object.fromEntries(new URL(this.__request.url).searchParams),
+              headers: Object.fromEntries(this.__request.headers.entries()),
+              method: this.__request.method,
+            }
+          : {};
+      query = await this.getQueryHook("show", query, requestDataShow);
+      query.where = { ...(query.where || {}), id: Number(id) };
+      const record = (await this.model.findUnique?.(query)) as TEntity | null;
       if (!record) return this.sendError("Record not found", {}, 404);
 
       const processed = await this.afterShow(record);
@@ -178,7 +209,19 @@ export default abstract class RestController<
 
     try {
       await this.beforeUpdate();
-      const record = (await this.model.update?.({ where: { id }, data })) as TEntity;
+      const record_updated = (await this.model.update?.({ where: { id }, data })) as TEntity;
+      let query: Record<string, unknown> = {};
+
+        const requestDataShow: Record<string, unknown> = this.__request
+          ? {
+              query: Object.fromEntries(new URL(this.__request.url).searchParams),
+              headers: Object.fromEntries(this.__request.headers.entries()),
+              method: this.__request.method,
+            }
+          : {};
+      query = await this.getQueryHook("show", query, requestDataShow);
+      query.where = { ...(query.where || {}), id: Number(record_updated.id) };
+      const record = (await this.model.findUnique?.(query)) as TEntity;
       const processed = await this.afterUpdate(record);
       return this.__sendResponse(200, this.messages.update, processed);
     } catch (err) {
@@ -189,7 +232,7 @@ export default abstract class RestController<
   async destroy(id: number): Promise<NextResponse> {
     try {
       await this.beforeDestroy();
-      await this.model.delete?.({ where: { id } });
+      await this.model.update?.({where: { id }, data: { deletedAt: new Date() },}) as TEntity;
       await this.afterDestroy();
       return this.__sendResponse(200, this.messages.delete, {});
     } catch (err) {
