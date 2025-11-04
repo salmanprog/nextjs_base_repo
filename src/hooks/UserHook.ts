@@ -1,4 +1,5 @@
 import { Prisma, UserType } from "@prisma/client";
+import { getHookUser } from "@/utils/hookUser";
 
 export default class UserHook {
 
@@ -6,12 +7,15 @@ export default class UserHook {
     query: Prisma.UserFindManyArgs,
     request?: Record<string, unknown>
   ): Promise<Prisma.UserFindManyArgs> {
+    const user = getHookUser(request);
     query.include = {
       userRole: true,
       apiTokens: true,
     };
     query.where = { ...query.where, deletedAt: null,userGroupId: 2 };
-    
+    if (user && user.id) {
+      query.where = { ...query.where, id: { not: Number(user.id) } };
+    }
     if (request && typeof request.q === "string") {
       query.where = {
         ...query.where,
@@ -32,7 +36,8 @@ export default class UserHook {
   }
 
   static async showQueryHook(
-    query: Prisma.UserFindUniqueArgs
+  query: Prisma.UserFindUniqueArgs,
+  request?: Record<string, unknown>
   ): Promise<Prisma.UserFindUniqueArgs> {
     query.include = {
       userRole: true,

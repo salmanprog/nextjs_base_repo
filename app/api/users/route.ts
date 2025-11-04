@@ -35,23 +35,23 @@ export async function POST(req: Request) {
     }
   });
 
-  const controller = new UsersController(data);
+  const controller = new UsersController(req,data);
   return controller.store(data);
 }
 export async function GET(req: Request) {
   const user = await getUserFromRequest(req);
 
-  if (!user) {
-    return new Response(
-      JSON.stringify({
-        code: 401,
-        message: "Authorization failed",
-        data: { authorization: "Missing or invalid token" },
-      }),
-      { status: 401, headers: { "Content-Type": "application/json" } }
-    );
-  }
+  // if (!user) {
+  //   return new Response(
+  //     JSON.stringify({
+  //       code: 401,
+  //       message: "Authorization failed",
+  //       data: { authorization: "Missing or invalid token" },
+  //     }),
+  //     { status: 401, headers: { "Content-Type": "application/json" } }
+  //   );
+  // }
 
-  const controller = new UsersController({ id: Number(user.id) });
+  const controller = new UsersController(req, { id: Number(user?.id) });
   return controller.index();
 }

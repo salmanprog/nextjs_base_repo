@@ -15,19 +15,19 @@ export default class UsersController extends RestController<
   Prisma.UserDelegate<DefaultArgs>,
   ExtendedUser
 > {
-  constructor(data?: Partial<ExtendedUser>) {
-    super(prisma.user as unknown as Prisma.UserDelegate<DefaultArgs> & {
-      findMany: (...args: unknown[]) => Promise<unknown>;
-      findUnique?: (...args: unknown[]) => Promise<unknown>;
-      create?: (...args: unknown[]) => Promise<unknown>;
-      update?: (...args: unknown[]) => Promise<unknown>;
-      delete?: (...args: unknown[]) => Promise<unknown>;
-    });
-
-    this.data = data ?? {};
-    this.resource = UserResource;
-    this.hook = UserHook;
-  }
+    constructor(req?: Request, data?: Partial<ExtendedUser>) {
+      super(prisma.user as unknown as Prisma.UserDelegate<DefaultArgs> & {
+        findMany: (...args: unknown[]) => Promise<unknown>;
+        findUnique?: (...args: unknown[]) => Promise<unknown>;
+        create?: (...args: unknown[]) => Promise<unknown>;
+        update?: (...args: unknown[]) => Promise<unknown>;
+        delete?: (...args: unknown[]) => Promise<unknown>;
+      },req);
+      
+      this.data = data ?? {};
+      this.resource = UserResource;
+      this.hook = UserHook;
+    }
 
   protected async validation(action: string) {
     switch (action) {
@@ -38,6 +38,16 @@ export default class UsersController extends RestController<
     }
   }
 
+  protected async beforeIndex(): Promise<void | NextResponse> {
+    const currentUser = this.getCurrentUser();
+  }
+  protected async beforeShow(): Promise<void | NextResponse> {
+    const user = this.requireUser();
+    const id = this.getRouteParam() ?? "";
+    if(parseInt(user.id) != parseInt(id)){
+        return this.sendError("Validation failed", { authentication: "You don't have an other profile" }, 422);
+    }
+  }
   protected async beforeStore(): Promise<void | NextResponse> {
     const email = this.data?.email;
     if (email) {
@@ -67,12 +77,12 @@ export default class UsersController extends RestController<
   }
 
   protected async beforeUpdate(): Promise<void | NextResponse> {
-    
-    const userId = this.data?.id;
-    if (!userId) return this.sendError("User ID is missing", {}, 400);
-
-    const user = await prisma.user.findUnique({ where: { id: userId } });
-    if (!user) return this.sendError("User not found", {}, 404);
+    const current_user = this.requireUser();
+    const idParam = this.getRouteParam();
+    const routeId = idParam ? parseInt(idParam.toString(), 10) : 0;
+    if (parseInt(current_user.id, 10) !== routeId) {
+      return this.sendError("Validation failed", { authentication: "You can't update another user's profile" }, 422);
+    }
     
     const image = this.data?.image;
     if (image && !/\.(jpg|jpeg|png)$/i.test(image)) {

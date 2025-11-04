@@ -24,8 +24,19 @@ export async function createUserToken(
 }
 
 export async function getUserByToken(token: string) {
-  return prisma.userApiToken.findFirst({
+  const record = await prisma.userApiToken.findFirst({
     where: { api_token: token },
-    include: { user: true },
+    include: {
+      user: {
+        include: {
+          userRole: true,
+          apiTokens: true,
+        },
+      },
+    },
   });
+
+  if (!record || !record.user) return null;
+  const { password, ...safeUser } = record.user;
+  return { ...safeUser, tokenId: record.id };
 }

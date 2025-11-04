@@ -16,12 +16,10 @@ export interface QueryHook<TQuery = Record<string, unknown>, TRequest = Record<s
 }
 
 export default abstract class RestController<
-  // keep TModel unconstrained so Prisma delegate types fit
   TModel = unknown,
   TEntity extends Record<string, unknown> = Record<string, unknown>,
   THook extends QueryHook = QueryHook
 > extends Controller {
-  // model must satisfy PrismaCompatibleModel shape at runtime/type intersection
   protected model: TModel & PrismaCompatibleModel;
   protected hook?: THook;
   protected resource:
@@ -40,10 +38,12 @@ export default abstract class RestController<
   };
 
   protected data: Partial<TEntity> | null = null;
-
-  constructor(model: TModel & PrismaCompatibleModel) {
+  protected user: Record<string, any> | null = null;
+  constructor(model: TModel & PrismaCompatibleModel, req?: Request) {
     super();
     this.model = model;
+    if (req) this.__request = req;
+    this.user = this.safeParseUser();
   }
 
   // ---------- Hooks ----------
@@ -118,6 +118,17 @@ export default abstract class RestController<
 }
 
   // ---------- CRUD ----------
+  private safeParseUser<T = any>(): T | null {
+    try {
+      const header =
+        this.__request?.headers?.get?.("x-current-user");
+      if (!header) return null;
+      return JSON.parse(header) as T;
+    } catch (err) {
+      console.warn("⚠️ Failed to parse x-current-user header:", err);
+      return null;
+    }
+  }
   async index(): Promise<NextResponse> {
     try {
       await this.beforeIndex();
@@ -180,7 +191,8 @@ export default abstract class RestController<
 
   async show(id: number): Promise<NextResponse> {
     try {
-      await this.beforeShow();
+      const beforeShow = await this.beforeShow();
+      if (beforeShow) return beforeShow;
       let query: Record<string, unknown> = {};
         const requestDataShow: Record<string, unknown> = this.__request
           ? {
@@ -208,7 +220,8 @@ export default abstract class RestController<
       return this.sendError("Validation failed", validation.errors ?? {}, 422);
 
     try {
-      await this.beforeUpdate();
+      const beforeUpdate = await this.beforeUpdate();
+      if (beforeUpdate) return beforeUpdate;
       const record_updated = (await this.model.update?.({ where: { id }, data })) as TEntity;
       let query: Record<string, unknown> = {};
 
@@ -261,5 +274,25 @@ export default abstract class RestController<
     } catch (error) {
       return this.sendError((error as Error).message, {}, 500);
     }
+  }
+
+  protected getRouteParam(name?: string): string | null {
+    if (!this.__request?.url) return null;
+    const url = new URL(this.__request.url);
+    const segments = url.pathname.split("/").filter(Boolean);
+    if (!name) return segments.pop() ?? null;
+    return segments.pop() ?? null;
+  }
+
+  protected getCurrentUser<T = any>(): T | null {
+    if (this.user) return this.user as T;
+    this.user = this.safeParseUser();
+    return this.user as T;
+  }
+
+  protected requireUser<T = any>(): T {
+    const user = this.getCurrentUser<T>();
+    if (!user) throw new Error("Unauthorized: No user in request context");
+    return user;
   }
 }
