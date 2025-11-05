@@ -3,7 +3,7 @@ import Checkbox from "@/components/form/input/Checkbox";
 import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "@/icons";
+import { ChevronLeftIcon, EyeClosedIcon, EyeIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -108,7 +108,7 @@ export default function SignInForm() {
                       {showPassword ? (
                         <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
                       ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
+                        <EyeClosedIcon className="fill-gray-500 dark:fill-gray-400" />
                       )}
                     </span>
                   </div>

@@ -1,109 +1,55 @@
-import PlusIcon from "./plus.svg";
-import CloseIcon from "./close.svg";
-import BoxIcon from "./box.svg";
-import CheckCircleIcon from "./check-circle.svg";
-import AlertIcon from "./alert.svg";
-import InfoIcon from "./info.svg";
-import ErrorIcon from "./info-hexa.svg";
-import BoltIcon from "./bolt.svg";
-import ArrowUpIcon from "./arrow-up.svg";
-import ArrowDownIcon from "./arrow-down.svg";
-import FolderIcon from "./folder.svg";
-import VideoIcon from "./videos.svg";
-import AudioIcon from "./audio.svg";
-import GridIcon from "./grid.svg";
-import FileIcon from "./file.svg";
-import DownloadIcon from "./download.svg";
-import ArrowRightIcon from "./arrow-right.svg";
-import GroupIcon from "./group.svg";
-import BoxIconLine from "./box-line.svg";
-import ShootingStarIcon from "./shooting-star.svg";
-import DollarLineIcon from "./dollar-line.svg";
-import TrashBinIcon from "./trash.svg";
-import AngleUpIcon from "./angle-up.svg";
-import AngleDownIcon from "./angle-down.svg";
-import PencilIcon from "./pencil.svg";
-import CheckLineIcon from "./check-line.svg";
-import CloseLineIcon from "./close-line.svg";
-import ChevronDownIcon from "./chevron-down.svg";
-import ChevronUpIcon from "./chevron-up.svg";
-import PaperPlaneIcon from "./paper-plane.svg";
-import LockIcon from "./lock.svg";
-import EnvelopeIcon from "./envelope.svg";
-import UserIcon from "./user-line.svg";
-import CalenderIcon from "./calender-line.svg";
-import EyeIcon from "./eye.svg";
-import EyeCloseIcon from "./eye-close.svg";
-import TimeIcon from "./time.svg";
-import CopyIcon from "./copy.svg";
-import ChevronLeftIcon from "./chevron-left.svg";
-import UserCircleIcon from "./user-circle.svg";
-import TaskIcon from "./task-icon.svg";
-import ListIcon from "./list.svg";
-import TableIcon from "./table.svg";
-import PageIcon from "./page.svg";
-import PieChartIcon from "./pie-chart.svg";
-import BoxCubeIcon from "./box-cube.svg";
-import PlugInIcon from "./plug-in.svg";
-import DocsIcon from "./docs.svg";
-import MailIcon from "./mail-line.svg";
-import HorizontaLDots from "./horizontal-dots.svg";
-import ChatIcon from "./chat.svg";
-import MoreDotIcon from "./more-dot.svg";
-import BellIcon from "./bell.svg";
-
-export {
-  DownloadIcon,
-  BellIcon,
-  MoreDotIcon,
-  FileIcon,
-  GridIcon,
-  AudioIcon,
-  VideoIcon,
-  BoltIcon,
-  PlusIcon,
-  BoxIcon,
-  CloseIcon,
-  CheckCircleIcon,
-  AlertIcon,
-  InfoIcon,
-  ErrorIcon,
-  ArrowUpIcon,
-  FolderIcon,
-  ArrowDownIcon,
-  ArrowRightIcon,
-  GroupIcon,
-  BoxIconLine,
-  ShootingStarIcon,
-  DollarLineIcon,
-  TrashBinIcon,
-  AngleUpIcon,
-  AngleDownIcon,
-  PencilIcon,
-  CheckLineIcon,
-  CloseLineIcon,
-  ChevronDownIcon,
-  PaperPlaneIcon,
-  EnvelopeIcon,
-  LockIcon,
-  UserIcon,
-  CalenderIcon,
-  EyeIcon,
-  EyeCloseIcon,
-  TimeIcon,
-  CopyIcon,
-  ChevronLeftIcon,
-  UserCircleIcon,
-  ListIcon,
-  TableIcon,
-  PageIcon,
-  TaskIcon,
-  PieChartIcon,
-  BoxCubeIcon,
-  PlugInIcon,
-  DocsIcon,
-  MailIcon,
-  HorizontaLDots,
-  ChevronUpIcon,
-  ChatIcon,
+export const icons = {
+  PlusIcon: "/icons/plus.svg",
+  CloseIcon: "/icons/close.svg",
+  BoxIcon: "/icons/box.svg",
+  CheckCircleIcon: "/icons/check-circle.svg",
+  AlertIcon: "/icons/alert.svg",
+  InfoIcon: "/icons/info.svg",
+  ErrorIcon: "/icons/info-hexa.svg",
+  BoltIcon: "/icons/bolt.svg",
+  ArrowUpIcon: "/icons/arrow-up.svg",
+  ArrowDownIcon: "/icons/arrow-down.svg",
+  FolderIcon: "/icons/folder.svg",
+  VideoIcon: "/icons/videos.svg",
+  AudioIcon: "/icons/audio.svg",
+  GridIcon: "/icons/grid.svg",
+  FileIcon: "/icons/file.svg",
+  DownloadIcon: "/icons/download.svg",
+  ArrowRightIcon: "/icons/arrow-right.svg",
+  GroupIcon: "/icons/group.svg",
+  BoxIconLine: "/icons/box-line.svg",
+  ShootingStarIcon: "/icons/shooting-star.svg",
+  DollarLineIcon: "/icons/dollar-line.svg",
+  TrashBinIcon: "/icons/trash.svg",
+  AngleUpIcon: "/icons/angle-up.svg",
+  AngleDownIcon: "/icons/angle-down.svg",
+  PencilIcon: "/icons/pencil.svg",
+  CheckLineIcon: "/icons/check-line.svg",
+  CloseLineIcon: "/icons/close-line.svg",
+  ChevronDownIcon: "/icons/chevron-down.svg",
+  ChevronUpIcon: "/icons/chevron-up.svg",
+  PaperPlaneIcon: "/icons/paper-plane.svg",
+  LockIcon: "/icons/lock.svg",
+  EnvelopeIcon: "/icons/envelope.svg",
+  UserIcon: "/icons/user-line.svg",
+  CalenderIcon: "/icons/calender-line.svg",
+  EyeIcon: "/icons/eye.svg",
+  EyeCloseIcon: "/icons/eye-close.svg",
+  TimeIcon: "/icons/time.svg",
+  CopyIcon: "/icons/copy.svg",
+  ChevronLeftIcon: "/icons/chevron-left.svg",
+  UserCircleIcon: "/icons/user-circle.svg",
+  TaskIcon: "/icons/task-icon.svg",
+  ListIcon: "/icons/list.svg",
+  TableIcon: "/icons/table.svg",
+  PageIcon: "/icons/page.svg",
+  PieChartIcon: "/icons/pie-chart.svg",
+  BoxCubeIcon: "/icons/box-cube.svg",
+  PlugInIcon: "/icons/plug-in.svg",
+  DocsIcon: "/icons/docs.svg",
+  MailIcon: "/icons/mail-line.svg",
+  HorizontaLDots: "/icons/horizontal-dots.svg",
+  ChatIcon: "/icons/chat.svg",
+  MoreDotIcon: "/icons/more-dot.svg",
+  BellIcon: "/icons/bell.svg",
 };
