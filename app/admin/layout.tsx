@@ -6,6 +6,7 @@ import AppHeader from "@/layout/AppHeader";
 import AppSidebar from "@/layout/AppSidebar";
 import Backdrop from "@/layout/Backdrop";
 import { usePathname } from "next/navigation";
+import { UserProvider } from "@/context/UserContext";
 
 export default function AdminLayout({
   children,
@@ -26,6 +27,7 @@ export default function AdminLayout({
   //   : "lg:ml-[90px]";
 
   return (
+    <UserProvider>
     <div className="min-h-screen xl:flex">
       <AppSidebar />
       <Backdrop />
@@ -36,5 +38,6 @@ export default function AdminLayout({
         <div className="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">{children}</div>
       </div>
     </div>
+    </UserProvider>
   );
 }

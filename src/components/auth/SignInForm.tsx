@@ -38,11 +38,10 @@ export default function SignInForm() {
     formData.append("password", form.password);
 
     await sendData(formData, (res) => {
-      
       const token = res?.apiTokens[0]?.apiToken;
       if (token) {
-        localStorage.setItem("token", token);
         document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
+        localStorage.setItem("token", token);
         router.push("/admin/dashboard");
       } else {
         setErrorMsg(res?.message || "Invalid credentials.");

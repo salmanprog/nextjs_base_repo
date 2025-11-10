@@ -32,7 +32,6 @@ export default function useApi(options: UseApiOptions) {
   const [error, setError] = useState<string | null>(null);
   const [queryParams, setQueryParams] = useState(params);
 
-  // 🔹 Build query string
   const buildQuery = (obj: Record<string, any>) => {
     const query = new URLSearchParams();
     Object.entries(obj).forEach(([key, value]) => {
@@ -42,14 +41,12 @@ export default function useApi(options: UseApiOptions) {
     return query.toString() ? `?${query.toString()}` : "";
   };
 
-  // 🔹 Build final URL
   const buildUrl = () => {
     const query = buildQuery(queryParams);
     const finalSlug = slug ? `/${slug}` : "";
     return `${baseUrl}${url}${finalSlug}${query}`;
   };
 
-  // 🔹 Get token (if required)
   const getToken = () => {
     if (typeof window !== "undefined") {
       return localStorage.getItem("token") || sessionStorage.getItem("token") || "";
@@ -57,7 +54,6 @@ export default function useApi(options: UseApiOptions) {
     return "";
   };
 
-  // 🔹 Main request function
   const request = async (customMethod: string, payload?: any) => {
     setLoading(true);
     setError(null);
@@ -66,17 +62,13 @@ export default function useApi(options: UseApiOptions) {
       const headers: Record<string, string> = {};
       const token = getToken();
 
-      // ✅ Only add Authorization header (Content-Type depends on payload)
       if (requiresAuth && token) {
         headers["Authorization"] = `Bearer ${token}`;
       }
 
       let body: BodyInit | undefined;
-
-      // ✅ Detect FormData automatically
       if (payload instanceof FormData) {
         body = payload;
-        // DO NOT set Content-Type manually — browser sets it automatically
       } else if (customMethod !== "GET" && payload) {
         body = JSON.stringify(payload);
         headers["Content-Type"] = "application/json";
@@ -128,7 +120,6 @@ export default function useApi(options: UseApiOptions) {
     if (type === "mount" && autoFetch) {
       fetchApi();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(queryParams)]);
 
   return {
