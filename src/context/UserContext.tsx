@@ -7,12 +7,14 @@ interface UserContextType {
   user: any;
   loading: boolean;
   refreshUser: () => Promise<void>;
+  setUser: (user: any) => void; // <-- add this
 }
 
 const UserContext = createContext<UserContextType>({
   user: null,
   loading: true,
   refreshUser: async () => {},
+  setUser: () => {}, // default no-op
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -50,7 +52,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, loading, refreshUser }}>
+    <UserContext.Provider value={{ user, loading, refreshUser, setUser }}>
       {children}
     </UserContext.Provider>
   );

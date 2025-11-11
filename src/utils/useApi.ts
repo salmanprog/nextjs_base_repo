@@ -13,6 +13,12 @@ interface UseApiOptions {
   requiresAuth?: boolean;
 }
 
+export interface ApiResponse<T = any> {
+  code: number;
+  message: string;
+  data?: T;
+}
+
 export default function useApi(options: UseApiOptions) {
   const {
     url,
@@ -32,6 +38,7 @@ export default function useApi(options: UseApiOptions) {
   const [error, setError] = useState<string | null>(null);
   const [queryParams, setQueryParams] = useState(params);
 
+  // Build query string
   const buildQuery = (obj: Record<string, any>) => {
     const query = new URLSearchParams();
     Object.entries(obj).forEach(([key, value]) => {
@@ -54,7 +61,8 @@ export default function useApi(options: UseApiOptions) {
     return "";
   };
 
-  const request = async (customMethod: string, payload?: any) => {
+  // Generic request function
+  const request = async <T = any>(customMethod: string, payload?: any): Promise<T> => {
     setLoading(true);
     setError(null);
 
@@ -67,8 +75,10 @@ export default function useApi(options: UseApiOptions) {
       }
 
       let body: BodyInit | undefined;
+
+      // Handle FormData vs JSON
       if (payload instanceof FormData) {
-        body = payload;
+        body = payload; // fetch will set the correct headers
       } else if (customMethod !== "GET" && payload) {
         body = JSON.stringify(payload);
         headers["Content-Type"] = "application/json";
@@ -80,36 +90,42 @@ export default function useApi(options: UseApiOptions) {
         body,
       });
 
-      const json = await res.json();
+      const json: T = await res.json();
 
       if (res.status === 401 || res.status === 403) {
         setError("Session expired. Redirecting to login...");
         localStorage.removeItem("token");
         setTimeout(() => router.push("/admin/login"), 1500);
-        return;
+        return json;
       }
 
       if (!res.ok) {
-        setError(json.message || "Request failed");
+        setError((json as any).message || "Request failed");
       } else {
-        setData(json.data || json);
+        setData((json as any).data || json);
       }
+
+      return json;
     } catch (err: any) {
       setError(err.message);
+      throw err;
     } finally {
       setLoading(false);
     }
   };
 
+  // Manual fetch
   const fetchApi = async () => request(method);
 
-  const sendData = async (
+  // Send data (POST, PATCH, PUT)
+  const sendData = async <T = any>(
     payload: any,
-    callback?: (data: any) => void,
+    callback?: (data: T) => void,
     customMethod: "POST" | "PUT" | "PATCH" = "POST"
-  ) => {
-    await request(customMethod, payload);
-    if (typeof callback === "function") callback(data);
+  ): Promise<T> => {
+    const response = await request<T>(customMethod, payload);
+    if (typeof callback === "function") callback(response);
+    return response;
   };
 
   const updateParams = (newParams: Record<string, any>) => {
