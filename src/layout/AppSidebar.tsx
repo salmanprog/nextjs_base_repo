@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useSidebar } from '@/context/SidebarContext';
 import {
   ChevronDown,
   ChevronUp,
@@ -98,10 +99,18 @@ const othersItems: NavItem[] = [
 ];
 
 const AppSidebar: React.FC = () => {
+  const { isExpanded, isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const toggleMenu = (menu: string) => {
     setOpenMenu(openMenu === menu ? null : menu);
+  };
+
+  // Close sidebar when clicking outside on mobile
+  const handleCloseMobile = () => {
+    if (isMobileOpen) {
+      toggleMobileSidebar();
+    }
   };
 
   const renderMenuItems = (items: NavItem[]) => (
@@ -112,20 +121,22 @@ const AppSidebar: React.FC = () => {
             <div>
               <button
                 onClick={() => toggleMenu(nav.name)}
-                className="flex items-center justify-between w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+                className={`flex items-center justify-between w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
               >
-                <span className="flex items-center space-x-2">
-                  <nav.icon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                  <span>{nav.name}</span>
+                <span className={`flex items-center space-x-2 ${!isExpanded ? 'space-x-0' : ''}`}>
+                  <nav.icon className="w-5 h-5 text-gray-600 dark:text-gray-300 shrink-0" />
+                  {isExpanded && <span>{nav.name}</span>}
                 </span>
-                {openMenu === nav.name ? (
-                  <ChevronUp className="w-4 h-4" />
-                ) : (
-                  <ChevronDown className="w-4 h-4" />
+                {isExpanded && (
+                  openMenu === nav.name ? (
+                    <ChevronUp className="w-4 h-4" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4" />
+                  )
                 )}
               </button>
 
-              {openMenu === nav.name && (
+              {openMenu === nav.name && isExpanded && (
                 <ul className="pl-8 mt-2 space-y-1">
                   {nav.subItems.map((sub) => (
                     <li key={sub.name}>
@@ -143,10 +154,11 @@ const AppSidebar: React.FC = () => {
           ) : (
             <Link
               href={nav.path ?? '#'}
-              className="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+              className={`flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
+              title={!isExpanded ? nav.name : undefined}
             >
-              <nav.icon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              <span>{nav.name}</span>
+              <nav.icon className="w-5 h-5 text-gray-600 dark:text-gray-300 shrink-0" />
+              {isExpanded && <span>{nav.name}</span>}
             </Link>
           )}
         </li>
@@ -155,24 +167,41 @@ const AppSidebar: React.FC = () => {
   );
 
   return (
-    <aside className="w-64 h-screen bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 flex flex-col justify-between">
+    <aside
+      className={`${
+        // Mobile: show/hide based on isMobileOpen
+        isMobileOpen ? 'translate-x-0' : '-translate-x-full'
+      } ${
+        // Desktop: always visible
+        'lg:translate-x-0'
+      } ${
+        // Desktop: width based on isExpanded
+        isExpanded ? 'lg:w-64' : 'lg:w-20'
+      } fixed top-0 left-0 h-full bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transform transition-all duration-300 z-50`}
+    >
       <div className="p-4">
         {/* Logo */}
-        <div className="flex items-center space-x-2 mb-6">
-          <div className="w-8 h-8 bg-green-600 rounded-md flex items-center justify-center text-white font-bold">
+        <div className={`flex items-center space-x-2 mb-6 ${!isExpanded ? 'justify-center' : ''}`}>
+          <div className="w-8 h-8 bg-green-600 rounded-md flex items-center justify-center text-white font-bold shrink-0">
             G
           </div>
-          <span className="font-semibold text-lg text-gray-800 dark:text-white">
-            Green House Admin
-          </span>
+          {isExpanded && (
+            <span className="font-semibold text-lg text-gray-800 dark:text-white whitespace-nowrap">
+              Green House Admin
+            </span>
+          )}
         </div>
 
         {/* Navigation */}
         <div>
-          <h3 className="text-gray-500 text-sm uppercase mb-2">Main</h3>
+          {isExpanded && (
+            <h3 className="text-gray-500 text-sm uppercase mb-2">Main</h3>
+          )}
           {renderMenuItems(navItems)}
 
-          <h3 className="text-gray-500 text-sm uppercase mt-6 mb-2">Others</h3>
+          {isExpanded && (
+            <h3 className="text-gray-500 text-sm uppercase mt-6 mb-2">Others</h3>
+          )}
           {renderMenuItems(othersItems)}
         </div>
       </div>
@@ -181,10 +210,11 @@ const AppSidebar: React.FC = () => {
       <div className="p-4 border-t border-gray-200 dark:border-gray-700">
         <Link
           href="/settings"
-          className="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+          className={`flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
+          title={!isExpanded ? 'Settings' : undefined}
         >
-          <Settings className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-          <span>Settings</span>
+          <Settings className="w-5 h-5 text-gray-600 dark:text-gray-300 shrink-0" />
+          {isExpanded && <span>Settings</span>}
         </Link>
       </div>
     </aside>

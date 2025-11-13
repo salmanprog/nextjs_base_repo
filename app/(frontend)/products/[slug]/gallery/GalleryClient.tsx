@@ -50,12 +50,15 @@ export default function GalleryClient({ images, productTitle }: GalleryClientPro
 
     if (images.length === 0) {
         return (
+            <>
+            <InnerBanner bannerClass="products-banner" title={'Photo Gallery'} />
             <section className="py-20">
                 <div className="container mx-auto text-center">
-                    <h1 className="text-3xl font-bold mb-6">{productTitle} – Photo Gallery</h1>
+                    <h1 className="text-3xl font-bold mb-6">{productTitle}</h1>
                     <p className="text-gray-600">No gallery images available for this product.</p>
                 </div>
             </section>
+            </>
         );
     }
 

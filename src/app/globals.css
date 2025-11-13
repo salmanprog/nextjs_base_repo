@@ -1107,6 +1107,25 @@ body {
 .btn-primary:hover {
   @apply bg-[var(--secondary-theme)] text-white;
 }
+.para {
+  @apply font-roboto font-medium ;
+}
+.para span {
+  @apply font-bold;
+}
+.contact-con > h3 > span:first-child,
+.social-links a {
+  @apply bg-[var(--secondary-theme)] text-white rounded-full w-[40px] h-[40px] flex items-center justify-center shrink-0;
+}
+.social-links {
+  @apply gap-4;
+}
+.contact-con h3 {
+  @apply flex-col md:flex-row items-center justify-center md:justify-start text-center md:text-left;
+}
+.social-links {
+  @apply justify-center md:justify-start;
+}
 /* responsive */
 
 @media(max-width: 991px) {
@@ -1162,4 +1181,15 @@ body {
 
   }
 
+}
+@media(max-width: 375px) {
+  .container {
+    padding: 0 10px;
+  }
+}
+
+@media(max-width: 767px) {
+  .inner-banner {
+    height: 370px;
+  }
 }
