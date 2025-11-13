@@ -30,7 +30,7 @@ export default function Footer() {
                 </div>
                 <a
                   href="tel:+1234567890"
-                  className="text-lg hover:text-gray-300 transition-colors"
+                  className="footer-link"
                 >
                   +1 (234) 567-890
                 </a>
@@ -41,7 +41,7 @@ export default function Footer() {
                 </div>
                 <a
                   href="mailto:welcome@thedailydosenow.com"
-                  className="text-lg hover:text-gray-300 transition-colors"
+                  className="footer-link"
                 >
                   welcome@thedailydosenow.com
                 </a>
@@ -58,7 +58,7 @@ export default function Footer() {
                   <li key={idx}>
                     <a
                       href="#"
-                      className="hover:text-gray-300 text-lg transition-colors"
+                      className="footer-link"
                     >
                       {item}
                     </a>

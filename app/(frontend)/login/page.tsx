@@ -59,7 +59,7 @@ export default function LoginPage() {
 
     return (
         <>
-            <InnerBanner title="Login" bannerClass="login-banner" />
+            <InnerBanner title="Login" bannerClass="login-banner auth-banner" />
             <section className="py-20">
                 <div className="container">
                     <div className="max-w-[40rem] mx-auto">

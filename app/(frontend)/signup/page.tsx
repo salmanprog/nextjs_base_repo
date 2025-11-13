@@ -78,7 +78,7 @@ export default function SignUpPage() {
 
     return (
         <>
-        <InnerBanner title="Signup" bannerClass="signup-banner" />
+        <InnerBanner title="Signup" bannerClass="signup-banner auth-banner" />
             <section className="py-20">
                 <div className="container">
                     <div className="max-w-[40rem] mx-auto">

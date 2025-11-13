@@ -10,17 +10,19 @@ export default function Header() {
         <header className="header">
             <nav className={`navs-wrapper ${isOpen ? 'active' : ''} flex`}>
                 <ul className={`primary-navs mx-auto flex justify-between items-center grow-1`}>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/products">Products</a></li>
-                    <li><a href="/">Photo Access</a></li>
+                    <li><a className="primary-nav-link" href="/">Home</a></li>
+                    <li><a className="primary-nav-link" href="/products">Products</a></li>
+                    <li><a className="primary-nav-link" href="/">Photo Access</a></li>
                     <li className="md-none">
                         <a href="">
                             <Image src="/images/logo.png" alt="Logo" width={100} height={100} />
                         </a>
                     </li>
-                    <li><a href="/">About</a></li>
-                    <li><a href="/">Contact</a></li>
-                    <li><a href="/">Blog</a></li>
+                    <li><a className="primary-nav-link" href="/">About</a></li>
+                    <li><a className="primary-nav-link" href="/">Contact</a></li>
+                    <li><a className="primary-nav-link" href="/">Blog</a></li>
+                    <li><a className="btn btn-primary" href="/login">Login</a></li>
+                    <li><a className="btn btn-secondary" href="/signup">Signup</a></li>
                 </ul>
             </nav>
             <button className="menu-icon" onClick={toggleMenu}>

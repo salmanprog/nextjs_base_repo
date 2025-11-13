@@ -804,7 +804,7 @@ body {
   @apply max-w-[1000px] xl:max-w-[1200px];
 }
 
-.primary-navs a {
+.primary-nav-link {
   @apply text-white text-[24px] font-roboto;
 }
 
@@ -948,10 +948,10 @@ body {
   overflow: hidden;
 }
 .btn-primary {
-  @apply bg-gradient-to-r from-[#4facfe] to-[#00f2fe] text-white;
+  @apply bg-[var(--primary-theme)] text-black;
   border: none;
 }
-.btn-primary::before {
+/* .btn-primary::before {
   content: '';
   position: absolute;
   top: 0;
@@ -963,7 +963,7 @@ body {
 }
 .btn-primary:hover::before {
   left: 100%;
-}
+} */
 .event-date {
   @apply text-white/80 text-xs font-semibold mb-2 block uppercase tracking-wider;
   letter-spacing: 1px;
@@ -999,11 +999,11 @@ body {
 }
 .product-card:hover .product-hidden-content .btn {
   transform: translateY(0);
-  box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5);
+  /* box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5); */
 }
 .product-hidden-content .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(79, 172, 254, 0.6);
+  /* box-shadow: 0 12px 30px rgba(79, 172, 254, 0.6); */
 }
 .custom-input::placeholder {
   @apply text-gray-500;
@@ -1084,6 +1084,28 @@ body {
 }
 .package-footer {
   @apply flex flex-col text-center;
+}
+.auth-banner {
+  background: url('/images/auth-bg.jpg') no-repeat center center/cover;
+}
+
+.footer-link {
+  @apply hover:text-gray-300 text-lg transition-colors;
+}
+.primary-nav-link  {
+  @apply hover:text-gray-300;
+}
+.primary-navs .btn {
+  @apply text-[16px];
+}
+.btn-secondary {
+  @apply bg-[var(--secondary-theme)] text-white;
+}
+.btn-secondary:hover {
+  @apply bg-[var(--primary-theme)] text-black;
+}
+.btn-primary:hover {
+  @apply bg-[var(--secondary-theme)] text-white;
 }
 /* responsive */
 
