@@ -1,15 +1,17 @@
-export default function FrontendLayout({ children }: { children: React.ReactNode }) {
+import Footer from '@/components/common/Footer';
+import Header from '@/components/common/Header';
+
+export default function FrontendLayout({ 
+  children
+}: { 
+  children: React.ReactNode;
+}) {
+  // Render normal frontend layout with Header/Footer for all routes
   return (
-    <html lang="en">
-      <body style={{ fontFamily: 'Arial, sans-serif', margin: 0 }}>
-        <header style={{ background: '#0B1B48', color: '#fff', padding: '15px' }}>
-          <h2>🛍 Never Forget Store</h2>
-        </header>
-        <main style={{ padding: '20px' }}>{children}</main>
-        <footer style={{ background: '#f2f2f2', textAlign: 'center', padding: '10px' }}>
-          © {new Date().getFullYear()} Never Forget
-        </footer>
-      </body>
-    </html>
-  )
+    <div>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </div>
+  );
 }
