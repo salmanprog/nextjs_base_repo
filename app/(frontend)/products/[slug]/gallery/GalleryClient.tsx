@@ -7,6 +7,7 @@ import Input from "@/components/form/input/InputField";
 import Lightbox from "yet-another-react-lightbox";
 import Download from "yet-another-react-lightbox/plugins/download";
 import "yet-another-react-lightbox/styles.css";
+import { Icons } from "@/components/icons/Index";
 
 interface GalleryClientProps {
     images: string[];
@@ -24,7 +25,7 @@ export default function GalleryClient({ images, productTitle }: GalleryClientPro
 
     const handleDownload = async (e: React.MouseEvent, imageUrl: string, imageName: string) => {
         e.stopPropagation();
-        
+
         try {
             const response = await fetch(imageUrl);
             const blob = await response.blob();
@@ -67,8 +68,11 @@ export default function GalleryClient({ images, productTitle }: GalleryClientPro
                         <div>
                             <h3 className="hd-md">Gallery</h3>
                         </div>
-                        <div className="w-1/3">
-                            <Input type="text" className="!bg-transparent !text-gray-500 !border-gray-300 custom-input" placeholder="Search images" />
+                        <div className="w-1/3 relative">
+                            <Input type="text" className="!bg-transparent !text-gray-500 !border-gray-300 custom-input pl-[48px]" placeholder="Search images" />
+                            <div className="absolute left-2 top-1/2 -translate-y-1/2">
+                                <Icons.search className="text-[24px]" />
+                            </div>
                         </div>
                     </div>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">

@@ -4,6 +4,9 @@ import { AiFillInstagram } from "react-icons/ai";
 import { FaFacebookF } from "react-icons/fa";
 import { IoIosMenu } from "react-icons/io";
 import { IoIosClose } from "react-icons/io";
+import { CiSearch } from "react-icons/ci";
+
+
 
 
 
@@ -15,4 +18,5 @@ export const Icons = {
     facebook: FaFacebookF,
     menu: IoIosMenu,
     close: IoIosClose,
+    search: CiSearch,
 }
