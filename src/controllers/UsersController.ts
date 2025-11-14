@@ -102,13 +102,13 @@ export default class UsersController extends RestController<
     try {
       const user = await prisma.user.findUnique({ where: { email }, include: {userRole: true,apiTokens: true,}, });
       if (!user) {
-        return this.sendError("Invalid credentials", {login_error: "Credentials are not match in our records."}, 401);
+        return this.sendError("Invalid credentials", {login_error: "Credentials are not match in our records."}, 400);
       }
       const bcrypt = await import("bcryptjs");
       const isValid = await bcrypt.compare(password, user.password || "");
 
       if (!isValid) {
-        return this.sendError("Invalid credentials", {password_error: "Password does not match."}, 401);
+        return this.sendError("Invalid credentials", {password_error: "Password does not match."}, 400);
       }
 
       await createUserToken(
