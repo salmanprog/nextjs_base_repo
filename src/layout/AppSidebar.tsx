@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useSidebar } from '@/context/SidebarContext';
 import {
   ChevronDown,
@@ -35,67 +36,70 @@ const navItems: NavItem[] = [
   {
     icon: LayoutDashboard,
     name: 'Dashboard',
-    subItems: [{ name: 'Ecommerce', path: '/', pro: false }],
+    path: '/admin',
   },
-  {
-    icon: Calendar,
-    name: 'Calendar',
-    path: '/calendar',
+  // {
+    //   icon: Calendar,
+    //   name: 'Calendar',
+    //   path: '/calendar',
+    // },
+    {
+      icon: UserCircle,
+      name: 'Users',
+      subItems: [
+        { name: 'All Users', path: '/admin/users/', pro: false },
+        { name: 'Add User', path: '/admin/users/add', pro: false },
+      ],
   },
-  {
-    icon: UserCircle,
-    name: 'User Profile',
-    path: '/profile',
-  },
-  {
-    name: 'Forms',
-    icon: List,
-    subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }],
-  },
-  {
-    name: 'Tables',
-    icon: Table,
-    subItems: [{ name: 'Basic Tables', path: '/basic-tables', pro: false }],
-  },
-  {
-    name: 'Pages',
-    icon: FileText,
-    subItems: [
-      { name: 'Blank Page', path: '/blank', pro: false },
-      { name: '404 Error', path: '/error-404', pro: false },
-    ],
-  },
+  // {
+  //   name: 'Forms',
+  //   icon: List,
+  //   subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }],
+  // },
+  // {
+  //   name: 'Tables',
+  //   icon: Table,
+  //   subItems: [{ name: 'Basic Tables', path: '/basic-tables', pro: false }],
+  // },
+  // {
+  //   name: 'Pages',
+  //   icon: FileText,
+  //   subItems: [
+  //     { name: 'Blank Page', path: '/blank', pro: false },
+  //     { name: '404 Error', path: '/error-404', pro: false },
+  //   ],
+  // },
 ];
 
 const othersItems: NavItem[] = [
-  {
-    icon: PieChart,
-    name: 'Charts',
-    subItems: [
-      { name: 'Line Chart', path: '/line-chart', pro: false },
-      { name: 'Bar Chart', path: '/bar-chart', pro: false },
-    ],
-  },
-  {
-    icon: Boxes,
-    name: 'UI Elements',
-    subItems: [
-      { name: 'Alerts', path: '/alerts', pro: false },
-      { name: 'Avatar', path: '/avatars', pro: false },
-      { name: 'Badge', path: '/badge', pro: false },
-      { name: 'Buttons', path: '/buttons', pro: false },
-      { name: 'Images', path: '/images', pro: false },
-      { name: 'Videos', path: '/videos', pro: false },
-    ],
-  },
-  {
-    icon: Plug,
-    name: 'Authentication',
-    subItems: [
-      { name: 'Sign In', path: '/signin', pro: false },
-      { name: 'Sign Up', path: '/signup', pro: false },
-    ],
-  },
+  // {
+  //   icon: PieChart,
+  //   name: 'Charts',
+  //   subItems: [
+  //     { name: 'Line Chart', path: '/line-chart', pro: false },
+  //     { name: 'Bar Chart', path: '/bar-chart', pro: false },
+  //   ],
+  // },
+  // {
+  //   icon: Boxes,
+  //   name: 'UI Elements',
+  //   subItems: [
+  //     { name: 'Alerts', path: '/alerts', pro: false },
+  //     { name: 'Avatar', path: '/avatars', pro: false },
+  //     { name: 'Badge', path: '/badge', pro: false },
+  //     { name: 'Buttons', path: '/buttons', pro: false },
+  //     { name: 'Images', path: '/images', pro: false },
+  //     { name: 'Videos', path: '/videos', pro: false },
+  //   ],
+  // },
+  // {
+  //   icon: Plug,
+  //   name: 'Authentication',
+  //   subItems: [
+  //     { name: 'Sign In', path: '/signin', pro: false },
+  //     { name: 'Sign Up', path: '/signup', pro: false },
+  //   ],
+  // },
 ];
 
 const AppSidebar: React.FC = () => {
@@ -121,7 +125,7 @@ const AppSidebar: React.FC = () => {
             <div>
               <button
                 onClick={() => toggleMenu(nav.name)}
-                className={`flex items-center justify-between w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
+                className={`flex items-center justify-between w-full px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
               >
                 <span className={`flex items-center space-x-2 ${!isExpanded ? 'space-x-0' : ''}`}>
                   <nav.icon className="w-5 h-5 text-gray-600 dark:text-gray-300 shrink-0" />
@@ -154,7 +158,7 @@ const AppSidebar: React.FC = () => {
           ) : (
             <Link
               href={nav.path ?? '#'}
-              className={`flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
+              className={`flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 dark:text-white rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
               title={!isExpanded ? nav.name : undefined}
             >
               <nav.icon className="w-5 h-5 text-gray-600 dark:text-gray-300 shrink-0" />
@@ -181,33 +185,26 @@ const AppSidebar: React.FC = () => {
     >
       <div className="p-4">
         {/* Logo */}
-        <div className={`flex items-center space-x-2 mb-6 ${!isExpanded ? 'justify-center' : ''}`}>
-          <div className="w-8 h-8 bg-green-600 rounded-md flex items-center justify-center text-white font-bold shrink-0">
-            G
-          </div>
-          {isExpanded && (
-            <span className="font-semibold text-lg text-gray-800 dark:text-white whitespace-nowrap">
-              Green House Admin
-            </span>
-          )}
+        <div className={`flex items-center space-x-2 mb-6 justify-center ${!isExpanded ? 'justify-center' : ''}`}>
+        <Image src="/images/logo.png" className='max-w-[150px]' alt="Logo" width={250} height={250} />
         </div>
 
         {/* Navigation */}
-        <div>
+        <div className='overflow-y-auto max-h-[calc(100vh-140px)]'>
           {isExpanded && (
             <h3 className="text-gray-500 text-sm uppercase mb-2">Main</h3>
           )}
           {renderMenuItems(navItems)}
 
-          {isExpanded && (
+          {/* {isExpanded && (
             <h3 className="text-gray-500 text-sm uppercase mt-6 mb-2">Others</h3>
-          )}
+          )} */}
           {renderMenuItems(othersItems)}
         </div>
       </div>
 
       {/* Bottom user/settings area */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+      {/* <div className="p-4 border-t border-gray-200 dark:border-gray-700">
         <Link
           href="/settings"
           className={`flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg ${!isExpanded ? 'justify-center' : ''}`}
@@ -216,7 +213,7 @@ const AppSidebar: React.FC = () => {
           <Settings className="w-5 h-5 text-gray-600 dark:text-gray-300 shrink-0" />
           {isExpanded && <span>Settings</span>}
         </Link>
-      </div>
+      </div> */}
     </aside>
   );
 };
