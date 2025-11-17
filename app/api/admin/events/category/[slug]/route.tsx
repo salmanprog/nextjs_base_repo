@@ -1,5 +1,5 @@
 export const runtime = "nodejs";
-import UsersController, { ExtendedUser } from "@/controllers/UsersController";
+import AdminEventCategoryController, { ExtendedEventCategory } from "@/controllers/AdminEventCategoryController";
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
@@ -7,13 +7,13 @@ import path from "path";
 // ------------------- GET (show) -------------------
 export async function GET(
   _req: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
   const params = await context.params;
   try {
-    const controller = new UsersController(_req);
-    const id = parseInt(params.id, 10);
-    return await controller.show(id);
+    const controller = new AdminEventCategoryController(_req);
+    const slug = params.slug;
+    return await controller.showSlug(String(slug));
   } catch (error: unknown) {
     return NextResponse.json(
       { code: 500, message: "Internal Server Error", error: (error as Error).message },
@@ -25,40 +25,33 @@ export async function GET(
 // ------------------- PATCH (update) -------------------
 export async function PATCH(
   request: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
   const params = await context.params;
-  const id = parseInt(params.id, 10);
-  if (isNaN(id)) {
-    return NextResponse.json({ code: 400, message: "Invalid user ID" }, { status: 400 });
-  }
+  const slug = params.slug;
 
   const contentType = request.headers.get("content-type") || "";
-  let data: Partial<ExtendedUser> = {};
+  let data: Partial<ExtendedEventCategory> = {};
+  console.log('slug.....................................................', slug);
 
   try {
     if (contentType.includes("multipart/form-data")) {
       const formData = await request.formData();
-
-      // 🧠 Handle text fields + image upload
       for (const [key, value] of formData.entries()) {
         if (typeof value === "string") {
           (data as Record<string, any>)[key] = value;
         } else if (value instanceof Blob && key === "image") {
-          // ✅ Save uploaded file to /public/uploads/
           const buffer = Buffer.from(await value.arrayBuffer());
-          const uploadDir = path.join(process.cwd(), "public", "uploads");
 
-          // ensure uploads folder exists
+          // Save in a dedicated 'category' folder
+          const uploadDir = path.join(process.cwd(), "public", "uploads", "category");
           await fs.mkdir(uploadDir, { recursive: true });
 
           const fileName = `${Date.now()}-${value.name}`;
           const filePath = path.join(uploadDir, fileName);
-
           await fs.writeFile(filePath, buffer);
 
-          // store image URL or path in DB
-          (data as Record<string, any>).imageUrl = `/uploads/${fileName}`;
+          (data as Record<string, any>).imageUrl = `/uploads/category/${fileName}`;
         }
       }
     } else if (contentType.includes("application/json")) {
@@ -70,13 +63,9 @@ export async function PATCH(
       );
     }
 
-    console.log("✅ Final parsed data:", data);
-
-    // 🔹 Update using controller
-    const controller = new UsersController(request, data);
-    return await controller.update(id, data);
+    const controller = new AdminEventCategoryController(request, data);
+    return controller.updateBySlug(slug, data);
   } catch (error: unknown) {
-    console.error("❌ Error in PATCH:", error);
     return NextResponse.json(
       { code: 500, message: "Internal Server Error", error: (error as Error).message },
       { status: 500 }
@@ -85,17 +74,16 @@ export async function PATCH(
 }
 
 
-
 // ------------------- DELETE (destroy) -------------------
 export async function DELETE(
   _req: Request,
-  context: { params: Promise<{ id: string }> }
+  context: { params: Promise<{ slug: string }> }
 ) {
   const params = await context.params;
   try {
-    const id = parseInt(params.id, 10);
-    const controller = new UsersController();
-    return await controller.destroy(id);
+    const slug = params.slug;
+    const controller = new AdminEventCategoryController(_req);
+    return await controller.destroyBySlug(slug); // <-- use new method
   } catch (error: unknown) {
     return NextResponse.json(
       { code: 500, message: "Internal Server Error", error: (error as Error).message },

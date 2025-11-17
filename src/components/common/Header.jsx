@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { Icons } from "@/components/icons/Index";
+import { useCurrentUser } from "@/utils/currentUser";
 import Link from "next/link";
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);

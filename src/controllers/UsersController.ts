@@ -3,10 +3,10 @@ import { prisma } from "@/lib/prisma";
 import RestController from "@/core/RestController";
 import { storeUser, updateUser } from "@/validators/user.validation";
 import UserResource from "@/resources/UserResource";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import type { DefaultArgs } from "@prisma/client/runtime/library";
 import { generateSlug } from "@/utils/slug";
-import { createUserToken } from "@/utils/token";
+import { createUserToken, getUserByToken } from "@/utils/token";
 import UserHook from "@/hooks/UserHook";
 
 export type ExtendedUser = User & { image?: string };
@@ -42,11 +42,11 @@ export default class UsersController extends RestController<
     const currentUser = this.getCurrentUser();
   }
   protected async beforeShow(): Promise<void | NextResponse> {
-    const user = this.requireUser();
-    const id = this.getRouteParam() ?? "";
-    if(parseInt(user.id) != parseInt(id)){
-        return this.sendError("Validation failed", { authentication: "You don't have an other profile" }, 422);
-    }
+    // const user = this.requireUser();
+    // const id = this.getRouteParam() ?? "";
+    // if(parseInt(user.id) != parseInt(id)){
+    //     return this.sendError("Validation failed", { authentication: "You don't have an other profile" }, 422);
+    // }
   }
   protected async beforeStore(): Promise<void | NextResponse> {
     const email = this.data?.email;

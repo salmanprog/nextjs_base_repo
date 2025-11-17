@@ -49,26 +49,26 @@ model UserApiToken {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
- model UserAddress {
-    id           Int      @id @default(autoincrement())
-    userId       Int
-    addressLine1 String   @db.VarChar(255)
-    addressLine2 String?  @db.VarChar(255)
-    city         String   @db.VarChar(150)
-    state        String?  @db.VarChar(150)
-    country      String   @db.VarChar(150)
-    postalCode   String?  @db.VarChar(50)
-    isDefault    Boolean  @default(false)
-    createdAt    DateTime @default(now()) @db.Timestamp(6)
-    updatedAt    DateTime @updatedAt
-    deletedAt    DateTime? @db.Timestamp(6)
+model UserAddress {
+  id           Int       @id @default(autoincrement())
+  userId       Int
+  addressLine1 String    @db.VarChar(255)
+  addressLine2 String?   @db.VarChar(255)
+  city         String    @db.VarChar(150)
+  state        String?   @db.VarChar(150)
+  country      String    @db.VarChar(150)
+  postalCode   String?   @db.VarChar(50)
+  isDefault    Boolean   @default(false)
+  createdAt    DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt    DateTime  @updatedAt
+  deletedAt    DateTime? @db.Timestamp(6)
 
-    // Relation to User
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // Relation to User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@index([userId])
-    @@map("user_address")
-  }
+  @@index([userId])
+  @@map("user_address")
+}
 
 model User {
   id                Int         @id @default(autoincrement())
@@ -105,6 +105,67 @@ model User {
   addresses UserAddress[]
 
   @@index([name])
+}
+
+model EventCategory {
+  id          Int       @id @default(autoincrement())
+  name        String    @db.VarChar(150)
+  slug        String    @unique @db.VarChar(150)
+  imageUrl    String?   @db.Text
+  description String?   @db.VarChar(255)
+  status      Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? @db.Timestamp(6)
+  events      Event[]
+
+  @@index([name])
+  @@map("event_category")
+}
+
+model Event {
+  id          Int       @id @default(autoincrement())
+  categoryId  Int
+  title       String    @db.VarChar(255)
+  slug        String    @unique @db.VarChar(255)
+  description String?   @db.Text
+  location    String?   @db.VarChar(255)
+  startDate   DateTime  @db.Timestamp(6)
+  endDate     DateTime? @db.Timestamp(6)
+  imageUrl    String?   @db.Text
+  status      Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? @db.Timestamp(6)
+
+  // Relationship
+  category EventCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@index([categoryId])
+  @@index([title])
+  @@map("event")
+}
+
+model Media {
+  id          Int       @id @default(autoincrement())
+  title       String?   @db.VarChar(255)
+  url         String    @db.Text
+  type        MediaType @default(IMAGE)
+  relatedType String?   @db.VarChar(100) // e.g., "Event", "User"
+  relatedId   Int?      // the ID of the related entity
+  status      Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt   DateTime  @updatedAt
+  deletedAt   DateTime? @db.Timestamp(6)
+
+  @@index([relatedType, relatedId])
+  @@map("media")
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  DOCUMENT
 }
 
 // ---------- ENUMS ----------

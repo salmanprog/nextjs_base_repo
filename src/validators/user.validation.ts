@@ -26,3 +26,18 @@ export const updateUserAddress = yup.object({
   postalCode: yup.string().required("postalCode is required"),
 });
 
+export const storeEventCategory = yup.object({
+  name: yup.string().required("Category name is required"),
+});
+
+export const updateEventCategory = yup.object({
+  name: yup.string().required("Category name is required"),
+});
+
+export const storeEvent = yup.object({
+  name: yup.string().required("Event name is required"),
+});
+
+export const updateEvent = yup.object({
+  name: yup.string().required("Event name is required"),
+});
