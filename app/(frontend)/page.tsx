@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Sec from "@/components/home/Sec";
 import Image from "next/image";
+import { products } from "./products/data";
 export default function HomePage() {
   const images = [
     "/images/home/hero-bg.png",
@@ -80,10 +81,10 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/30 z-[5]"></div>
       </section>
       {/* add slug link */}
-      <Sec title="Sea Trials / Herndon" sectionClass="home-sec-2" href="/products" />
-      <Sec title="Graduations / Commissioning" sectionClass="home-sec-3" href="/products" />
-      <Sec title="Plebe Summer" sectionClass="home-sec-4" href="/products" />
-      <Sec title="Studio Collection" sectionClass="home-sec-5" href="/products" />
+      <Sec title="Sea Trials / Herndon" sectionClass="home-sec-2" href={`/products/${products[0].slug}`} />
+      <Sec title="Graduations / Commissioning" sectionClass="home-sec-3" href={`/products/${products[1].slug}`} />
+      <Sec title="Plebe Summer" sectionClass="home-sec-4" href={`/products/${products[2].slug}`} />
+      <Sec title="Studio Collection" sectionClass="home-sec-5" href={`/products/${products[3].slug}`} />
     </>
   )
 }

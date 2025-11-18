@@ -1153,6 +1153,24 @@ li {
 .dropdown-ul li:nth-child(4) a {
   @apply text-[#828282];
 }
+
+
+.dropdown-li {
+  position: relative;
+}
+
+.dropdown-li .dropdown {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all .2s ease;
+}
+
+.dropdown-li:hover .dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0px);
+}
 /* responsive */
 
 @media(max-width: 991px) {

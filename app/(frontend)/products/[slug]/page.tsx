@@ -23,9 +23,25 @@ export default async function ProductDescriptionPage({ params }: ProductDescript
     return (
         <>
             <InnerBanner bannerClass="products-banner" title={'Product Description'} />
-            <div>
-                <h1>Product Description Page</h1>
-            </div>
+            <section className="sec-gap">
+                <div className="container">
+                    <div className="product-description-content text-center">
+                        <div className="flex justify-center gap-4 items-center">
+
+                            <h2 className="text-[20px] font-bold">Product Description
+                            </h2>
+                            {product.packages?.priceDescription && (
+                                <p className="text-xl text-gray-600">{product.packages?.priceDescription}</p>
+                            )}
+                        </div>
+                        {product.packages?.description && (
+                            <p className="text-xl text-gray-600">{product.packages?.description} To add to cart click the button below </p>
+                        )}
+                    </div>
+                </div>
+
+
+            </section>
         </>
     )
 }
