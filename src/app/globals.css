@@ -9,6 +9,7 @@
   --secondary-theme-light: #0F1B4F;
   --primary-font: 'Sogeo Script', cursive;
   --secondary-font: 'Sofia Pro', sans-serif;
+  --sogeo-print: 'Sogeo Print', sans-serif;
   --default-color: #fff;
 }
 
@@ -16,7 +17,21 @@
 @font-face {
   font-family: 'Sogeo Script';
   src: url("/fonts/segoesc.ttf") format('truetype');
-  font-weight: normal;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sogeo Print';
+  src: url("/fonts/segoeprint.ttf") format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Sogeo Print';
+  src: url("/fonts/segoeprint_bold.ttf") format('truetype');
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
@@ -24,11 +39,13 @@
 @font-face {
   font-family: 'Sofia Pro';
   src: url("/fonts/Sofia-Pro-Regular-Az.otf");
+  font-weight: 400;
 }
 
 @font-face {
   font-family: 'Sofia Pro';
   src: url("/fonts/Sofia-Pro-Semi-Bold-Az.otf");
+  font-weight: 600;
 }
 
 
@@ -771,7 +788,14 @@ span.flatpickr-weekday,
   cursor: grabbing; /* Changes the cursor to indicate dragging */
 }
 
-
+/* global classes start */
+.sogeo-print {
+  font-family: var(--sogeo-print);
+}
+.primary-font {
+  font-family: var(--primary-font);
+}
+/* global classes end */
 /* custom css */
 html,
 body {
@@ -801,12 +825,10 @@ body {
 }
 
 .primary-navs {
+  font-family: var(--sogeo-print);
   @apply max-w-[1000px] xl:max-w-[1000px];
 }
 
-.primary-nav-link {
-  @apply text-white text-[24px] font-roboto;
-}
 
 .hero-section {
   @apply relative h-screen;
@@ -835,17 +857,6 @@ body {
   background: url('/images/home/sec-02.png') no-repeat center center/cover;
 }
 
-.home-sec-2 .hd-lg {
-  color: #4aad78;
-}
-
-.home-sec-3 .hd-lg {
-  color: #2775a9;
-}
-
-.home-sec-5 .hd-lg {
-  color: #828282;
-}
 
 .home-sec-3 {
   background: url('/images/home/sec-03.png') no-repeat center center/cover;
@@ -875,7 +886,7 @@ body {
   @apply  hidden right-[10px] top-0 bg-[var(--secondary-theme)] flex justify-center items-center w-[40px] h-[40px] text-[var(--default-color)];
 }
 .hero-bottom-content {
-  @apply block absolute right-[190px] bottom-[40px]  z-10 text-end text-[48px] max-w-[490px] ml-auto leading-13
+  @apply block absolute right-[30px] bottom-[40px]  z-10 text-end text-[48px] max-w-[490px] ml-auto leading-13
 }
 .inner-banner {
   @apply h-[600px] flex items-center z-1 justify-center text-center relative;
@@ -1093,7 +1104,7 @@ body {
   @apply hover:text-[var(--primary-theme)] text-lg transition-colors;
 }
 .primary-nav-link  {
-  @apply hover:text-[var(--primary-theme)];
+  @apply hover:text-[var(--primary-theme)] text-white text-[24px];
 }
 .primary-navs .btn {
   @apply text-[16px];
@@ -1108,7 +1119,7 @@ body {
   @apply bg-[var(--secondary-theme)] text-white;
 }
 .para {
-  @apply font-roboto font-medium ;
+  @apply font-roboto font-medium dark:text-white;
 }
 .para span {
   @apply font-bold;
@@ -1125,6 +1136,22 @@ body {
 }
 .social-links {
   @apply justify-center md:justify-start;
+}
+h3,
+li {
+  @apply dark:text-white;
+}
+.dropdown-ul li:first-child a {
+  @apply text-[#4aad78];
+}
+.dropdown-ul li:nth-child(2) a {
+  @apply text-[#2775a9];
+}
+.dropdown-ul li:nth-child(3) a {
+  @apply text-[var(--primary-theme)];
+}
+.dropdown-ul li:nth-child(4) a {
+  @apply text-[#828282];
 }
 /* responsive */
 

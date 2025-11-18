@@ -186,7 +186,7 @@ const AppSidebar: React.FC = () => {
       <div className="p-4">
         {/* Logo */}
         <div className={`flex items-center space-x-2 mb-6 justify-center ${!isExpanded ? 'justify-center' : ''}`}>
-        <Image src="/images/logo.png" className='max-w-[150px]' alt="Logo" width={250} height={250} />
+        <Image src="/images/logo.png" className={`${!isExpanded ? 'max-w-[50px]' : 'max-w-[150px]'}`} alt="Logo" width={250} height={250} />
         </div>
 
         {/* Navigation */}
