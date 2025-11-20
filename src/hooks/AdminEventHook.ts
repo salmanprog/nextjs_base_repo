@@ -1,12 +1,15 @@
-import { Prisma, EventCategory } from "@prisma/client";
+import { Prisma, Event } from "@prisma/client";
 
-export default class AdminEventCategoryHook {
+export default class AdminEventHook {
 
   // For listing multiple event categories
   static async indexQueryHook(
-    query: Prisma.EventCategoryFindManyArgs,
+    query: Prisma.EventFindManyArgs,
     request?: Record<string, unknown>
-  ): Promise<Prisma.EventCategoryFindManyArgs> {
+  ): Promise<Prisma.EventFindManyArgs> {
+    query.include = {
+      category: true,
+    };
     query.where = { ...query.where, deletedAt: null, status: true };
     query.orderBy = {
       createdAt: "desc",
@@ -16,17 +19,20 @@ export default class AdminEventCategoryHook {
 
   // For fetching a single event category by id or slug
   static async showQueryHook(
-    query: Prisma.EventCategoryFindUniqueArgs,
+    query: Prisma.EventFindUniqueArgs,
     request?: Record<string, unknown>
-  ): Promise<Prisma.EventCategoryFindUniqueArgs> {
+  ): Promise<Prisma.EventFindUniqueArgs> {
+    query.include = {
+      category: true,
+    };
     query.where = { ...query.where, deletedAt: null, status: true };
     return query;
   }
 
   // Before creating a new event category
   static async beforeCreateHook(
-    data: Prisma.EventCategoryCreateInput
-  ): Promise<Prisma.EventCategoryCreateInput> {
+    data: Prisma.EventCreateInput
+  ): Promise<Prisma.EventCreateInput> {
     return data;
   }
 }

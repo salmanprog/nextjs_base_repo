@@ -1,22 +1,22 @@
-import type { Prisma, EventCategory } from "@prisma/client";
+import type { Prisma, Event } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import RestController from "@/core/RestController";
 import type { DefaultArgs } from "@prisma/client/runtime/library";
 import { NextResponse } from "next/server";
-import AdminEventCategoryHook from "@/hooks/AdminEventCategoryHook";
-import AdminEventCategoryResource from "@/resources/AdminEventCategoryResource";
-import { storeEventCategory, updateEventCategory } from "@/validators/user.validation";
+import AdminEventHook from "@/hooks/AdminEventHook";
+import AdminEventResource from "@/resources/AdminEventResource";
+import { storeEvent, updateEvent } from "@/validators/user.validation";
 import { generateSlug } from "@/utils/slug";
 
-export type ExtendedEventCategory = EventCategory & { imageUrl?: string };
+export type ExtendedEvent = Event & { imageUrl?: string };
 
-export default class AdminEventCategoryController extends RestController<
-  Prisma.EventCategoryDelegate<DefaultArgs>,
-  ExtendedEventCategory
+export default class AdminEventController extends RestController<
+  Prisma.EventDelegate<DefaultArgs>,
+  ExtendedEvent
 > {
-  constructor(req?: Request, data?: Partial<ExtendedEventCategory>) {
+  constructor(req?: Request, data?: Partial<ExtendedEvent>) {
     super(
-      prisma.eventCategory as unknown as Prisma.EventCategoryDelegate<DefaultArgs> & {
+      prisma.event as unknown as Prisma.EventDelegate<DefaultArgs> & {
         findMany: (...args: unknown[]) => Promise<unknown>;
         findUnique?: (...args: unknown[]) => Promise<unknown>;
         create?: (...args: unknown[]) => Promise<unknown>;
@@ -27,23 +27,24 @@ export default class AdminEventCategoryController extends RestController<
     );
 
     this.data = data ?? {};
-    this.resource = AdminEventCategoryResource;
-    this.hook = AdminEventCategoryHook;
+    this.resource = AdminEventResource;
+    this.hook = AdminEventHook;
   }
 
   // ------------------- Validation -------------------
   protected async validation(action: string) {
     switch (action) {
       case "store":
-        return await this.__validate(storeEventCategory, this.data ?? {});
+        return await this.__validate(storeEvent, this.data ?? {});
       case "update":
-        return await this.__validate(updateEventCategory, this.data ?? {});
+        return await this.__validate(updateEvent, this.data ?? {});
     }
   }
 
   // ------------------- Hooks -------------------
   protected async beforeIndex(): Promise<void | NextResponse> {
     this.getCurrentUser(); // can log if needed
+    console.log('check==========================================')
   }
 
   protected async beforeShow(): Promise<void | NextResponse> {
@@ -63,15 +64,18 @@ export default class AdminEventCategoryController extends RestController<
     if (!currentUser) {
       return this.sendError("Unauthorized", { auth: "User not logged in" }, 401);
     }
-    if (this.data?.name) {
-      this.data.slug = await generateSlug("eventCategory", this.data.name);
+    if (this.data?.title) {
+      this.data.slug = await generateSlug("eventCategory", this.data.title);
     }
     if (this.data?.status !== undefined) {
       this.data.status = String(this.data.status) === "1";
     }
+    if (this.data?.categoryId !== undefined) {
+      this.data.categoryId = Number(this.data.categoryId);
+    }
   }
 
-  protected async afterStore(record: ExtendedEventCategory): Promise<ExtendedEventCategory> {
+  protected async afterStore(record: ExtendedEvent): Promise<ExtendedEvent> {
     return record;
   }
 
@@ -89,9 +93,12 @@ export default class AdminEventCategoryController extends RestController<
     if (this.data?.status !== undefined) {
       this.data.status = String(this.data.status) === "1";
     }
+    if (this.data?.categoryId !== undefined) {
+      this.data.categoryId = Number(this.data.categoryId);
+    }
   }
 
-  protected async afterUpdate(record: ExtendedEventCategory): Promise<ExtendedEventCategory> {
+  protected async afterUpdate(record: ExtendedEvent): Promise<ExtendedEvent> {
     return record;
   }
 

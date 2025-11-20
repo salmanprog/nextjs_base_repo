@@ -183,7 +183,7 @@ export default abstract class RestController<
       query.where = { ...(query.where || {}), id: Number(create.id) };
       const record = (await this.model.findUnique?.(query)) as TEntity;
       const processed = await this.afterStore(record);
-      return this.__sendResponse(201, this.messages.store, processed);
+      return this.__sendResponse(200, this.messages.store, processed);
     } catch (err) {
       return this.sendError((err as Error).message, {}, 500);
     }

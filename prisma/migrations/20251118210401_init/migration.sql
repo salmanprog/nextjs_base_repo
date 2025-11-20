@@ -107,24 +107,76 @@ CREATE TABLE `event_category` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `event` (
+CREATE TABLE `Event` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `categoryId` INTEGER NOT NULL,
     `title` VARCHAR(255) NOT NULL,
     `slug` VARCHAR(255) NOT NULL,
     `description` TEXT NULL,
-    `location` VARCHAR(255) NULL,
-    `startDate` TIMESTAMP(6) NOT NULL,
-    `endDate` TIMESTAMP(6) NULL,
     `imageUrl` TEXT NULL,
     `status` BOOLEAN NOT NULL DEFAULT true,
     `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updatedAt` DATETIME(3) NOT NULL,
     `deletedAt` TIMESTAMP(6) NULL,
 
-    UNIQUE INDEX `event_slug_key`(`slug`),
-    INDEX `event_categoryId_idx`(`categoryId`),
-    INDEX `event_title_idx`(`title`),
+    UNIQUE INDEX `Event_slug_key`(`slug`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `event_packages` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventId` INTEGER NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `slug` VARCHAR(255) NOT NULL,
+    `description` TEXT NULL,
+    `imageUrl` TEXT NULL,
+    `isFace` BOOLEAN NOT NULL DEFAULT false,
+    `status` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `deletedAt` TIMESTAMP(6) NULL,
+
+    UNIQUE INDEX `event_packages_slug_key`(`slug`),
+    INDEX `event_packages_eventId_idx`(`eventId`),
+    INDEX `event_packages_title_idx`(`title`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `event_package_gallery` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventPackageId` INTEGER NOT NULL,
+    `eventId` INTEGER NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `slug` VARCHAR(255) NOT NULL,
+    `description` TEXT NULL,
+    `imageUrl` TEXT NULL,
+    `status` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `deletedAt` TIMESTAMP(6) NULL,
+
+    UNIQUE INDEX `event_package_gallery_slug_key`(`slug`),
+    INDEX `event_package_gallery_eventId_idx`(`eventId`),
+    INDEX `event_package_gallery_eventPackageId_idx`(`eventPackageId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `media` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255) NULL,
+    `url` TEXT NOT NULL,
+    `type` ENUM('IMAGE', 'VIDEO', 'DOCUMENT') NOT NULL DEFAULT 'IMAGE',
+    `relatedType` VARCHAR(100) NULL,
+    `relatedId` INTEGER NULL,
+    `status` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `deletedAt` TIMESTAMP(6) NULL,
+
+    INDEX `media_relatedType_relatedId_idx`(`relatedType`, `relatedId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -138,4 +190,13 @@ ALTER TABLE `user_address` ADD CONSTRAINT `user_address_userId_fkey` FOREIGN KEY
 ALTER TABLE `User` ADD CONSTRAINT `User_userGroupId_fkey` FOREIGN KEY (`userGroupId`) REFERENCES `user_role`(`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE `event` ADD CONSTRAINT `event_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `event_category`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `Event` ADD CONSTRAINT `Event_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `event_category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `event_packages` ADD CONSTRAINT `event_packages_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `Event`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `event_package_gallery` ADD CONSTRAINT `event_package_gallery_eventPackageId_fkey` FOREIGN KEY (`eventPackageId`) REFERENCES `event_packages`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `event_package_gallery` ADD CONSTRAINT `event_package_gallery_eventId_fkey` FOREIGN KEY (`eventId`) REFERENCES `Event`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
