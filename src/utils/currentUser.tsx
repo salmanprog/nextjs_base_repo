@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import useApi, { ApiResponse } from "@/utils/useApi";
 
 interface User {
@@ -11,6 +11,7 @@ export const useCurrentUser = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loadingUser, setLoadingUser] = useState(true);
   const [errorUser, setErrorUser] = useState<string | null>(null);
+  const hasFetchedRef = useRef(false);
 
   const { fetchApi } = useApi({
     url: "/api/currentuser",
@@ -20,6 +21,10 @@ export const useCurrentUser = () => {
   });
 
   useEffect(() => {
+    // Prevent multiple calls
+    if (hasFetchedRef.current) return;
+    hasFetchedRef.current = true;
+
     let isMounted = true; // avoid state update if unmounted
 
     const fetchUser = async () => {
@@ -44,7 +49,8 @@ export const useCurrentUser = () => {
     return () => {
       isMounted = false;
     };
-  }, [fetchApi]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array to call only once
 
   return { user, loadingUser, errorUser };
 };
