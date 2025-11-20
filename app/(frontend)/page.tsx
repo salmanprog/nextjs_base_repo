@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Sec from "@/components/home/Sec";
 import Image from "next/image";
 import { products } from "./products/data";
+import { Icons } from "@/components/icons/Index";
 export default function HomePage() {
   const images = [
     "/images/home/hero-bg.png",
@@ -29,11 +30,24 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
+  const [isMounted, setIsMounted] = useState(false);
+
+useEffect(() => {
+  setIsMounted(true);
+}, []);
+
   return (
     <>
       <section className="hero-section relative h-screen flex items-center justify-center overflow-hidden">
+        {/* add scroll down arrow with pagination like 1/5  */}
+        <div className="scroll-down-arrow absolute bottom-3 flex-col left-0 right-0 flex justify-center items-center z-10">
+          <span className="text-[var(--primary-theme)] text-[25px]">1/5</span>
+          <button className="scroll-down-arrow-icon">
+            <Icons.arrowDown className="text-[var(--primary-theme)] text-2xl" />
+          </button>
+        </div>
         {/* Background Images Layer */}
-        {images.map((img, index) => (
+        {isMounted && images.map((img, index) => (
           <div
             key={index}
             className={`absolute inset-0 bg-center bg-cover transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
@@ -57,7 +71,7 @@ export default function HomePage() {
             </span> */}
             <div className="hero-bottom-content group inline-block">
               <button className="">
-                <Image src="/images/logo.png" alt="" width={100} height={100} />
+                <Image src="/images/nabsd-logo.svg" alt="" width={200} height={200} />
               </button>
 
               <span className="
