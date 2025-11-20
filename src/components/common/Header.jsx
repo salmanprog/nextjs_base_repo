@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useState, useRef, useMemo, useCallback, useEffect } from "react";
 import { Icons } from "@/components/icons/Index";
+import { useCurrentUser } from "@/utils/currentUser";
 import Link from "next/link";
 
 // Move productCategories outside component to prevent recreation
@@ -13,6 +14,8 @@ const PRODUCT_CATEGORIES = [
 ];
 
 export default function Header() {
+    console.log("Header");
+    
     const [isOpen, setIsOpen] = useState(false);
     const hoverRef = useRef(false);
 

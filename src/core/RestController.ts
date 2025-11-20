@@ -183,7 +183,7 @@ export default abstract class RestController<
       query.where = { ...(query.where || {}), id: Number(create.id) };
       const record = (await this.model.findUnique?.(query)) as TEntity;
       const processed = await this.afterStore(record);
-      return this.__sendResponse(201, this.messages.store, processed);
+      return this.__sendResponse(200, this.messages.store, processed);
     } catch (err) {
       return this.sendError((err as Error).message, {}, 500);
     }
@@ -203,6 +203,30 @@ export default abstract class RestController<
           : {};
       query = await this.getQueryHook("show", query, requestDataShow);
       query.where = { ...(query.where || {}), id: Number(id) };
+      const record = (await this.model.findUnique?.(query)) as TEntity | null;
+      if (!record) return this.sendError("Record not found", {}, 404);
+
+      const processed = await this.afterShow(record);
+      return this.__sendResponse(200, this.messages.show, processed);
+    } catch (err) {
+      return this.sendError((err as Error).message, {}, 500);
+    }
+  }
+
+  async showSlug(slug: string): Promise<NextResponse> {
+    try {
+      const beforeShow = await this.beforeShow();
+      if (beforeShow) return beforeShow;
+      let query: Record<string, unknown> = {};
+        const requestDataShow: Record<string, unknown> = this.__request
+          ? {
+              query: Object.fromEntries(new URL(this.__request.url).searchParams),
+              headers: Object.fromEntries(this.__request.headers.entries()),
+              method: this.__request.method,
+            }
+          : {};
+      query = await this.getQueryHook("show", query, requestDataShow);
+      query.where = { ...(query.where || {}), slug: String(slug) };
       const record = (await this.model.findUnique?.(query)) as TEntity | null;
       if (!record) return this.sendError("Record not found", {}, 404);
 
@@ -242,10 +266,55 @@ export default abstract class RestController<
     }
   }
 
+  async updateBySlug(slug: string, data: Partial<TEntity>): Promise<NextResponse> {
+    this.data = data;
+
+    const validation = await this.validation("update");
+    if (validation && "success" in validation && !validation.success)
+      return this.sendError("Validation failed", validation.errors ?? {}, 422);
+
+    try {
+      const beforeUpdate = await this.beforeUpdate();
+      if (beforeUpdate) return beforeUpdate;
+
+      const record_updated = (await this.model.update?.({ where: { slug }, data })) as TEntity;
+
+      let query: Record<string, unknown> = {};
+      const requestDataShow: Record<string, unknown> = this.__request
+        ? {
+            query: Object.fromEntries(new URL(this.__request.url).searchParams),
+            headers: Object.fromEntries(this.__request.headers.entries()),
+            method: this.__request.method,
+          }
+        : {};
+
+      query = await this.getQueryHook("show", query, requestDataShow);
+      query.where = { ...(query.where || {}), slug: record_updated.slug };
+
+      const record = (await this.model.findUnique?.(query)) as TEntity;
+      const processed = await this.afterUpdate(record);
+
+      return this.__sendResponse(200, this.messages.update, processed);
+    } catch (err) {
+      return this.sendError((err as Error).message, {}, 500);
+    }
+  }
+
   async destroy(id: number): Promise<NextResponse> {
     try {
       await this.beforeDestroy();
       await this.model.update?.({where: { id }, data: { deletedAt: new Date() },}) as TEntity;
+      await this.afterDestroy();
+      return this.__sendResponse(200, this.messages.delete, {});
+    } catch (err) {
+      return this.sendError((err as Error).message, {}, 500);
+    }
+  }
+
+  async destroyBySlug(slug: string): Promise<NextResponse> {
+    try {
+      await this.beforeDestroy();
+      await this.model.update?.({where: { slug }, data: { deletedAt: new Date() },}) as TEntity;
       await this.afterDestroy();
       return this.__sendResponse(200, this.messages.delete, {});
     } catch (err) {

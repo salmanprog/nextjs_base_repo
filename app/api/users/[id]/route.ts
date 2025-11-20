@@ -29,7 +29,6 @@ export async function PATCH(
 ) {
   const params = await context.params;
   const id = parseInt(params.id, 10);
-  console.log("📦 Content-Type------------------------------------------:", request.headers.get("content-type"));
   if (isNaN(id)) {
     return NextResponse.json({ code: 400, message: "Invalid user ID" }, { status: 400 });
   }

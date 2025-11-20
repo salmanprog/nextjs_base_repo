@@ -43,13 +43,21 @@ const navItems: NavItem[] = [
     //   name: 'Calendar',
     //   path: '/calendar',
     // },
-    {
-      icon: UserCircle,
-      name: 'Users',
-      subItems: [
-        { name: 'All Users', path: '/admin/users/', pro: false },
-        { name: 'Add User', path: '/admin/users/add', pro: false },
-      ],
+  {
+    icon: UserCircle,
+    name: 'Users',
+    subItems: [
+      { name: 'All Users', path: '/admin/users/', pro: false },
+      { name: 'Add User', path: '/admin/users/add', pro: false },
+    ],
+  },
+  {
+    icon: Plug,
+    name: 'Events',
+    subItems: [
+      { name: 'Event Category', path: '/admin/event-categories/', pro: false },
+      { name: 'Events', path: '/admin/event', pro: false },
+    ],
   },
   // {
   //   name: 'Forms',

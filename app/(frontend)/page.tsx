@@ -2,8 +2,19 @@
 import { useEffect, useState } from "react";
 import Sec from "@/components/home/Sec";
 import Image from "next/image";
-import { products } from "./products/data";
+import useApi from "@/utils/useApi";
 import { Icons } from "@/components/icons/Index";
+
+interface EventCategory {
+  id: number;
+  name: string;
+  slug: string;
+  imageUrl: string | null;
+  description: string | null;
+  status: boolean;
+  createdAt: string;
+}
+
 export default function HomePage() {
   const images = [
     "/images/home/hero-bg.png",
@@ -22,7 +33,28 @@ export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(
     Math.floor(Math.random() * images.length)
   );
+  const [categories, setCategories] = useState<EventCategory[]>([]);
+  
+  const { data, loading: apiLoading, error: apiError, fetchApi } = useApi({
+    url: "/api/users/events/category",
+    type: "manual",
+    method: "GET",
+    requiresAuth: false,
+  });
 
+  // Fetch categories on mount
+  useEffect(() => {
+    fetchApi();
+  }, []);
+
+  // Update categories when data is received
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setCategories(data);
+    }
+  }, [data]);
+
+  // Hero image rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -31,18 +63,51 @@ export default function HomePage() {
   }, []);
 
   const [isMounted, setIsMounted] = useState(false);
+  const [currentSection, setCurrentSection] = useState(1);
 
-useEffect(() => {
-  setIsMounted(true);
-}, []);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Calculate total sections: 1 (hero) + categories.length
+  const totalSections = 1 + categories.length;
+
+  // Track scroll position to determine current section
+  useEffect(() => {
+    if (!isMounted || totalSections <= 1) return;
+
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('section');
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      let activeSection = 1;
+
+      sections.forEach((section, index) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          activeSection = index + 1;
+        }
+      });
+
+      setCurrentSection(activeSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMounted, categories.length]);
 
   return (
     <>
       <section className="hero-section relative h-screen flex items-center justify-center overflow-hidden">
-        {/* add scroll down arrow with pagination like 1/5  */}
         <div className="scroll-down-arrow absolute bottom-3 flex-col left-0 right-0 flex justify-center items-center z-10">
-          <span className="text-[var(--primary-theme)] text-[25px]">1/5</span>
-          <button className="scroll-down-arrow-icon">
+          <span className="text-[var(--primary-theme)] text-[25px]">
+            {currentSection}/{totalSections}
+          </span>
+          <button className="scroll-down-arrow-icon animate-bounce duration-300 ease-in-out">
             <Icons.arrowDown className="text-[var(--primary-theme)] text-2xl" />
           </button>
         </div>
@@ -94,11 +159,23 @@ useEffect(() => {
         {/* Overlay for dark effect (optional) */}
         <div className="absolute inset-0 bg-black/30 z-[5]"></div>
       </section>
-      {/* add slug link */}
-      <Sec title="Sea Trials / Herndon" sectionClass="home-sec-2" href={`/products/${products[0].slug}`} />
-      <Sec title="Graduations / Commissioning" sectionClass="home-sec-3" href={`/products/${products[1].slug}`} />
-      <Sec title="Plebe Summer" sectionClass="home-sec-4" href={`/products/${products[2].slug}`} />
-      <Sec title="Studio Collection" sectionClass="home-sec-5" href={`/products/${products[3].slug}`} />
+      {/* Event Categories Sections */}
+      {categories.length > 0 ? (
+        categories.map((category, index) => (
+          <Sec
+            key={category.id}
+            title={category.name}
+            sectionClass={`home-sec-${index + 2}`}
+            href={`/products/${category.slug}`}
+          />
+        ))
+      ) : apiLoading ? (
+        <div className="container py-8 text-center">Loading categories...</div>
+      ) : apiError ? (
+        <div className="container py-8 text-center text-red-500">Error loading categories: {apiError}
+        
+        </div>
+      ) : null}
     </>
   )
 }

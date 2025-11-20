@@ -3,10 +3,10 @@ import { prisma } from "@/lib/prisma";
 import RestController from "@/core/RestController";
 import { storeUser, updateUser } from "@/validators/user.validation";
 import UserResource from "@/resources/UserResource";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import type { DefaultArgs } from "@prisma/client/runtime/library";
 import { generateSlug } from "@/utils/slug";
-import { createUserToken } from "@/utils/token";
+import { createUserToken, getUserByToken } from "@/utils/token";
 import UserHook from "@/hooks/UserHook";
 
 export type ExtendedUser = User & { image?: string };
@@ -42,11 +42,11 @@ export default class UsersController extends RestController<
     const currentUser = this.getCurrentUser();
   }
   protected async beforeShow(): Promise<void | NextResponse> {
-    const user = this.requireUser();
-    const id = this.getRouteParam() ?? "";
-    if(parseInt(user.id) != parseInt(id)){
-        return this.sendError("Validation failed", { authentication: "You don't have an other profile" }, 422);
-    }
+    // const user = this.requireUser();
+    // const id = this.getRouteParam() ?? "";
+    // if(parseInt(user.id) != parseInt(id)){
+    //     return this.sendError("Validation failed", { authentication: "You don't have an other profile" }, 422);
+    // }
   }
   protected async beforeStore(): Promise<void | NextResponse> {
     const email = this.data?.email;
@@ -102,13 +102,13 @@ export default class UsersController extends RestController<
     try {
       const user = await prisma.user.findUnique({ where: { email }, include: {userRole: true,apiTokens: true,}, });
       if (!user) {
-        return this.sendError("Invalid credentials", {login_error: "Credentials are not match in our records."}, 401);
+        return this.sendError("Invalid credentials", {login_error: "Credentials are not match in our records."}, 400);
       }
       const bcrypt = await import("bcryptjs");
       const isValid = await bcrypt.compare(password, user.password || "");
 
       if (!isValid) {
-        return this.sendError("Invalid credentials", {password_error: "Password does not match."}, 401);
+        return this.sendError("Invalid credentials", {password_error: "Password does not match."}, 400);
       }
 
       await createUserToken(

@@ -1171,6 +1171,34 @@ li {
   visibility: visible;
   transform: translateY(0px);
 }
+.description-content-item {
+  background: rgba(255, 255, 255, 0.19);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.54);
+  padding: 50px 20px;
+
+}
+
+/* HTML: <div class="loader"></div> */
+.loading-text {
+  width: fit-content;
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 30px;
+  color: #0000;
+  background: linear-gradient(90deg,#f1e712 calc(50% + 0.5ch),#f1e712 0) right/calc(200% + 1ch) 100%;
+  -webkit-background-clip: text;
+          background-clip: text;
+  animation: l7 2s infinite steps(11);
+  margin: 0 auto;
+}
+.loading-text:before {
+  content:"Loading..."
+}
+@keyframes l7 {to{background-position: left}}
 /* responsive */
 
 @media(max-width: 991px) {
