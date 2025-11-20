@@ -11,6 +11,7 @@ export default function EditEvent() {
 
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [price, setPrice] = useState("");
   const [status, setStatus] = useState("1");
   const [image, setImage] = useState<File | null>(null);
   const [oldImage, setOldImage] = useState<string | null>(null);
@@ -53,7 +54,8 @@ export default function EditEvent() {
       setTitle(eventData.title ?? eventData.name ?? "");
       setDescription(eventData.description || "");
       setStatus(eventData.status ? "1" : "0");
-      setCategoryId(String(eventData.categoryId));  // ⭐ Important
+      setCategoryId(String(eventData.categoryId));
+      setPrice(String(eventData.price));
       setOldImage(eventData.imageUrl || null);
     }
   }, [eventData]);
@@ -64,11 +66,13 @@ export default function EditEvent() {
 
     if (!title) return setErrorMsg("Event title is required.");
     if (!categoryId) return setErrorMsg("Category is required.");
+    if (!price) return setErrorMsg("Event price is required.");
 
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("categoryId", categoryId);
+      formData.append("price", String(Number(price)));
       formData.append("description", description);
       formData.append("status", status);
 
@@ -142,6 +146,17 @@ export default function EditEvent() {
                   </option>
                 ))}
               </select>
+            </div>
+
+            {/* Price */}
+            <div>
+              <label className="block mb-1 text-sm font-medium">Event Price</label>
+              <input
+                type="text"
+                className="h-11 w-full rounded-lg border px-4 py-2.5 text-sm"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
             </div>
 
             {/* Description */}

@@ -1,4 +1,5 @@
 "use client";
+import type { Metadata } from "next";
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";

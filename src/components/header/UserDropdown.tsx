@@ -20,7 +20,14 @@ function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     setIsOpen(false);
   }
   const logout = () => {
+    // Clear cookie
     document.cookie = "token=; path=/; max-age=0";
+    // Clear localStorage
+    localStorage.removeItem("token");
+    localStorage.clear();
+    // Clear sessionStorage as well
+    sessionStorage.removeItem("token");
+    sessionStorage.clear();
     router.push("/admin/login");
   };
   return (

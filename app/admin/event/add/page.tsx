@@ -10,6 +10,7 @@ export default function AddEvent() {
 
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
+  const [price, setPrice] = useState("");
   const [status, setStatus] = useState("1");
   const [image, setImage] = useState<File | null>(null);
   const [description, setDescription] = useState("");
@@ -40,11 +41,13 @@ export default function AddEvent() {
 
     if (!title) return setErrorMsg("Event title is required.");
     if (!categoryId) return setErrorMsg("Please select a category.");
+    if (!price) return setErrorMsg("Event price is required.");
 
     try {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("categoryId", categoryId);
+      formData.append("price", String(Number(price)));
       formData.append("description", description);
       formData.append("status", status);
       if (image) formData.append("image", image);
@@ -52,7 +55,7 @@ export default function AddEvent() {
       const res = await sendData(formData, undefined, "POST");
 
       if (res.code === 200) {
-        router.push("/admin/events");
+        router.push("/admin/event");
       } else {
         setErrorMsg(res.message || "Something went wrong.");
       }
@@ -109,6 +112,18 @@ export default function AddEvent() {
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Event Price */}
+          <div>
+            <label className="block text-sm font-medium">Event Price</label>
+            <input
+              type="text"
+              placeholder="Enter event price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="h-11 w-full rounded-lg border px-4"
+            />
           </div>
 
           {/* Description */}

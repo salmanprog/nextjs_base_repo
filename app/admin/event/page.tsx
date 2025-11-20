@@ -13,6 +13,12 @@ interface Event {
   id: number;
   name: string;
   slug: string;
+  price: number | null;
+  category: {
+    id: number;
+    title: string;
+    slug: string;
+  } | null;
   status: false | true;
 }
 
@@ -158,6 +164,18 @@ export default function EventList() {
                 isHeader
                 className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
+                Category
+              </TableCell>
+              <TableCell
+                isHeader
+                className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+              >
+                Price
+              </TableCell>
+              <TableCell
+                isHeader
+                className="py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+              >
                 Status
               </TableCell>
               <TableCell
@@ -186,6 +204,12 @@ export default function EventList() {
                 </TableCell>
                 <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                   {even.slug}
+                </TableCell>
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                  {even.category?.title || "N/A"}
+                </TableCell>
+                <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                  {even.price !== null ? `$${even.price.toFixed(2)}` : "N/A"}
                 </TableCell>
                 <TableCell className="py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                   <Badge

@@ -114,6 +114,7 @@ CREATE TABLE `Event` (
     `slug` VARCHAR(255) NOT NULL,
     `description` TEXT NULL,
     `imageUrl` TEXT NULL,
+    `price` DOUBLE NULL DEFAULT 0,
     `status` BOOLEAN NOT NULL DEFAULT true,
     `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     `updatedAt` DATETIME(3) NOT NULL,

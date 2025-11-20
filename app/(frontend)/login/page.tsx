@@ -88,7 +88,6 @@ export default function LoginPage() {
 
       if (res.code === 200 && res.data?.apiTokens?.[0]?.apiToken) {
         const token = res.data.apiTokens[0].apiToken;
-        document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
         localStorage.setItem("token", token);
         router.push("/");
       } else {

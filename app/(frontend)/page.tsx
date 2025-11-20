@@ -2,7 +2,18 @@
 import { useEffect, useState } from "react";
 import Sec from "@/components/home/Sec";
 import Image from "next/image";
-import { products } from "./products/data";
+import useApi from "@/utils/useApi";
+
+interface EventCategory {
+  id: number;
+  name: string;
+  slug: string;
+  imageUrl: string | null;
+  description: string | null;
+  status: boolean;
+  createdAt: string;
+}
+
 export default function HomePage() {
   const images = [
     "/images/home/hero-bg.png",
@@ -21,7 +32,28 @@ export default function HomePage() {
   const [currentIndex, setCurrentIndex] = useState(
     Math.floor(Math.random() * images.length)
   );
+  const [categories, setCategories] = useState<EventCategory[]>([]);
+  
+  const { data, loading: apiLoading, error: apiError, fetchApi } = useApi({
+    url: "/api/users/events/category",
+    type: "manual",
+    method: "GET",
+    requiresAuth: false,
+  });
 
+  // Fetch categories on mount
+  useEffect(() => {
+    fetchApi();
+  }, []);
+
+  // Update categories when data is received
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setCategories(data);
+    }
+  }, [data]);
+
+  // Hero image rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -80,11 +112,21 @@ export default function HomePage() {
         {/* Overlay for dark effect (optional) */}
         <div className="absolute inset-0 bg-black/30 z-[5]"></div>
       </section>
-      {/* add slug link */}
-      <Sec title="Sea Trials / Herndon" sectionClass="home-sec-2" href={`/products/${products[0].slug}`} />
-      <Sec title="Graduations / Commissioning" sectionClass="home-sec-3" href={`/products/${products[1].slug}`} />
-      <Sec title="Plebe Summer" sectionClass="home-sec-4" href={`/products/${products[2].slug}`} />
-      <Sec title="Studio Collection" sectionClass="home-sec-5" href={`/products/${products[3].slug}`} />
+      {/* Event Categories Sections */}
+      {categories.length > 0 ? (
+        categories.map((category, index) => (
+          <Sec
+            key={category.id}
+            title={category.name}
+            sectionClass={`home-sec-${index + 2}`}
+            href={`/products/${category.slug}`}
+          />
+        ))
+      ) : apiLoading ? (
+        <div className="container py-8 text-center">Loading categories...</div>
+      ) : apiError ? (
+        <div className="container py-8 text-center text-red-500">Error loading categories: {apiError}</div>
+      ) : null}
     </>
   )
 }

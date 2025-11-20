@@ -44,7 +44,6 @@ export default class AdminEventController extends RestController<
   // ------------------- Hooks -------------------
   protected async beforeIndex(): Promise<void | NextResponse> {
     this.getCurrentUser(); // can log if needed
-    console.log('check==========================================')
   }
 
   protected async beforeShow(): Promise<void | NextResponse> {
@@ -73,6 +72,9 @@ export default class AdminEventController extends RestController<
     if (this.data?.categoryId !== undefined) {
       this.data.categoryId = Number(this.data.categoryId);
     }
+    if (this.data?.price !== undefined) {
+      this.data.price = Number(this.data.price);
+    }
   }
 
   protected async afterStore(record: ExtendedEvent): Promise<ExtendedEvent> {
@@ -95,6 +97,9 @@ export default class AdminEventController extends RestController<
     }
     if (this.data?.categoryId !== undefined) {
       this.data.categoryId = Number(this.data.categoryId);
+    }
+    if (this.data?.price !== undefined) {
+      this.data.price = Number(this.data.price);
     }
   }
 

@@ -130,6 +130,7 @@ model Event {
   slug        String    @unique @db.VarChar(255)
   description String?   @db.Text
   imageUrl    String?   @db.Text
+  price       Float?    @default(0)
   status      Boolean   @default(true)
   createdAt   DateTime  @default(now()) @db.Timestamp(6)
   updatedAt   DateTime  @updatedAt

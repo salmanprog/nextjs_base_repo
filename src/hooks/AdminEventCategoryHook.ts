@@ -1,4 +1,5 @@
 import { Prisma, EventCategory } from "@prisma/client";
+import { getHookUser } from "@/utils/hookUser";
 
 export default class AdminEventCategoryHook {
 
@@ -7,7 +8,11 @@ export default class AdminEventCategoryHook {
     query: Prisma.EventCategoryFindManyArgs,
     request?: Record<string, unknown>
   ): Promise<Prisma.EventCategoryFindManyArgs> {
-    query.where = { ...query.where, deletedAt: null, status: true };
+    const user = getHookUser(request);
+    query.where = { ...query.where, deletedAt: null };
+    if (!user || user.userGroupId !== 1) {
+      query.where = { ...query.where, status: true };
+    }
     query.orderBy = {
       createdAt: "desc",
     };
@@ -19,7 +24,7 @@ export default class AdminEventCategoryHook {
     query: Prisma.EventCategoryFindUniqueArgs,
     request?: Record<string, unknown>
   ): Promise<Prisma.EventCategoryFindUniqueArgs> {
-    query.where = { ...query.where, deletedAt: null, status: true };
+    query.where = { ...query.where, deletedAt: null };
     return query;
   }
 

@@ -16,6 +16,7 @@ export default class AdminEventResource extends BaseResource<ExtendedEvent> {
       name: event.title,
       slug: event.slug,
       categoryId: event.categoryId,
+      price: event.price,
       imageUrl: event.imageUrl
         ? `${process.env.NEXT_PUBLIC_APP_URL || ""}${event.imageUrl}`
         : null,

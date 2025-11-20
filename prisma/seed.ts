@@ -30,16 +30,16 @@ async function main() {
     },
   });
 
-  const hashedPassword = await bcrypt.hash("admin123", 10);
+  const hashedPassword = await bcrypt.hash("Admin@123", 10);
 
   await prisma.user.upsert({
-    where: { email: "admin@example.com" },
+    where: { email: "admin@thornton.com" },
     update: {},
     create: {
       name: "Super Admin",
       username: "superadmin",
       slug: "super-admin",
-      email: "admin@example.com",
+      email: "admin@thornton.com",
       password: hashedPassword,
       userGroupId: adminRole.id,
       userType: "ADMIN",
@@ -50,6 +50,41 @@ async function main() {
     },
   });
 
+  const eventCategories = [
+    {
+      name: "Sea Trials / Herndon",
+      slug: "sea-trials-herndon",
+      description: "All sea related events",
+      imageUrl: "/uploads/category/sec-02.png",
+    },
+    {
+      name: "Graduations / Commissioning",
+      slug: "graduations-commissioning",
+      description: "Graduations celebration events",
+      imageUrl: "/uploads/category/sec-03.png",
+    },
+    {
+      name: "Plebe Summer",
+      slug: "plebe-summer",
+      description: "Plebe events",
+      imageUrl: "/uploads/category/sec-04.png",
+    },
+    {
+      name: "Studio Collection",
+      slug: "studio-collection",
+      description: "Studio Collection",
+      imageUrl: "/uploads/category/sec-05.png",
+    },
+  ];
+
+  for (const cat of eventCategories) {
+    await prisma.eventCategory.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: cat,
+    });
+  }
+  
   console.log("✅ Seed completed successfully");
 }
 
