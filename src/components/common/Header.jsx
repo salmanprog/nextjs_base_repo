@@ -1,9 +1,10 @@
 "use client";
 import Image from "next/image";
-import { useState, useRef, useMemo, useCallback, useEffect } from "react";
+import { useState, useRef, useMemo, useCallback } from "react";
 import { Icons } from "@/components/icons/Index";
 import { useCurrentUser } from "@/utils/currentUser";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 // Move productCategories outside component to prevent recreation
 const PRODUCT_CATEGORIES = [
@@ -16,9 +17,24 @@ const PRODUCT_CATEGORIES = [
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
     const hoverRef = useRef(false);
+    const router = useRouter();
+    const { user, loadingUser } = useCurrentUser();
 
     const toggleMenu = useCallback(() => {
         setIsOpen(prev => !prev);
+    }, []);
+
+    const logout = useCallback(() => {
+        // Clear cookie
+        document.cookie = "token=; path=/; max-age=0";
+        // Clear localStorage
+        localStorage.removeItem("token");
+        localStorage.clear();
+        // Clear sessionStorage as well
+        sessionStorage.removeItem("token");
+        sessionStorage.clear();
+        // Reload page to reset state
+        window.location.href = "/login";
     }, []);
 
     const productCategories = useMemo(() => PRODUCT_CATEGORIES, []);
@@ -79,9 +95,26 @@ export default function Header() {
                         <Image src="/images/logo.png" alt="Logo" className="block md:hidden" width={100} height={100} />
                     </Link>
                     <div className="flex items-center gap-2">
-
-                        <Link className="btn btn-primary" href="/login">Login</Link>
-                        <Link className="btn btn-secondary" href="/signup">Signup</Link>
+                        {loadingUser ? (
+                            <span className="text-sm text-gray-600">Loading...</span>
+                        ) : user ? (
+                            <>
+                                <span className="text-sm font-medium btn btn-primary">
+                                    Welcome, {user.name}
+                                </span>
+                                <button 
+                                    onClick={logout}
+                                    className="btn btn-secondary"
+                                >
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <Link className="btn btn-primary" href="/login">Login</Link>
+                                <Link className="btn btn-secondary" href="/signup">Signup</Link>
+                            </>
+                        )}
                         <button className="menu-icon" onClick={toggleMenu}>
                             {isOpen ? <Icons.close className="text-[24px]" /> : <Icons.menu className="text-[24px]" />}
                         </button>
