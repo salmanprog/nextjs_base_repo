@@ -15,6 +15,8 @@ const PRODUCT_CATEGORIES = [
 ];
 
 export default function Header() {
+    console.log("Header");
+    
     const [isOpen, setIsOpen] = useState(false);
     const hoverRef = useRef(false);
     const router = useRouter();

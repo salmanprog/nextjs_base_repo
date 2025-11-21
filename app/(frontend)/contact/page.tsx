@@ -27,6 +27,7 @@ export default function AboutPage() {
                             <div className="social-links flex items-center">
                                 <h3 className="hd-md"><Link className="underline hover:text-[var(--secondary-theme-light)]" href="https://www.facebook.com/groups/search/groups_home?q=usna%202029%"><Icons.facebook className="text-[20px] contact-icon" /></Link></h3>
                                 <h3 className="hd-md"><Link className="underline hover:text-[var(--secondary-theme-light)]" href="https://www.instagram.com/plebesummerphotos/"><Icons.instagram className="text-[20px] contact-icon" /></Link></h3>
+                                <h3 className="hd-md"><Link className="underline hover:text-[var(--secondary-theme-light)]" href="#"><Icons.tiktok className="text-[20px] contact-icon" /></Link></h3>
                             </div>
                         </div>
                         <div className="text-end w-full order-1 md:order-2">

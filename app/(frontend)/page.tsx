@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Sec from "@/components/home/Sec";
 import Image from "next/image";
 import useApi from "@/utils/useApi";
+import { Icons } from "@/components/icons/Index";
 
 interface EventCategory {
   id: number;
@@ -61,11 +62,57 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
+  const [isMounted, setIsMounted] = useState(false);
+  const [currentSection, setCurrentSection] = useState(1);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  // Calculate total sections: 1 (hero) + categories.length
+  const totalSections = 1 + categories.length;
+
+  // Track scroll position to determine current section
+  useEffect(() => {
+    if (!isMounted || totalSections <= 1) return;
+
+    const handleScroll = () => {
+      const sections = document.querySelectorAll('section');
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+
+      let activeSection = 1;
+
+      sections.forEach((section, index) => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        
+        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+          activeSection = index + 1;
+        }
+      });
+
+      setCurrentSection(activeSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isMounted, categories.length]);
+
   return (
     <>
       <section className="hero-section relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="scroll-down-arrow absolute bottom-3 flex-col left-0 right-0 flex justify-center items-center z-10">
+          <span className="text-[var(--primary-theme)] text-[25px]">
+            {currentSection}/{totalSections}
+          </span>
+          <button className="scroll-down-arrow-icon animate-bounce duration-300 ease-in-out">
+            <Icons.arrowDown className="text-[var(--primary-theme)] text-2xl" />
+          </button>
+        </div>
         {/* Background Images Layer */}
-        {images.map((img, index) => (
+        {isMounted && images.map((img, index) => (
           <div
             key={index}
             className={`absolute inset-0 bg-center bg-cover transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
@@ -89,7 +136,7 @@ export default function HomePage() {
             </span> */}
             <div className="hero-bottom-content group inline-block">
               <button className="">
-                <Image src="/images/logo.png" alt="" width={100} height={100} />
+                <Image src="/images/nabsd-logo.svg" alt="" width={200} height={200} />
               </button>
 
               <span className="
@@ -126,7 +173,9 @@ export default function HomePage() {
       ) : apiLoading ? (
         <div className="container py-8 text-center">Loading categories...</div>
       ) : apiError ? (
-        <div className="container py-8 text-center text-red-500">Error loading categories: {apiError}</div>
+        <div className="container py-8 text-center text-red-500">Error loading categories: {apiError}
+        
+        </div>
       ) : null}
     </>
   )
