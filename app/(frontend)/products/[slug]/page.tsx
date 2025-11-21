@@ -33,30 +33,66 @@ const getFaqsBySlug = (slug: string) => {
     const faqsMap: Record<string, Array<{ question: string; answer: string }>> = {
         "sea-trials-herndon": [
             {
-                question: "What are Sea Trials and Herndon?",
-                answer: "Sea Trials and Herndon are important Naval Academy traditions. Sea Trials test the plebes' physical and mental endurance, while Herndon Monument Climb marks the end of Plebe Year."
+                question: "How do we order?",
+                answer: "Click Here."
             },
             {
-                question: "When do Sea Trials and Herndon take place?",
-                answer: "Sea Trials typically occur in late April, and the Herndon Monument Climb happens in May, marking the end of the academic year for plebes."
+                question: "Will there be photographs of my son/daughter?",
+                answer: "Do not know for sure. At the Herndon Monument Climb, we are only able to photograph Plebes who are actually climbing the monument. At Sea Trials, probably as we photograph every company at one of the 36 evolutions. The evolution we photographs is the Mud Crawl. It is the best evolution and unlike any Plebe Summer evolution."
             },
             {
-                question: "How can I order photos from these events?",
-                answer: "You can browse our collection and add photos to your cart. All photos are professionally captured and available in various formats."
+                question: "How will the Sea Trials photographs be organized?",
+                answer: "By companies."
+            },
+            {
+                question: "How many photographs will there be of my son/daughter.",
+                answer: "We do not know. If your son/daughter is on zero block or excused from Sea Trials, not at all. If injured, heshe will be on the sidelines and we will photograph him/her."
             }
         ],
         "graduations-commissioning": [
             {
-                question: "What is included in Graduation and Commissioning photos?",
-                answer: "Our graduation and commissioning collection includes ceremony photos, individual portraits, group photos, and candid moments from this special day."
+                question: "How do we order?",
+                answer: "Click Here."
             },
             {
-                question: "When will graduation photos be available?",
-                answer: "Photos are typically available within 2-3 weeks after the graduation ceremony. You'll receive a notification when your photos are ready."
+                question: "How many photographs will there be of my son/daughter?",
+                answer: "Probably 5-10, but we can not make any guarantee."
             },
             {
-                question: "Can I order prints in different sizes?",
-                answer: "Yes, we offer various print sizes and formats. You can select your preferred option when adding items to your cart."
+                question: "Do I have to sign up prior to Graduation Day?",
+                answer: "No you do not, but after May 15 there is a price increase and photographs are available for thirty days only."
+            },
+            {
+                question: "Will there be photographs of my son/daughter other than during the processional, hand shake, and leaving stage?",
+                answer: "We do not know as these are all candids. We do photographs the graduate sin their sets during various parts of the ceremony."
+            },
+            {
+                question: "How accurate is the Grad Finder?",
+                answer: "It is a Facial Recognition Program so there are no guarantees, and no refunds if it does not work. Its effectiveness will depend in part on the photographs you upload for the Facial Recognition program to do its job."
+            },
+            {
+                question: "How large are the files?",
+                answer: "Large enough to make a good quality 8x10 photograph, and certainly great for Social media."
+            },
+            {
+                question: "Can the files be cropped?",
+                answer: "Yes. We leave extra room when we take each photo for cropping purposes?"
+            },
+            {
+                question: "Will the TOP 100 be photographed?",
+                answer: "Yes. Unfortunately the position of the dignitary who shakes the Top 100's hand is partially blocked. Also, the view from the left side is the best angle for the TOP 100."
+            },
+            {
+                question: "Are refunds available?",
+                answer: "Sorry, they are not."
+            },
+            {
+                question: "Can we download photographs of the other parts of the ceremony?",
+                answer: "Yes. That way you do not have to be too worried about good photographs from the nose-bleed sections of the stadium. We have the best angle and are close with our long lenses."
+            },
+            {
+                question: "What is the angle of your camera when you photograph the handshake and the leaving stage?",
+                answer: "We photograph from the best angle to capture the handshake and leaving stage moments with our professional long lenses."
             }
         ],
         "plebe-summer": [

@@ -20,7 +20,7 @@ export default function FaqList({ faqs }: FaqListProps) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto space-b-4">
+    <div className="">
         <h2 className="text-3xl font-bold mb-8 text-center">Frequently Asked Questions</h2>
       {faqs.map((item, index) => (
         <FaqItem
