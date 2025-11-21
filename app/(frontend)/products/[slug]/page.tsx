@@ -203,15 +203,14 @@ export default function ProductDescriptionPage({ params }: ProductDescriptionPro
                                             {event.description}
                                         </p>
                                     )}
+                                    <span className="">To add to cart</span>
                                     <div className="mt-6">
                                         <Link
                                             href="#"
                                             className="btn btn-primary inline-flex items-center gap-2"
                                         >
-                                            <span>Add To Cart</span>
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                            </svg>
+                                            <Image src="/images/waldo-logo.png" alt="cart" width={100} height={100} />
+                                            <span>Click Me</span>
                                         </Link>
                                     </div>
                                 </div>
