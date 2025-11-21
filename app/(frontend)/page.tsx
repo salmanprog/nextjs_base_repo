@@ -118,8 +118,9 @@ export default function HomePage() {
           <Sec
             key={category.id}
             title={category.name}
-            sectionClass={`home-sec-${index + 2}`}
+            
             href={`/products/${category.slug}`}
+            backgroundImage={category.imageUrl}
           />
         ))
       ) : apiLoading ? (

@@ -3,8 +3,11 @@ import { useState } from "react";
 import { Dropdown } from "./Dropdown";
 import { DropdownItem } from "./DropdownItem";
 
-export default function ActionMenu({ editUrl, onDelete }: any) {
+export default function ActionMenu({ editUrl, viewUrl, onDelete }: any) {
   const [open, setOpen] = useState(false);
+
+  // Use viewUrl if provided, otherwise fallback to editUrl for backward compatibility
+  const url = viewUrl || editUrl;
 
   return (
     <div className="relative dropdown">
@@ -29,32 +32,35 @@ export default function ActionMenu({ editUrl, onDelete }: any) {
 
       {/* Dropdown */}
       <Dropdown isOpen={open} onClose={() => setOpen(false)} className="w-40 p-2 space-y-1">
-        {/* Edit Action */}
-        <DropdownItem
-          tag="a"
-          href={editUrl}
-          className="text-xs font-medium text-gray-500 dark:text-gray-400 
-                     hover:bg-gray-100 hover:text-gray-700 
-                     dark:hover:bg-white/5 dark:hover:text-gray-300"
-          onItemClick={() => setOpen(false)}
-        >
-          Edit
-        </DropdownItem>
+        {/* View Action */}
+        {url && (
+          <DropdownItem
+            tag="a"
+            href={url}
+            className="text-xs font-medium text-gray-500 dark:text-gray-400 
+                       hover:bg-gray-100 hover:text-gray-700 
+                       dark:hover:bg-white/5 dark:hover:text-gray-300"
+            onItemClick={() => setOpen(false)}
+          >
+            {viewUrl ? "View" : "Edit"}
+          </DropdownItem>
+        )}
 
-        {/* Delete Action */}
-        <DropdownItem
-          tag="button"
-          onClick={() => {
-            setOpen(false);
-            onDelete();
-          }}
-          className="text-xs font-medium text-gray-500 dark:text-gray-400 
-                     hover:bg-gray-100 hover:text-gray-700 
-                     dark:hover:bg-white/5 dark:hover:text-gray-300"
-        >
-          Delete
-        </DropdownItem>
-
+        {/* Delete Action - only show if onDelete is provided */}
+        {onDelete && (
+          <DropdownItem
+            tag="button"
+            onClick={() => {
+              setOpen(false);
+              onDelete();
+            }}
+            className="text-xs font-medium text-gray-500 dark:text-gray-400 
+                       hover:bg-gray-100 hover:text-gray-700 
+                       dark:hover:bg-white/5 dark:hover:text-gray-300"
+          >
+            Delete
+          </DropdownItem>
+        )}
       </Dropdown>
     </div>
   );

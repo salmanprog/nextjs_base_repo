@@ -1,7 +1,7 @@
 import type { Prisma, User } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import RestController from "@/core/RestController";
-import { storeUser, updateUser } from "@/validators/user.validation";
+import { storeUser, updateUser, changePassword } from "@/validators/user.validation";
 import UserResource from "@/resources/UserResource";
 import { NextRequest, NextResponse } from "next/server";
 import type { DefaultArgs } from "@prisma/client/runtime/library";
@@ -119,6 +119,49 @@ export default class UsersController extends RestController<
       const extendedUser = loginuser as ExtendedUser;
 
       return this.__sendResponse(200, "Login successful", extendedUser);
+    } catch (err) {
+      return this.sendError((err as Error).message, {}, 500);
+    }
+  }
+
+  async changePassword(
+    currentPassword: string,
+    newPassword: string
+  ): Promise<NextResponse> {
+    try {
+      // Get current user
+      const currentUser = this.requireUser();
+      const userId = parseInt(currentUser.id, 10);
+
+      // Fetch user from database
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        return this.sendError("User not found", {}, 404);
+      }
+
+      // Verify current password
+      const bcrypt = await import("bcryptjs");
+      const isValid = await bcrypt.compare(currentPassword, user.password || "");
+
+      if (!isValid) {
+        return this.sendError("Validation failed", {
+          currentPassword: "Current password is incorrect",
+        }, 422);
+      }
+
+      // Hash new password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      // Update password
+      await prisma.user.update({
+        where: { id: userId },
+        data: { password: hashedPassword },
+      });
+
+      return this.__sendResponse(200, "Password changed successfully", {});
     } catch (err) {
       return this.sendError((err as Error).message, {}, 500);
     }

@@ -4,11 +4,12 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const protectedApiRoutes = [
-  //{ path: "/api/users", methods: ["GET", "PATCH"] },
+  { path: "/api/users/profile", methods: ["GET", "PATCH"] },
   { path: "/api/admin/profile", methods: ["GET", "PATCH"] },
   { path: "/api/admin/address", methods: ["POST", "GET", "PATCH", "DELETE"] },
   { path: "/api/admin/users", methods: ["POST", "GET", "PATCH", "DELETE"] },
   { path: "/api/currentuser", methods: ["GET"] },
+  { path: "/api/users/password", methods: ["POST"] },
   { path: "/api/admin/events/category", methods: ["POST", "GET", "PATCH", "DELETE"] },
   { path: "/api/admin/events", methods: ["POST", "GET", "PATCH", "DELETE"] },
 ];

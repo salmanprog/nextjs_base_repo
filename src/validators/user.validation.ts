@@ -8,6 +8,15 @@ export const storeUser = yup.object({
 
 export const updateUser = yup.object({
   name: yup.string().min(2).max(20).optional(),
+  mobileNumber: yup.string().optional().nullable(),
+});
+
+export const changePassword = yup.object({
+  currentPassword: yup.string().required("Current password is required"),
+  newPassword: yup.string().min(6).max(100).required("New password is required"),
+  confirmPassword: yup.string()
+    .required("Please confirm your password")
+    .oneOf([yup.ref("newPassword")], "Passwords must match"),
 });
 
 export const storeUserAddress = yup.object({

@@ -99,9 +99,12 @@ export default function Header() {
                             <span className="text-sm text-gray-600">Loading...</span>
                         ) : user ? (
                             <>
-                                <span className="text-sm font-medium btn btn-primary">
-                                    Welcome, {user.name}
-                                </span>
+                                <Link 
+                                    href="/account"
+                                    className="text-sm font-medium btn btn-primary"
+                                >
+                                    My Account
+                                </Link>
                                 <button 
                                     onClick={logout}
                                     className="btn btn-secondary"

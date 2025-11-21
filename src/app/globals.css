@@ -894,6 +894,9 @@ body {
 .products-banner {
   background: url('/images/home/hero/01.jpg') no-repeat center center/cover;
 }
+.account-banner {
+  background: url('/images/home/hero/01.jpg') no-repeat center center/cover;
+}
 .sec-gap {
   @apply py-24;
 }

@@ -14,9 +14,15 @@ export default class AdminUserResource extends BaseResource<ExtendedUser> {
       slug: user.slug,
       name: user.name,
       email: user.email,
+      mobileNumber: user.mobileNumber,
+      dob: user.dob,
+      gender: user.gender,
+      status: user.status,
       imageUrl: user.imageUrl
         ? `${process.env.NEXT_PUBLIC_APP_URL || ""}${user.imageUrl}`
         : null,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
       // Include user role
       role: user.userRole
         ? {
