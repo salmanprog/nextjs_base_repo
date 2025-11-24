@@ -11,7 +11,9 @@ const protectedApiRoutes = [
   { path: "/api/currentuser", methods: ["GET"] },
   { path: "/api/users/password", methods: ["POST"] },
   { path: "/api/admin/events/category", methods: ["POST", "GET", "PATCH", "DELETE"] },
+  { path: "/api/admin/events/category/faq", methods: ["POST", "GET", "PATCH", "DELETE"] },
   { path: "/api/admin/events", methods: ["POST", "GET", "PATCH", "DELETE"] },
+  
 ];
 
 export async function proxy(req: NextRequest) {

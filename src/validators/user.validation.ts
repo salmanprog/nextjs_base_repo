@@ -54,3 +54,15 @@ export const updateEvent = yup.object({
   categoryId: yup.string().required("Event category is required"),
   price: yup.string().required("Event price is required"),
 });
+
+export const storeEventCategoryFaq = yup.object({
+  eventCategoryId: yup.string().required("Event category is required"),
+  question: yup.string().required("Question is required"),
+  answer: yup.string().required("Answer is required"),
+});
+
+export const updateEventCategoryFaq = yup.object({
+  eventCategoryId: yup.string().required("Event category is required"),
+  question: yup.string().required("Question is required"),
+  answer: yup.string().required("Answer is required"),
+});

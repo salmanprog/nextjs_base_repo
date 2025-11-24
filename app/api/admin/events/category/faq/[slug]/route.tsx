@@ -1,8 +1,6 @@
 export const runtime = "nodejs";
-import AdminEventCategoryController, { ExtendedEventCategory } from "@/controllers/AdminEventCategoryController";
+import AdminEventCategoryFaqController, { ExtendedEventCategoryFaq } from "@/controllers/AdminEventCategoryFaqController";
 import { NextResponse } from "next/server";
-import { promises as fs } from "fs";
-import path from "path";
 
 // ------------------- GET (show) -------------------
 export async function GET(
@@ -11,7 +9,7 @@ export async function GET(
 ) {
   const params = await context.params;
   try {
-    const controller = new AdminEventCategoryController(_req);
+    const controller = new AdminEventCategoryFaqController(_req);
     const slug = params.slug;
     return await controller.showSlug(String(slug));
   } catch (error: unknown) {
@@ -31,7 +29,7 @@ export async function PATCH(
   const slug = params.slug;
 
   const contentType = request.headers.get("content-type") || "";
-  let data: Partial<ExtendedEventCategory> = {};
+  let data: Partial<ExtendedEventCategoryFaq> = {};
 
   try {
     if (contentType.includes("multipart/form-data")) {
@@ -39,18 +37,6 @@ export async function PATCH(
       for (const [key, value] of formData.entries()) {
         if (typeof value === "string") {
           (data as Record<string, any>)[key] = value;
-        } else if (value instanceof Blob && key === "image") {
-          const buffer = Buffer.from(await value.arrayBuffer());
-
-          // Save in a dedicated 'category' folder
-          const uploadDir = path.join(process.cwd(), "public", "uploads", "category");
-          await fs.mkdir(uploadDir, { recursive: true });
-
-          const fileName = `${Date.now()}-${value.name}`;
-          const filePath = path.join(uploadDir, fileName);
-          await fs.writeFile(filePath, buffer);
-
-          (data as Record<string, any>).imageUrl = `/uploads/category/${fileName}`;
         }
       }
     } else if (contentType.includes("application/json")) {
@@ -62,7 +48,7 @@ export async function PATCH(
       );
     }
 
-    const controller = new AdminEventCategoryController(request, data);
+    const controller = new AdminEventCategoryFaqController(request, data);
     return controller.updateBySlug(slug, data);
   } catch (error: unknown) {
     return NextResponse.json(
@@ -81,7 +67,7 @@ export async function DELETE(
   const params = await context.params;
   try {
     const slug = params.slug;
-    const controller = new AdminEventCategoryController(_req);
+    const controller = new AdminEventCategoryFaqController(_req);
     return await controller.destroyBySlug(slug); // <-- use new method
   } catch (error: unknown) {
     return NextResponse.json(
@@ -90,3 +76,4 @@ export async function DELETE(
     );
   }
 }
+

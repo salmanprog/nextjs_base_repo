@@ -118,6 +118,7 @@ model EventCategory {
   updatedAt   DateTime  @updatedAt
   deletedAt   DateTime? @db.Timestamp(6)
   events      Event[]
+  faqs        EventCategoryFaq[]
 
   @@index([name])
   @@map("event_category")
@@ -138,53 +139,24 @@ model Event {
 
   // Relations
   category EventCategory        @relation(fields: [categoryId], references: [id])
-  events   EventPackages[]
-  gallery  EventPackageGallery[] 
 }
 
-model EventPackages {
-  id          Int       @id @default(autoincrement())
-  eventId     Int
-  title       String    @db.VarChar(255)
-  slug        String    @unique @db.VarChar(255)
-  description String?   @db.Text
-  imageUrl    String?   @db.Text
-  isFace      Boolean   @default(false)
-  status      Boolean   @default(true)
-  createdAt   DateTime  @default(now()) @db.Timestamp(6)
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime? @db.Timestamp(6)
-  events      EventPackageGallery[]
-
-  event       Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@index([eventId])
-  @@index([title])
-  @@map("event_packages")
-}
-
-model EventPackageGallery {
+model EventCategoryFaq {
   id              Int       @id @default(autoincrement())
-  eventPackageId  Int       
-  eventId         Int       
-  title           String    @db.VarChar(255)
-  slug            String    @unique @db.VarChar(255)
-  description     String?   @db.Text
-  imageUrl        String?   @db.Text
+  eventCategoryId Int
+  slug            String?   @unique @db.VarChar(255)
+  question        String    @db.VarChar(500)
+  answer          String    @db.Text
   status          Boolean   @default(true)
   createdAt       DateTime  @default(now()) @db.Timestamp(6)
   updatedAt       DateTime  @updatedAt
   deletedAt       DateTime? @db.Timestamp(6)
 
-  // Relationship with EventPackages
-  package EventPackages @relation(fields: [eventPackageId], references: [id], onDelete: Cascade)
+  // Relation to EventCategory
+  eventCategory EventCategory @relation(fields: [eventCategoryId], references: [id], onDelete: Cascade)
 
-  // Relationship with Event
-  event   Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
-
-  @@index([eventId])
-  @@index([eventPackageId])
-  @@map("event_package_gallery")
+  @@index([eventCategoryId])
+  @@map("event_category_faqs")
 }
 
 model Media {
