@@ -112,7 +112,7 @@ model EventCategory {
   name        String    @db.VarChar(150)
   slug        String    @unique @db.VarChar(150)
   imageUrl    String?   @db.Text
-  description String?   @db.Text(255)
+  description String?   @db.Text
   status      Boolean   @default(true)
   createdAt   DateTime  @default(now()) @db.Timestamp(6)
   updatedAt   DateTime  @updatedAt
