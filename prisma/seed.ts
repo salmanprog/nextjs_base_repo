@@ -130,6 +130,101 @@ async function main() {
       create: event,
     });
   }
+
+  const eventCategoriesFaqs = [
+    {
+      eventCategoryId: 1,
+      question: "Will there be photographs of my son/daughter?",
+      slug: "will-there-be-photographs-of-my-sondaughter",
+      answer: "Do not know for sure. At the Herndon Monument Climb, we are only able to photograph Plebes who are actually climbing the monument. At Sea Trials, probably as we photograph every company at one of the 36 evelutions we photograph is the Mud Crawl. It is the best evolution and unlike any Plebes Summer evolution.",
+      status: true,
+    },
+    {
+      eventCategoryId: 1,
+      question: "How will the sea Trials photographs be organized?",
+      slug: "how-will-the-sea-trials-photographs-be-organized",
+      answer: "By Companies",
+      status: true,
+    },
+    {
+      eventCategoryId: 1,
+      question: "How many photographs will be there be of my son/daughter?",
+      slug: "how-many-photographs-will-there-be-of-my-sondaughter",
+      answer: "We do not know. If your son/daughter is on zero block or excused from Sea Trials, not at all. If injured, heshe will be on the sidelines and we will photograph him/her.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "How many photographs will there be of my son/daughter?",
+      slug: "how-many-photographs-will-there-be-of-my-sondaughter-1",
+      answer: "Probably 5-10, but we can not make any guarantee.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "Do I have to sign up prior to Graduation Day?",
+      slug: "do-i-have-to-sign-up-prior-to-graduation-day-2",
+      answer: "No you do not, but after May 15 there is a price increase and photographs are available for thirty days only.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "Will there be photographs of my son/daughter other than during the processional, hand shake, and leaving stage?",
+      slug: "will-there-be-photographs-of-my-sondaughter-other-than",
+      answer: "We do not know as these are all candids. We do photographs the graduate sin their sets during various parts of the ceremony.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "How accurate is the Grad Finder?",
+      slug: "how-accurate-is-the-grad-finder",
+      answer: "It is a Facial Recognition Program so there are no guarantees, and no refunds if it does not work. Its effectiveness will depend in part on the photographs you upload for the Facial Recognition program to do its job.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "How large are the files?",
+      slug: "how-large-are-the-files-2",
+      answer: "Large enough to make a good quality 8x10 photograph, and certainly great for Social media.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "Can the files be cropped?",
+      slug: "can-the-files-be-cropped-2",
+      answer: "Yes. We leave extra room when we take each photo for cropping purposes?",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "Will the TOP 100 be photographed?",
+      slug: "will-the-top-100-be-photographed-2",
+      answer: "Yes. Unfortunately the position of the dignitary who shakes the Top 100’s hand is partially blocked. Also, the view from the left side is the best angle for the TOP 100.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "Are refunds available?",
+      slug: "are-refunds-available-2",
+      answer: "Sorry, they are not.",
+      status: true,
+    },
+    {
+      eventCategoryId: 2,
+      question: "Can we download photographs of the other parts of the ceremony?",
+      slug: "can-we-download-photographs-of-the-other-parts-of-the-ceremony",
+      answer: "Yes. That way you do not have to be too worried about good photographs from the nose-bleed sections of the stadium. We have the best angle and are close with our long lenses.",
+      status: true,
+    },
+  ];
+  for (const faq of eventCategoriesFaqs) {
+    await (prisma as any).eventCategoryFaq.upsert({
+      where: { slug: faq.slug },
+      update: {},
+      create: faq,
+    });
+  }
+
   console.log("✅ Seed completed successfully");
 }
 

@@ -125,6 +125,23 @@ CREATE TABLE `Event` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `event_category_faqs` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `eventCategoryId` INTEGER NOT NULL,
+    `slug` VARCHAR(255) NULL,
+    `question` VARCHAR(500) NOT NULL,
+    `answer` TEXT NOT NULL,
+    `status` BOOLEAN NOT NULL DEFAULT true,
+    `createdAt` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `deletedAt` TIMESTAMP(6) NULL,
+
+    UNIQUE INDEX `event_category_faqs_slug_key`(`slug`),
+    INDEX `event_category_faqs_eventCategoryId_idx`(`eventCategoryId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `media` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NULL,
@@ -152,3 +169,6 @@ ALTER TABLE `User` ADD CONSTRAINT `User_userGroupId_fkey` FOREIGN KEY (`userGrou
 
 -- AddForeignKey
 ALTER TABLE `Event` ADD CONSTRAINT `Event_categoryId_fkey` FOREIGN KEY (`categoryId`) REFERENCES `event_category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `event_category_faqs` ADD CONSTRAINT `event_category_faqs_eventCategoryId_fkey` FOREIGN KEY (`eventCategoryId`) REFERENCES `event_category`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

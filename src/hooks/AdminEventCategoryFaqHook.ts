@@ -13,6 +13,18 @@ export default class AdminEventCategoryFaqHook {
     if (!user || user.userGroupId !== 1) {
       query.where = { ...query.where, status: true };
     }
+    
+    // Filter by eventCategoryId if provided in query parameters
+    if (request?.query && typeof request.query === 'object' && 'eventCategoryId' in request.query) {
+      const eventCategoryId = request.query.eventCategoryId;
+      if (eventCategoryId) {
+        query.where = { 
+          ...query.where, 
+          eventCategoryId: typeof eventCategoryId === 'string' ? parseInt(eventCategoryId, 10) : Number(eventCategoryId)
+        };
+      }
+    }
+    
     query.orderBy = {
       createdAt: "desc",
     };

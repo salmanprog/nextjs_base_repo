@@ -55,6 +55,7 @@ const navItems: NavItem[] = [
     name: 'Events',
     subItems: [
       { name: 'Event Category', path: '/admin/event-categories/', pro: false },
+      { name: 'Event Category FAQ', path: '/admin/event-category-faq/', pro: false },
       { name: 'Events', path: '/admin/event', pro: false },
     ],
   },
