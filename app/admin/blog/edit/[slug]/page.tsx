@@ -171,7 +171,7 @@ export default function EditBlog() {
                       width={128}
                       height={128}
                       className="object-cover w-full h-full"
-                      unoptimized={oldImage.includes('localhost')}
+                      unoptimized
                     />
                   </div>
                 </div>

@@ -213,7 +213,7 @@ export default function BlogList() {
                           width={50}
                           height={50}
                           className="object-cover w-full h-full"
-                          unoptimized={blog.imageUrl.includes('localhost')}
+                          unoptimized
                         />
                       </div>
                     ) : (
