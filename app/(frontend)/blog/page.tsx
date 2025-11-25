@@ -61,13 +61,16 @@ export default function BlogPage() {
                   <div className="blog-card-image">
                     {blog.imageUrl ? (
                       <Image
-                        src={blog.imageUrl}
-                        alt={blog.title}
-                        width={400}
-                        height={264}
-                        className="w-full"
-                        unoptimized={blog.imageUrl.includes('localhost')}
-                      />
+                      src={blog.imageUrl.startsWith("http")
+                        ? blog.imageUrl
+                        : `${blog.imageUrl}`
+                      }
+                      alt={blog.title || "Blog image"}
+                      width={400}
+                      height={264}
+                      className="w-full h-[264px] object-cover rounded"
+                      unoptimized
+                    />
                     ) : (
                       <div className="w-full h-[264px] bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                         <span className="text-gray-400">No Image</span>

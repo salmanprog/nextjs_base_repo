@@ -79,13 +79,16 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
               {blog.imageUrl && (
                 <div className="blog-detail-image mb-8">
                   <Image
-                    src={blog.imageUrl}
-                    alt={blog.title}
-                    width={800}
-                    height={400}
-                    className="w-full h-auto rounded-lg object-cover"
-                    unoptimized={blog.imageUrl.includes('localhost')}
-                  />
+                      src={blog.imageUrl.startsWith("http")
+                        ? blog.imageUrl
+                        : `${blog.imageUrl}`
+                      }
+                      alt={blog.title || "Blog image"}
+                      width={400}
+                      height={264}
+                      className="w-full h-[264px] object-cover rounded"
+                      unoptimized
+                    />
                 </div>
               )}
 
