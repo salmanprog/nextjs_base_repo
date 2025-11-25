@@ -2,6 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { products } from "./data";
 import InnerBanner from "@/components/common/InnerBanner";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "My Waldo | Products",
+  description: "Browse our products",
+};
 
 export default function ProductsPage() {
 

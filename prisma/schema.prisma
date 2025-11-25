@@ -159,6 +159,23 @@ model EventCategoryFaq {
   @@map("event_category_faqs")
 }
 
+model Blog {
+  id            Int       @id @default(autoincrement())
+  title         String    @db.VarChar(255)
+  slug          String    @unique @db.VarChar(255)
+  description   String?   @db.Text
+  imageUrl      String?   @db.Text
+  seoTitle      String?   @db.VarChar(255)
+  seoDescription String?  @db.Text
+  status        Boolean   @default(true)
+  createdAt     DateTime  @default(now()) @db.Timestamp(6)
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime? @db.Timestamp(6)
+
+  @@index([title])
+  @@map("blog")
+}
+
 model Media {
   id          Int       @id @default(autoincrement())
   title       String?   @db.VarChar(255)

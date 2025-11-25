@@ -9,6 +9,11 @@ export default function EditEventCategoryFaq() {
   const router = useRouter();
   const { slug } = useParams();
 
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Edit Event Category FAQ";
+  }, []);
+
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [eventCategoryId, setEventCategoryId] = useState("");

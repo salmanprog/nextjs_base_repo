@@ -9,6 +9,11 @@ export default function EditEvent() {
   const router = useRouter();
   const { slug } = useParams();
 
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Edit Event";
+  }, []);
+
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [price, setPrice] = useState("");

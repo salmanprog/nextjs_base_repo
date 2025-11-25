@@ -32,6 +32,12 @@ export default function EventCategoryFaqList() {
     type: "manual",
     requiresAuth: true,
   });
+
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Event Category FAQs";
+  }, []);
+
   useEffect(() => {
     fetchApi();
   }, []);

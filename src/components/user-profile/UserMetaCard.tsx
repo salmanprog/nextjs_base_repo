@@ -11,23 +11,56 @@ import { useUser } from "@/context/UserContext";
 export default function UserMetaCard() {
   const { user, loading } = useUser();
   const { isOpen, openModal, closeModal } = useModal();
+  
+  // Helper function to normalize image URL
+  const normalizeImageUrl = (url: string | null | undefined): string | null => {
+    if (!url) return null;
+    // If it's already a relative path, return as is
+    if (url.startsWith('/')) return url;
+    // If it's a full URL, extract the path
+    try {
+      const urlObj = new URL(url);
+      return urlObj.pathname;
+    } catch {
+      // If URL parsing fails, assume it's a relative path
+      return url.startsWith('/') ? url : `/${url}`;
+    }
+  };
+
   const handleSave = () => {
     // Handle save logic here
     console.log("Saving changes...");
     closeModal();
   };
+
+  // Get the avatar image URL or fallback
+  const avatarUrl = user?.imageUrl ? normalizeImageUrl(user.imageUrl) : null;
+  const userInitial = user?.name?.[0]?.toUpperCase() || "U";
+
   return (
     <>
       <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
         <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
           <div className="flex flex-col items-center w-full gap-6 xl:flex-row">
-            <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
-              <Image
-                width={80}
-                height={80}
-                src="/images/user/owner.jpg"
-                alt="user"
-              />
+            <div className="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800 flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+              {loading ? (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-2xl text-gray-400">...</span>
+                </div>
+              ) : avatarUrl ? (
+                <Image
+                  width={80}
+                  height={80}
+                  src={avatarUrl}
+                  alt={user?.name || "user"}
+                  className="w-full h-full object-cover"
+                  unoptimized={avatarUrl.startsWith('data:') || avatarUrl.includes('localhost')}
+                />
+              ) : (
+                <span className="text-3xl text-gray-600 dark:text-gray-400 font-semibold">
+                  {userInitial}
+                </span>
+              )}
             </div>
             <div className="order-3 xl:order-2">
               <h4 className="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">

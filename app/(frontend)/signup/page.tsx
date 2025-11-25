@@ -14,6 +14,10 @@ interface SignupResponse {
 export default function SignUpPage() {
   const router = useRouter();
   useEffect(() => {
+    document.title = "My Waldo | Sign Up";
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem("token") || document.cookie.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1];
     if (token) {
       router.push("/");

@@ -1,9 +1,51 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Badge from "../ui/badge/Badge";
 import { ArrowDownIcon, ArrowUpIcon, GroupIcon } from "lucide-react";
+import useApi from "@/utils/useApi";
 
 export const EcommerceMetrics = () => {
+  const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [totalEvents, setTotalEvents] = useState<number>(0);
+
+  // Fetch users
+  const { data: usersData, fetchApi: fetchUsers } = useApi({
+    url: "/api/admin/users",
+    method: "GET",
+    type: "manual",
+    requiresAuth: true,
+  });
+
+  // Fetch events
+  const { data: eventsData, fetchApi: fetchEvents } = useApi({
+    url: "/api/admin/events",
+    method: "GET",
+    type: "manual",
+    requiresAuth: true,
+  });
+
+  useEffect(() => {
+    fetchUsers();
+    fetchEvents();
+  }, []);
+
+  useEffect(() => {
+    if (usersData && Array.isArray(usersData)) {
+      setTotalUsers(usersData.length);
+    }
+  }, [usersData]);
+
+  useEffect(() => {
+    if (eventsData && Array.isArray(eventsData)) {
+      setTotalEvents(eventsData.length);
+    }
+  }, [eventsData]);
+
+  // Format number with commas
+  const formatNumber = (num: number) => {
+    return num.toLocaleString();
+  };
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
       {/* <!-- Metric Item Start --> */}
@@ -15,10 +57,10 @@ export const EcommerceMetrics = () => {
         <div className="flex items-end justify-between mt-5">
           <div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Customers
+              Users
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              3,782
+              {formatNumber(totalUsers)}
             </h4>
           </div>
           <Badge color="success">
@@ -37,10 +79,10 @@ export const EcommerceMetrics = () => {
         <div className="flex items-end justify-between mt-5">
           <div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Orders
+              Events
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              {formatNumber(totalEvents)}
             </h4>
           </div>
 

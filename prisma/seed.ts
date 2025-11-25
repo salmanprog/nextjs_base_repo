@@ -216,6 +216,55 @@ async function main() {
       answer: "Yes. That way you do not have to be too worried about good photographs from the nose-bleed sections of the stadium. We have the best angle and are close with our long lenses.",
       status: true,
     },
+    {
+      eventCategoryId: 3,
+      question: "What is Plebe Summer?",
+      slug: "what-is-plebe-summer",
+      answer: "Plebe Summer is the intensive 7-week training period for incoming Naval Academy midshipmen, marking the beginning of their journey at USNA.",
+      status: true,
+    },
+    {
+      eventCategoryId: 3,
+      question: "How long have you been photographing Plebe Summer?",
+      slug: "how-long-have-you-been-photographing-plebe-summer-3",
+      answer: "Since 1980, Thornton Studios has been the only approved vendor to photograph Plebe Summer, serving the Naval Academy for over 45 years.",
+      status: true,
+    },
+    {
+      eventCategoryId: 3,
+      question: "When can I view and purchase Plebe Summer photos?",
+      slug: "when-can-i-view-and-purchase-plebe-3",
+      answer: "Photos are typically available after the completion of Plebe Summer. Check back regularly or contact us for specific availability dates.",
+      status: true,
+    },
+    {
+      eventCategoryId: 3,
+      question: "Are you an approved NABSD vendor?",
+      slug: "are-you-an-approved-nabsd-vendor-3",
+      answer: "Yes, Thornton Studios is approved by the Naval Academy Business Service Division (NABSD) and is the only approved vendor for Plebe Summer photography.",
+      status: true,
+    },
+    {
+      eventCategoryId: 4,
+      question: "What is included in the Studio Collection?",
+      slug: "what-is-included-in-the-studio-collection-4",
+      answer: "Our Studio Collection features professional portraits, formal photos, and studio-quality images of midshipmen in various uniforms and settings.",
+      status: true,
+    },
+    {
+      eventCategoryId: 4,
+      question: "Can I schedule a studio session?",
+      slug: "can-i-schedule-a-studio-session-4",
+      answer: "Yes, studio sessions can be scheduled. Please contact us for availability and booking information.",
+      status: true,
+    },
+    {
+      eventCategoryId: 4,
+      question: "What formats are available for studio photos?",
+      slug: "what-formats-are-available-for-studio-photos-4",
+      answer: "We offer digital downloads, prints in various sizes, and custom framing options for all studio collection photos.",
+      status: true,
+    }
   ];
   for (const faq of eventCategoriesFaqs) {
     await (prisma as any).eventCategoryFaq.upsert({
@@ -225,6 +274,51 @@ async function main() {
     });
   }
 
+  const blogs = [
+    {
+      title: "Plebe Summer 2025",
+      slug: "plebe-summer-2025",
+      description: "Plebe Summer 2025 was a great success. We had a lot of fun and the midshipmen were great. We took over 250,000 photographs each platoon at least 15 times. The photographs are organized into galleries, identified by date, platoon and evolution (event). There are two methods for finding photographs of your son/daughter. They are Manual search and Waldo Finder. Waldo Finder is a proprietary facial recognition technology that we use to automatically find photographs of your son/daughter. It is not perfect so you will need still to search the galleries. But, it is fun. Most of the ceremony is photographed, from the Jumbotron image to the faculty processional, Graduates in their seats, Oaths of Office, Navy Blue and Gold, Speeches, Cap Toss, etc. Just find and download the photographs of your son/daughter to create your own Plebe Summer Coffee Table Book on Shutterfly, etc.",
+      seoTitle: "Plebe Summer 2025",
+      seoDescription: "Plebe Summer 2025 was a great success.",
+      imageUrl: "/uploads/blog/05.jpg",
+      status: true,
+    },
+    {
+      title: "Sports and Training Access",
+      slug: "sports-and-training-access",
+      description: "Sports and Training Access is a new feature that allows you to access all the photographs of the sports and training events. You can download the photographs of your son/daughter to create your own Sports and Training Coffee Table Book on Shutterfly, etc. We are not able to photograph every midshipman during Sports and Training, but we are during Sea Trials. During Sports and Training we photograph each company as they complete one of the events —the Mud Crawl.",
+      seoTitle: "Sports and Training Access",
+      seoDescription: "Sports and Training Access",
+      imageUrl: "/uploads/blog/06.jpg",
+      status: true,
+    },
+    {
+      title: "Graduations / Commissioning 2025",
+      slug: "graduations-commissioning-2025",
+      description: "Graduations / Commissioning 2025 was a great success. We had a lot of fun and the midshipmen were great. We took over 250,000 photographs each platoon at least 15 times. The photographs are organized into galleries, identified by date, platoon and evolution (event). There are two methods for finding photographs of your son/daughter. They are Manual search and Waldo Finder. Waldo Finder is a proprietary facial recognition technology that we use to automatically find photographs of your son/daughter. It is not perfect so you will need still to search the galleries. But, it is fun. Most of the ceremony is photographed, from the Jumbotron image to the faculty processional, Graduates in their seats, Oaths of Office, Navy Blue and Gold, Speeches, Cap Toss, etc. Just find and download the photographs of your son/daughter to create your own Plebe Summer Coffee Table Book on Shutterfly, etc.",
+      seoTitle: "Graduations / Commissioning 2025",
+      seoDescription: "Graduations / Commissioning 2025 was a great success.",
+      imageUrl: "/uploads/blog/07.jpg",
+      status: true,
+    },
+    {
+      title: "Studio Collection 2025",
+      slug: "studio-collection-2025",
+      description: "Studio Collection 2025 was a great success. We had a lot of fun and the midshipmen were great. We took over 250,000 photographs each platoon at least 15 times. The photographs are organized into galleries, identified by date, platoon and evolution (event). There are two methods for finding photographs of your son/daughter. They are Manual search and Waldo Finder. Waldo Finder is a proprietary facial recognition technology that we use to automatically find photographs of your son/daughter. It is not perfect so you will need still to search the galleries. But, it is fun. Most of the ceremony is photographed, from the Jumbotron image to the faculty processional, Graduates in their seats, Oaths of Office, Navy Blue and Gold, Speeches, Cap Toss, etc. Just find and download the photographs of your son/daughter to create your own Plebe Summer Coffee Table Book on Shutterfly, etc.",
+      seoTitle: "Studio Collection 2025",
+      seoDescription: "Studio Collection 2025 was a great success.",
+      imageUrl: "/uploads/blog/03.jpg",
+      status: true,
+    },
+  ];
+  for (const blog of blogs) {
+    await (prisma as any).blog.upsert({
+      where: { slug: blog.slug },
+      update: {},
+      create: blog,
+    });
+  }
   console.log("✅ Seed completed successfully");
 }
 

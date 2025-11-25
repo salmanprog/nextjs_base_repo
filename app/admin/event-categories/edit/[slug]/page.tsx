@@ -10,6 +10,12 @@ export default function EditEventCategory() {
   const router = useRouter();
   const params = useParams();
   const slug = params.slug;
+
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Edit Event Category";
+  }, []);
+
   const [name, setName] = useState("");
   const [status, setStatus] = useState("1");
   const [image, setImage] = useState<File | null>(null);

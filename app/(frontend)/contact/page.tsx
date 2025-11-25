@@ -2,6 +2,13 @@ import InnerBanner from "@/components/common/InnerBanner";
 import Image from "next/image";
 import Link from "next/link";
 import { Icons } from "@/components/icons/Index";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "My Waldo | Contact Us",
+  description: "Contact My Waldo",
+};
+
 export default function AboutPage() {
     return (
         <>

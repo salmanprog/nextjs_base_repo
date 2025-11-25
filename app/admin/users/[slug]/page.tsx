@@ -32,6 +32,11 @@ export default function UserDetailsPage() {
   const router = useRouter();
   const slug = params?.slug as string;
 
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | User Details";
+  }, []);
+
   const { data, loading, error, fetchApi } = useApi({
     url: `/api/admin/users/${slug}`,
     method: "GET",

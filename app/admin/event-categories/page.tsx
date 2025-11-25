@@ -1,5 +1,4 @@
 "use client";
-import type { Metadata } from "next";
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
@@ -27,6 +26,12 @@ export default function EventCategoryList() {
     type: "manual",
     requiresAuth: true,
   });
+
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Event Categories";
+  }, []);
+
   useEffect(() => {
     fetchApi();
   }, []);

@@ -73,6 +73,11 @@ export default function AccountPage() {
     }
   }, [user]);
 
+  // Set page title
+  useEffect(() => {
+    document.title = "My Waldo | My Account";
+  }, []);
+
   // Redirect if not logged in
   useEffect(() => {
     if (!loadingUser && !user && !errorUser) {

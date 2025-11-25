@@ -32,6 +32,12 @@ export default function EventList() {
     type: "manual",
     requiresAuth: true,
   });
+
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Events";
+  }, []);
+
   useEffect(() => {
     fetchApi();
   }, []);

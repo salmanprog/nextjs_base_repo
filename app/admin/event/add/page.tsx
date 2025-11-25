@@ -8,6 +8,11 @@ import useApi from "@/utils/useApi";
 export default function AddEvent() {
   const router = useRouter();
 
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Add Event";
+  }, []);
+
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [price, setPrice] = useState("");

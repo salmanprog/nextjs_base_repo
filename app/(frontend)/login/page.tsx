@@ -15,6 +15,10 @@ interface LoginResponse {
 export default function LoginPage() {
   const router = useRouter();
   useEffect(() => {
+    document.title = "My Waldo | Login";
+  }, []);
+
+  useEffect(() => {
     const token = localStorage.getItem("token") || document.cookie.split(';').find(c => c.trim().startsWith('token='))?.split('=')[1];
     if (token) {
       router.push("/");

@@ -42,6 +42,12 @@ export default function ProductDescriptionPage({ params }: ProductDescriptionPro
         requiresAuth: false,
     });
 
+    // Set page title
+    useEffect(() => {
+        const pageTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        document.title = `My Waldo | ${pageTitle}`;
+    }, [slug]);
+
     // Fetch events when slug is available
     useEffect(() => {
         if (slug) {

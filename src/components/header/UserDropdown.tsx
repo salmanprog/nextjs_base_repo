@@ -11,10 +11,26 @@ export default function UserDropdown() {
   const { user, loading } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-  e.stopPropagation();
-  setIsOpen((prev) => !prev);
-}
+
+  // Helper function to normalize image URL
+  const normalizeImageUrl = (url: string | null | undefined): string | null => {
+    if (!url) return null;
+    // If it's already a relative path, return as is
+    if (url.startsWith('/')) return url;
+    // If it's a full URL, extract the path
+    try {
+      const urlObj = new URL(url);
+      return urlObj.pathname;
+    } catch {
+      // If URL parsing fails, assume it's a relative path
+      return url.startsWith('/') ? url : `/${url}`;
+    }
+  };
+
+  function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.stopPropagation();
+    setIsOpen((prev) => !prev);
+  }
 
   function closeDropdown() {
     setIsOpen(false);
@@ -30,19 +46,36 @@ function toggleDropdown(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     sessionStorage.clear();
     router.push("/admin/login");
   };
+
+  // Get the avatar image URL or fallback
+  const avatarUrl = user?.imageUrl ? normalizeImageUrl(user.imageUrl) : null;
+  const userInitial = user?.name?.[0]?.toUpperCase() || "A";
+
   return (
     <div className="relative">
       <button
         onClick={toggleDropdown} 
         className="flex items-center text-gray-700 dark:text-gray-400 dropdown-toggle"
       >
-        <span className="mr-3 overflow-hidden rounded-full h-11 w-11">
-          <Image
-            width={44}
-            height={44}
-            src="/images/user/owner.jpg"
-            alt="User"
-          />
+        <span className="mr-3 overflow-hidden rounded-full h-11 w-11 flex items-center justify-center bg-gray-100 dark:bg-gray-700">
+          {loading ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="text-sm text-gray-400">...</span>
+            </div>
+          ) : avatarUrl ? (
+            <Image
+              width={44}
+              height={44}
+              src={avatarUrl}
+              alt={user?.name || "User"}
+              className="w-full h-full object-cover"
+              unoptimized={avatarUrl.startsWith('data:') || avatarUrl.includes('localhost')}
+            />
+          ) : (
+            <span className="text-lg text-gray-600 dark:text-gray-400 font-semibold">
+              {userInitial}
+            </span>
+          )}
         </span>
 
         <span className="block mr-1 font-medium text-theme-sm">{loading ? "Loading..." : user?.name || "Admin"}</span>

@@ -59,16 +59,17 @@ const navItems: NavItem[] = [
       { name: 'Events', path: '/admin/event', pro: false },
     ],
   },
+  {
+    name: 'Blogs',
+    icon: FileText,
+    subItems: [{ name: 'Blogs', path: '/admin/blog/', pro: false }],
+  },
   // {
   //   name: 'Forms',
   //   icon: List,
   //   subItems: [{ name: 'Form Elements', path: '/form-elements', pro: false }],
   // },
   // {
-  //   name: 'Tables',
-  //   icon: Table,
-  //   subItems: [{ name: 'Basic Tables', path: '/basic-tables', pro: false }],
-  // },
   // {
   //   name: 'Pages',
   //   icon: FileText,

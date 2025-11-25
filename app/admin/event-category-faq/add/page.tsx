@@ -7,6 +7,11 @@ import useApi from "@/utils/useApi";
 export default function AddEventCategoryFaq() {
   const router = useRouter();
 
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Add Event Category FAQ";
+  }, []);
+
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [eventCategoryId, setEventCategoryId] = useState("");

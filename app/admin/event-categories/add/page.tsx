@@ -1,11 +1,16 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "@/components/ui/button/Button";
 import { useRouter } from "next/navigation";
 import useApi from "@/utils/useApi";
 
 export default function AddEventCategory() {
   const router = useRouter();
+
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Add Event Category";
+  }, []);
 
   const [name, setName] = useState("");
   const [status, setStatus] = useState("1");

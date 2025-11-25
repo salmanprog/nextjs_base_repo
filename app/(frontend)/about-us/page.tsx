@@ -1,5 +1,12 @@
 import InnerBanner from "@/components/common/InnerBanner";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "My Waldo | About Us",
+  description: "Learn more about My Waldo",
+};
+
 export default function AboutPage() {
     return (
         <>

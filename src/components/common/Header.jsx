@@ -91,7 +91,7 @@ export default function Header() {
                         </li>
                         <li><Link className="primary-nav-link" href="/about-us">About Us</Link></li>
                         <li><Link className="primary-nav-link" href="/contact">Contact</Link></li>
-                        <li><Link className="primary-nav-link" href="#">Blog</Link></li>
+                        <li><Link className="primary-nav-link" href="/blog">Blog</Link></li>
                     </ul>
                     <Link href="/">
                         <Image src="/images/logo.png" alt="Logo" className="block md:hidden" width={100} height={100} />

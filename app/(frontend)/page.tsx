@@ -65,6 +65,11 @@ export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
   const [currentSection, setCurrentSection] = useState(1);
 
+  // Set page title
+  useEffect(() => {
+    document.title = "My Waldo | Home";
+  }, []);
+
   useEffect(() => {
     setIsMounted(true);
   }, []);

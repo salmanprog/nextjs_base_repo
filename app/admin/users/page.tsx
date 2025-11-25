@@ -29,6 +29,12 @@ export default function UserList() {
     type: "manual",
     requiresAuth: true,
   });
+
+  // Set page title
+  useEffect(() => {
+    document.title = "Admin | Users";
+  }, []);
+
   useEffect(() => {
     fetchApi();
   }, []);
