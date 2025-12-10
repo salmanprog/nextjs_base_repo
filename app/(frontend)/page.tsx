@@ -34,7 +34,7 @@ export default function HomePage() {
     Math.floor(Math.random() * images.length)
   );
   const [categories, setCategories] = useState<EventCategory[]>([]);
-  
+
   const { data, loading: apiLoading, error: apiError, fetchApi } = useApi({
     url: "/api/users/events/category",
     type: "manual",
@@ -90,7 +90,7 @@ export default function HomePage() {
       sections.forEach((section, index) => {
         const sectionTop = section.offsetTop;
         const sectionHeight = section.offsetHeight;
-        
+
         if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
           activeSection = index + 1;
         }
@@ -140,9 +140,9 @@ export default function HomePage() {
             {/* <span className="">
             </span> */}
             <div className="hero-bottom-content group inline-block">
-              <button className="">
+              {/* <button className="">
                 <Image src="/images/nabsd-logo.svg" alt="" width={200} height={200} />
-              </button>
+              </button> */}
 
               <span className="
       absolute left-[-760px] mt-2
@@ -162,7 +162,7 @@ export default function HomePage() {
         </div>
 
         {/* Overlay for dark effect (optional) */}
-        <div className="absolute inset-0 bg-black/30 z-[5]"></div>
+        <div className="absolute inset-0 z-[5]"></div>
       </section>
       {/* Event Categories Sections */}
       {categories.length > 0 ? (
@@ -170,7 +170,7 @@ export default function HomePage() {
           <Sec
             key={category.id}
             title={category.name}
-            
+
             href={`/products/${category.slug}`}
             backgroundImage={category.imageUrl}
           />
@@ -179,7 +179,7 @@ export default function HomePage() {
         <div className="container py-8 text-center">Loading categories...</div>
       ) : apiError ? (
         <div className="container py-8 text-center text-red-500">Error loading categories: {apiError}
-        
+
         </div>
       ) : null}
     </>

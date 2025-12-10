@@ -17,7 +17,7 @@ const PRODUCT_CATEGORIES = [
 
 export default function Header() {
     console.log("Header");
-    
+
     const [isOpen, setIsOpen] = useState(false);
     const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
     const hoverRef = useRef(false);
@@ -29,7 +29,7 @@ export default function Header() {
         type: "mount",
         method: "GET",
         requiresAuth: false,
-      });
+    });
 
     // Update categories when data is received
     useEffect(() => {
@@ -88,7 +88,7 @@ export default function Header() {
                 <nav className={`navs-wrapper flex items-center justify-between`}>
                     <ul className={`primary-navs mx-auto flex justify-between items-center ${isOpen ? 'active' : ''} grow-1`}>
                         <li><Link className="primary-nav-link" href="/">Home</Link></li>
-                        <li 
+                        <li
                             className="relative dropdown-li"
                             onMouseEnter={handleMouseEnter}
                             onMouseLeave={handleMouseLeave}
@@ -106,7 +106,7 @@ export default function Header() {
                                                     <li key={index}>
                                                         <Link
                                                             href={category.path}
-                                                            className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 transition-colors"
+                                                            className="block px-4 py-2 text-sm text-[#828282] hover:bg-gray-800 transition-colors"
                                                             onClick={handleDropdownClick}
                                                         >
                                                             {category.name}
@@ -139,13 +139,13 @@ export default function Header() {
                             <span className="text-sm text-gray-600">Loading...</span>
                         ) : user ? (
                             <>
-                                <Link 
+                                <Link
                                     href="/account"
                                     className="text-sm font-medium btn btn-primary"
                                 >
                                     My Account
                                 </Link>
-                                <button 
+                                <button
                                     onClick={logout}
                                     className="btn btn-secondary"
                                 >

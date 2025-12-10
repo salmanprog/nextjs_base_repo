@@ -96,18 +96,18 @@ export default function SignUpPage() {
 
       const res = await sendData<ApiResponse<SignupResponse>>(fd, undefined, "POST");
 
-        if (res.code === 200) {
-            setSuccessMsg("Thanks for registering! Please login with your credentials.");
-        }
+      if (res.code === 200) {
+        setSuccessMsg("Thanks for registering! Please login with your credentials.");
+      }
 
-        else if (res.code === 422) {
+      else if (res.code === 422) {
         setErrors(res.data ?? {});        // ✔ TS Safe
         setErrorMsg(res.message || "Validation failed");
-        }
+      }
 
-        else {
+      else {
         setErrorMsg(res.message || "Something went wrong.");
-        }
+      }
     } catch (err: any) {
       setErrorMsg(err?.message || "Server error. Try again.");
     }
@@ -127,19 +127,19 @@ export default function SignUpPage() {
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {successMsg && (
-                        <div className="bg-green-100 text-green-700 p-3 rounded-md text-sm font-medium mb-3">
-                            {successMsg}
-                        </div>
-                    )}
+                  <div className="bg-green-100 text-green-700 p-3 rounded-md text-sm font-medium mb-3">
+                    {successMsg}
+                  </div>
+                )}
                 {errorMsg && (
-                        <div className="text-sm text-red-500 font-medium mb-3">{errorMsg}</div>
-                    )}
-                    {Object.values(errors).length > 0 && (
-                        <div className="bg-red-100 text-red-700 p-3 rounded-md text-sm space-y-1 mb-4">
-                        {Object.values(errors).map((err, idx) => (
-                            <div key={idx}>• {err}</div>
-                        ))}
-                        </div>
+                  <div className="text-sm text-red-500 font-medium mb-3">{errorMsg}</div>
+                )}
+                {Object.values(errors).length > 0 && (
+                  <div className="bg-red-100 text-red-700 p-3 rounded-md text-sm space-y-1 mb-4">
+                    {Object.values(errors).map((err, idx) => (
+                      <div key={idx}>• {err}</div>
+                    ))}
+                  </div>
                 )}
 
                 <Input
@@ -215,6 +215,46 @@ export default function SignUpPage() {
                   >
                     👁️
                   </span>
+                </div>
+
+                {/* Checkbox Groups */}
+                <div className="space-y-6">
+                  <div>
+                    <h2 className="text-1xl font-bold text-black mb-1">WHAT CLASS ARE YOU INTERESTED IN?</h2>
+                    <p className="text-sm text-black">You can select as many classes as you wish, current, future or past. This is <strong>NOT</strong> required.</p>
+                  </div>
+
+                  {/* Current and/or Future Class(es) */}
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-3">Current and/or Future Class(es)</label>
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                      {["2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033"].map((year) => (
+                        <div key={year} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 rounded border-gray-300 text-brand-500 focus:ring-brand-500"
+                          />
+                          <span className="text-sm text-black">{year}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Prior USNA Class(es) */}
+                  <div>
+                    <label className="block text-sm font-medium text-black mb-3">Prior USNA Class(es)</label>
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                      {["2025", "2024", "2023", "2022"].map((year) => (
+                        <div key={year} className="flex items-center gap-2">
+                          <input
+                            type="checkbox"
+                            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
+                          />
+                          <span className="text-sm text-black">{year}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
 
                 <button

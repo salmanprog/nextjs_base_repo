@@ -3,12 +3,12 @@ import { Icons } from "@/components/icons/Index";
 import Link from "next/link";
 
 const footerLinks = [
-  { label: "Home", href: "/",},
-  { label: "Photo Access", href: "#",},
-  { label: "Products", href: "/products",},
-  { label: "About Us", href: "/about-us",},
-  { label: "Contact", href: "/contact",},
-  { label: "Blog", href: "#",},
+  { label: "Home", href: "/", },
+  { label: "Photo Access", href: "#", },
+  { label: "Products", href: "/products", },
+  { label: "About Us", href: "/about-us", },
+  { label: "Contact", href: "/contact", },
+  { label: "Blog", href: "#", },
 ]
 export default function Footer() {
   return (
@@ -38,21 +38,27 @@ export default function Footer() {
                   <Icons.phone />
                 </div>
                 <a
-                  href="tel:+1234567890"
+                  href="tel:+14436993000"
                   className="footer-link"
                 >
-                  +1 (234) 567-890
+                  +1 (443) 699-3000
                 </a>
+
+              </li>
+              <li className="flex flex-col gap-1 -mt-2">
+                <span className="text-white text-2xl pl-[56px] font-semibold">Office Hours</span>
+                <p className="text-white text-lg pl-[56px]">June 1 thru August 15: 5:00 to 6:00 Pm</p>
+                <p className="text-white text-lg pl-[56px]">August 16 to May 331 10:00 to 4:00</p>
               </li>
               <li className="flex items-center gap-4">
                 <div className="circle-theme shrink-0">
                   <Icons.email />
                 </div>
                 <a
-                  href="mailto:welcome@thedailydosenow.com"
+                  href="mailto:ThorntonStudios@comcast.net"
                   className="footer-link"
                 >
-                  welcome@thedailydosenow.com
+                  ThorntonStudios@comcast.net
                 </a>
               </li>
             </ul>
@@ -83,7 +89,7 @@ export default function Footer() {
             <ul className="flex items-center gap-4">
               <li>
                 <a
-                  href="#"
+                  href="https://www.facebook.com/groups/422424839205495"
                   className="circle-theme circle-md  !h-[60px] !w-[60px]"
                 >
                   <Icons.facebook className="text-[20px]" />
@@ -91,7 +97,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="https://www.instagram.com/plebesummerphotos/"
                   className="circle-theme circle-md ml-[-28px] !h-[60px] !w-[60px] !text-[var(--primary-theme)] !bg-[var(--secondary-theme)]"
                 >
                   <Icons.instagram className="text-[20px]" />

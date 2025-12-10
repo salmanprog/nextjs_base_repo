@@ -1240,18 +1240,7 @@ h3,
 li {
   @apply dark:text-white;
 }
-.dropdown-ul li:first-child a {
-  @apply text-[#4aad78];
-}
-.dropdown-ul li:nth-child(2) a {
-  @apply text-[#2775a9];
-}
-.dropdown-ul li:nth-child(3) a {
-  @apply text-[var(--primary-theme)];
-}
-.dropdown-ul li:nth-child(4) a {
-  @apply text-[#828282];
-}
+
 
 
 .dropdown-li {
