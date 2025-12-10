@@ -13,9 +13,9 @@ export default class AdminEventCategoryHook {
     if (!user || user.userGroupId !== 1) {
       query.where = { ...query.where, status: true };
     }
-    query.orderBy = {
-      createdAt: "desc",
-    };
+    // query.orderBy = {
+    //   createdAt: "desc",
+    // };
     return query;
   }
 

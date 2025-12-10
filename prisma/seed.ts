@@ -75,6 +75,12 @@ async function main() {
       description: "Studio Collection",
       imageUrl: "/uploads/category/sec-05.png",
     },
+    {
+      name: "USNA Lucky Bag",
+      slug: "usna-lucky-bag",
+      description: "USNA Lucky Bag",
+      imageUrl: "/uploads/category/sec-03.png",
+    },
   ];
 
   for (const cat of eventCategories) {

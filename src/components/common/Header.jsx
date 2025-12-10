@@ -1,10 +1,11 @@
 "use client";
 import Image from "next/image";
-import { useState, useRef, useMemo, useCallback } from "react";
+import { useState, useRef, useMemo, useEffect, useCallback } from "react";
 import { Icons } from "@/components/icons/Index";
 import { useCurrentUser } from "@/utils/currentUser";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import useApi from "@/utils/useApi";
 
 // Move productCategories outside component to prevent recreation
 const PRODUCT_CATEGORIES = [
@@ -18,10 +19,34 @@ export default function Header() {
     console.log("Header");
     
     const [isOpen, setIsOpen] = useState(false);
+    const [isProductsDropdownOpen, setIsProductsDropdownOpen] = useState(false);
     const hoverRef = useRef(false);
     const router = useRouter();
     const { user, loadingUser } = useCurrentUser();
+    const [categories, setCategories] = useState([]);
+    const { data, loading: apiLoading, error: apiError } = useApi({
+        url: "/api/users/events/category",
+        type: "mount",
+        method: "GET",
+        requiresAuth: false,
+      });
 
+    // Update categories when data is received
+    useEffect(() => {
+        if (data) {
+            // Handle both direct array and wrapped response
+            const categoriesData = Array.isArray(data) ? data : (data.data || []);
+            if (Array.isArray(categoriesData)) {
+                // Map categories to include path from slug
+                const mappedCategories = categoriesData.map((category) => ({
+                    name: category.name,
+                    path: category.slug ? `/products/${category.slug}` : "/products",
+                    slug: category.slug,
+                }));
+                setCategories(mappedCategories);
+            }
+        }
+    }, [data]);
     const toggleMenu = useCallback(() => {
         setIsOpen(prev => !prev);
     }, []);
@@ -63,25 +88,38 @@ export default function Header() {
                 <nav className={`navs-wrapper flex items-center justify-between`}>
                     <ul className={`primary-navs mx-auto flex justify-between items-center ${isOpen ? 'active' : ''} grow-1`}>
                         <li><Link className="primary-nav-link" href="/">Home</Link></li>
-                        <li className="relative dropdown-li">
+                        <li 
+                            className="relative dropdown-li"
+                            onMouseEnter={handleMouseEnter}
+                            onMouseLeave={handleMouseLeave}
+                        >
                             <Link className="primary-nav-link" href="#">Products</Link>
 
-                            <div className="dropdown absolute left-0 top-full w-64 z-50">
-                                <div className="rounded-xl border border-gray-600 bg-black shadow-theme-lg">
-                                    <ul className="py-2 dropdown-ul">
-                                        {PRODUCT_CATEGORIES.map((category, index) => (
-                                            <li key={index}>
-                                                <Link
-                                                    href={category.path}
-                                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
-                                                >
-                                                    {category.name}
-                                                </Link>
-                                            </li>
-                                        ))}
-                                    </ul>
+                            {isProductsDropdownOpen && (
+                                <div className="dropdown absolute left-0 top-full w-64 z-50">
+                                    <div className="rounded-xl border border-gray-600 bg-black shadow-theme-lg">
+                                        <ul className="py-2 dropdown-ul">
+                                            {apiLoading ? (
+                                                <li className="px-4 py-2 text-sm text-gray-300">Loading categories...</li>
+                                            ) : categories.length > 0 ? (
+                                                categories.map((category, index) => (
+                                                    <li key={index}>
+                                                        <Link
+                                                            href={category.path}
+                                                            className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-800 transition-colors"
+                                                            onClick={handleDropdownClick}
+                                                        >
+                                                            {category.name}
+                                                        </Link>
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <li className="px-4 py-2 text-sm text-gray-300">No categories available</li>
+                                            )}
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                         </li>
                         <li><Link className="primary-nav-link" href="/">Photo Access</Link></li>
                         <li className="md-none">
@@ -116,8 +154,8 @@ export default function Header() {
                             </>
                         ) : (
                             <>
-                                <Link className="btn btn-primary" href="/login">Login</Link>
-                                <Link className="btn btn-secondary" href="/signup">Signup</Link>
+                                <Link className="btn btn-secondary" href="/login">Login</Link>
+                                <Link className="btn btn-primary" href="/signup">Signup</Link>
                             </>
                         )}
                         <button className="menu-icon" onClick={toggleMenu}>

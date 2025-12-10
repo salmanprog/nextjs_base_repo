@@ -76,6 +76,7 @@ model User {
   createdBy         Int         @default(0)
   userType          UserType    @default(USER)
   name              String?     @db.VarChar(255)
+  lname              String?     @db.VarChar(255)
   username          String      @unique @default("temp_username") @db.VarChar(150)
   slug              String      @unique @default("temp_slug") @db.VarChar(150)
   email             String?     @unique @db.VarChar(150)

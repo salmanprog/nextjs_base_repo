@@ -25,14 +25,16 @@ export default function SignUpPage() {
   }, [router]);
   const [form, setForm] = useState({
     name: "",
+    lname: "",
     email: "",
-    phone: "",
+    mobileNumber: "",
     password: "",
     confirmPassword: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -53,14 +55,15 @@ export default function SignUpPage() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
 
-    if (!form.name.trim()) newErrors.name = "Full name is required";
+    if (!form.name.trim()) newErrors.name = "First name is required";
+    if (!form.lname.trim()) newErrors.lname = "Last name is required";
     if (!form.email.trim()) newErrors.email = "Email is required";
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = "Invalid email format";
     }
 
-    if (!form.phone.trim()) newErrors.phone = "Phone is required";
+    if (!form.mobileNumber.trim()) newErrors.mobileNumber = "Phone is required";
 
     if (!form.password) newErrors.password = "Password is required";
     if (form.password.length < 6)
@@ -79,6 +82,7 @@ export default function SignUpPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg("");
+    setSuccessMsg("");
 
     if (!validateForm()) return;
 
@@ -86,12 +90,14 @@ export default function SignUpPage() {
       const fd = new FormData();
       fd.append("name", form.name);
       fd.append("email", form.email);
+      fd.append("lname", form.lname);
+      fd.append("mobileNumber", form.mobileNumber);
       fd.append("password", form.password);
 
       const res = await sendData<ApiResponse<SignupResponse>>(fd, undefined, "POST");
 
-        if (res.code === 201) {
-            setErrorMsg("Thanks for the Registering. Please login via your credentials!");
+        if (res.code === 200) {
+            setSuccessMsg("Thanks for registering! Please login with your credentials.");
         }
 
         else if (res.code === 422) {
@@ -120,6 +126,11 @@ export default function SignUpPage() {
               </h2>
 
               <form onSubmit={handleSubmit} className="space-y-5">
+                {successMsg && (
+                        <div className="bg-green-100 text-green-700 p-3 rounded-md text-sm font-medium mb-3">
+                            {successMsg}
+                        </div>
+                    )}
                 {errorMsg && (
                         <div className="text-sm text-red-500 font-medium mb-3">{errorMsg}</div>
                     )}
@@ -133,12 +144,22 @@ export default function SignUpPage() {
 
                 <Input
                   name="name"
-                  placeholder="Full Name"
+                  placeholder="First Name"
                   value={form.name}
                   onChange={handleChange}
                   error={!!errors.name}
                   hint={errors.name}
                 />
+
+                <Input
+                  name="lname"
+                  placeholder="Last Name"
+                  value={form.lname}
+                  onChange={handleChange}
+                  error={!!errors.lname}
+                  hint={errors.lname}
+                />
+
 
                 <Input
                   name="email"
@@ -151,13 +172,13 @@ export default function SignUpPage() {
                 />
 
                 <Input
-                  name="phone"
+                  name="mobileNumber"
                   type="tel"
-                  placeholder="Phone"
-                  value={form.phone}
+                  placeholder="Mobile Number"
+                  value={form.mobileNumber}
                   onChange={handleChange}
-                  error={!!errors.phone}
-                  hint={errors.phone}
+                  error={!!errors.mobileNumber}
+                  hint={errors.mobileNumber}
                 />
 
                 <div className="relative">

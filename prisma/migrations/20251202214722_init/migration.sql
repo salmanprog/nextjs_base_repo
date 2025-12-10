@@ -60,6 +60,7 @@ CREATE TABLE `User` (
     `createdBy` INTEGER NOT NULL DEFAULT 0,
     `userType` ENUM('ADMIN', 'USER') NOT NULL DEFAULT 'USER',
     `name` VARCHAR(255) NULL,
+    `lname` VARCHAR(255) NULL,
     `username` VARCHAR(150) NOT NULL DEFAULT 'temp_username',
     `slug` VARCHAR(150) NOT NULL DEFAULT 'temp_slug',
     `email` VARCHAR(150) NULL,
