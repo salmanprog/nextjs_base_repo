@@ -135,6 +135,7 @@ export default function HomePage() {
               <h1 className="hd-lg text-center">Thornton Studios</h1>
               <span className="block text-end text-[28px] max-w-[370px] ml-auto font-[var(--font-primary-font)]">
                 Serving the Naval Academy for over 45 years
+                
               </span>
             </div>
             {/* <span className="">
