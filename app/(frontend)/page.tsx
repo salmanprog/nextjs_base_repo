@@ -124,6 +124,7 @@ export default function HomePage() {
               }`}
             style={{
               backgroundImage: `url(${img})`,
+
             }}
           />
         ))}
@@ -163,20 +164,26 @@ export default function HomePage() {
         </div>
 
         {/* Overlay for dark effect (optional) */}
-        <div className="absolute inset-0 z-[5]"></div>
+        <div className="absolute inset-0 z-[5]" ></div>
       </section>
       {/* Event Categories Sections */}
       {categories.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category, index) => (
-            <Sec
-              key={category.id}
-              title={category.name}
-              sectionClass="!h-[50vh] border border-white/10"
-              href={`/products/${category.slug}`}
-              backgroundImage={category.imageUrl}
-            />
-          ))}
+        <div className="bg-[linear-gradient(90deg,#f1e712,#061246)] py-[50px]">
+          <div className="container">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+              {categories.map((category, index) => (
+                <Sec
+                  key={category.id}
+                  title={category.name}
+                  sectionClass="!h-[50vh] border border-white/10"
+                  href={`/products/${category.slug}`}
+                  backgroundImage={category.imageUrl}
+
+                />
+
+              ))}
+            </div>
+          </div>
         </div>
       ) : apiLoading ? (
         <div className="container py-8 text-center">Loading categories...</div>

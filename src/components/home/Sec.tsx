@@ -14,8 +14,8 @@ export default function Sec({
 }) {
     return (
         <Link href={href || "/"}>
-            <section
-                className={`home-sec h-screen flex items-center relative ${sectionClass || ''}`}
+            <div
+                className={`home-sec relative overflow-hidden rounded-[20px]  ${sectionClass || ''}`}
                 style={backgroundImage ? {
                     backgroundImage: `url(${backgroundImage})`,
                     backgroundSize: 'cover',
@@ -23,14 +23,11 @@ export default function Sec({
                     backgroundRepeat: 'no-repeat'
                 } : {}}
             >
-                {/* Overlay for better text readability */}
-                {backgroundImage && (
-                    <div className="absolute inset-0 bg-black/40 z-[1]"></div>
-                )}
-                <div className="container relative z-10">
-                    <h2 className="hd-lg text-center text-white">{title}</h2>
+                {/* Title Box at Bottom */}
+                <div className="absolute bottom-0 left-0 right-0 bg-[#0a1628] text-white p-6 z-10">
+                    <h3 className="text-xl font-bold text-[var(--primary-theme)]">{title}</h3>
                 </div>
-            </section>
+            </div>
         </Link>
     )
 }

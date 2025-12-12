@@ -834,6 +834,8 @@ body {
   @apply relative h-screen;
   background: url('/images/home/hero-bg.png') no-repeat center center/cover;
   z-index: 1;
+
+  
 }
 .inner-banner::before,
 .hero-section::before {

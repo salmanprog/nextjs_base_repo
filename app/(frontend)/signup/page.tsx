@@ -39,6 +39,24 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [showPriorClassesDropdown, setShowPriorClassesDropdown] = useState(false);
+  const [selectedPriorClasses, setSelectedPriorClasses] = useState<number[]>([]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.prior-classes-dropdown')) {
+        setShowPriorClassesDropdown(false);
+      }
+    };
+
+    if (showPriorClassesDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showPriorClassesDropdown]);
 
   const { sendData, loading } = useApi({
     url: "/api/users",
@@ -245,14 +263,16 @@ export default function SignUpPage() {
                   {/* Prior USNA Class(es) */}
                   <div>
                     <label className="block text-sm font-medium text-black mb-3">Prior USNA Class(es)</label>
-                    <div className="relative">
+                    <div className="relative prior-classes-dropdown">
                       <button
                         type="button"
                         onClick={() => setShowPriorClassesDropdown(!showPriorClassesDropdown)}
                         className="w-full bg-white border border-gray-300 text-black py-2 px-3 rounded-md text-left flex justify-between items-center text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
                       >
-                        Select Class Year
-                        <IoMdArrowDropdown size={30}/>
+                        {selectedPriorClasses.length > 0
+                          ? selectedPriorClasses.sort((a, b) => b - a).join(', ')
+                          : 'Select Class Year'}
+                        <IoMdArrowDropdown size={30} />
                       </button>
 
                       {showPriorClassesDropdown && (
@@ -261,6 +281,14 @@ export default function SignUpPage() {
                             <label key={year} className="flex items-center px-4 py-2 hover:bg-gray-50 cursor-pointer">
                               <input
                                 type="checkbox"
+                                checked={selectedPriorClasses.includes(year)}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedPriorClasses([...selectedPriorClasses, year]);
+                                  } else {
+                                    setSelectedPriorClasses(selectedPriorClasses.filter(y => y !== year));
+                                  }
+                                }}
                                 className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black mr-3"
                               />
                               <span className="text-sm text-black">{year}</span>
