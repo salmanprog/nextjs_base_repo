@@ -135,7 +135,7 @@ export default function HomePage() {
               <h1 className="hd-lg text-center">Thornton Studios</h1>
               <span className="block text-end text-[28px] max-w-[370px] ml-auto font-[var(--font-primary-font)]">
                 Serving the Naval Academy for over 45 years
-                
+
               </span>
             </div>
             {/* <span className="">
@@ -167,22 +167,25 @@ export default function HomePage() {
       </section>
       {/* Event Categories Sections */}
       {categories.length > 0 ? (
-        categories.map((category, index) => (
-          <Sec
-            key={category.id}
-            title={category.name}
-
-            href={`/products/${category.slug}`}
-            backgroundImage={category.imageUrl}
-          />
-        ))
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {categories.map((category, index) => (
+            <Sec
+              key={category.id}
+              title={category.name}
+              sectionClass="!h-[50vh] border border-white/10"
+              href={`/products/${category.slug}`}
+              backgroundImage={category.imageUrl}
+            />
+          ))}
+        </div>
       ) : apiLoading ? (
         <div className="container py-8 text-center">Loading categories...</div>
       ) : apiError ? (
         <div className="container py-8 text-center text-red-500">Error loading categories: {apiError}
 
         </div>
-      ) : null}
+      ) : null
+      }
     </>
   )
 }

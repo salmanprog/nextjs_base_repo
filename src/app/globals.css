@@ -847,9 +847,15 @@ body {
   z-index: -1;
 }
 
-.hd-lg {
+/* .hd-lg {
   font-family: var(--primary-font);
   @apply text-[50px] md:text-[70px] 2xl:text-[96px];
+  color: var(--primary-theme);
+} */
+
+.hd-lg {
+  font-family: var(--primary-font);
+  @apply text-[30px] md:text-[42px] 2xl:text-[60px];
   color: var(--primary-theme);
 }
 

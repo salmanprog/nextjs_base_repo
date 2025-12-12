@@ -1,20 +1,20 @@
 'use client';
 import Link from "next/link";
 
-export default function Sec({ 
-    title, 
-    sectionClass, 
-    href, 
-    backgroundImage 
-}: { 
-    title: string; 
-    sectionClass?: string; 
-    href: string; 
+export default function Sec({
+    title,
+    sectionClass,
+    href,
+    backgroundImage
+}: {
+    title: string;
+    sectionClass?: string;
+    href: string;
     backgroundImage?: string | null;
 }) {
     return (
         <Link href={href || "/"}>
-            <section 
+            <section
                 className={`home-sec h-screen flex items-center relative ${sectionClass || ''}`}
                 style={backgroundImage ? {
                     backgroundImage: `url(${backgroundImage})`,

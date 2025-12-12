@@ -6,6 +6,7 @@ import Link from "next/link";
 import InnerBanner from "@/components/common/InnerBanner";
 import useApi, { ApiResponse } from "@/utils/useApi";
 import { useRouter } from "next/navigation";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 interface SignupResponse {
   [key: string]: string;
@@ -37,6 +38,7 @@ export default function SignUpPage() {
   const [successMsg, setSuccessMsg] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPriorClassesDropdown, setShowPriorClassesDropdown] = useState(false);
 
   const { sendData, loading } = useApi({
     url: "/api/users",
@@ -243,16 +245,29 @@ export default function SignUpPage() {
                   {/* Prior USNA Class(es) */}
                   <div>
                     <label className="block text-sm font-medium text-black mb-3">Prior USNA Class(es)</label>
-                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                      {["2025", "2024", "2023", "2022"].map((year) => (
-                        <div key={year} className="flex items-center gap-2">
-                          <input
-                            type="checkbox"
-                            className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black"
-                          />
-                          <span className="text-sm text-black">{year}</span>
+                    <div className="relative">
+                      <button
+                        type="button"
+                        onClick={() => setShowPriorClassesDropdown(!showPriorClassesDropdown)}
+                        className="w-full bg-white border border-gray-300 text-black py-2 px-3 rounded-md text-left flex justify-between items-center text-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black"
+                      >
+                        Select Class Year
+                        <IoMdArrowDropdown size={30}/>
+                      </button>
+
+                      {showPriorClassesDropdown && (
+                        <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                          {Array.from({ length: new Date().getFullYear() - 1894 + 1 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                            <label key={year} className="flex items-center px-4 py-2 hover:bg-gray-50 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                className="w-4 h-4 rounded border-gray-300 text-black focus:ring-black mr-3"
+                              />
+                              <span className="text-sm text-black">{year}</span>
+                            </label>
+                          ))}
                         </div>
-                      ))}
+                      )}
                     </div>
                   </div>
                 </div>
