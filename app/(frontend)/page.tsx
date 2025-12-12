@@ -168,7 +168,7 @@ export default function HomePage() {
       </section>
       {/* Event Categories Sections */}
       {categories.length > 0 ? (
-        <div className="bg-[linear-gradient(90deg,#f1e712,#061246)] py-[50px]">
+        <div className="bg-[linear-gradient(90deg,#f1e712,#061246)] py-[30px]">
           <div className="container">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
               {categories.map((category, index) => (
