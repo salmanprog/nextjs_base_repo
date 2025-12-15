@@ -168,14 +168,14 @@ export default function HomePage() {
       </section>
       {/* Event Categories Sections */}
       {categories.length > 0 ? (
-        <div className="bg-[linear-gradient(90deg,#f1e712,#061246)] py-[30px]">
+        <section className="bg-white py-[30px]">
           <div className="container">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {categories.map((category, index) => (
                 <Sec
                   key={category.id}
                   title={category.name}
-                  sectionClass="!h-[50vh] border border-white/10"
+                  sectionClass="border-2 border-white/100"
                   href={`/products/${category.slug}`}
                   backgroundImage={category.imageUrl}
 
@@ -184,7 +184,7 @@ export default function HomePage() {
               ))}
             </div>
           </div>
-        </div>
+        </section>
       ) : apiLoading ? (
         <div className="container py-8 text-center">Loading categories...</div>
       ) : apiError ? (

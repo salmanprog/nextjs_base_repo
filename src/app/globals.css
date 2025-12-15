@@ -6,7 +6,6 @@
 :root {
   --primary-theme: #f1e712;
   --secondary-theme: #061246;
-  --secondary-theme-light: #0F1B4F;
   --primary-font: 'Sogeo Script', cursive;
   --secondary-font: 'Sofia Pro', sans-serif;
   --sogeo-print: 'Sogeo Print', sans-serif;
@@ -879,7 +878,7 @@ body {
 }
 
 .footer {
-  background-color: var(--secondary-theme-light);
+  background-color: #0F1B4F;
   color: var(--default-color);
 }
 
@@ -973,7 +972,7 @@ body {
   @apply bg-[var(--primary-theme)] text-black;
   border: none;
 }
-/* .btn-primary::before {
+/* .btn-primary::before {F
   content: '';
   position: absolute;
   top: 0;
