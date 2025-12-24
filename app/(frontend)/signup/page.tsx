@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Input from "@/components/form/input/InputField";
 import Link from "next/link";
+import Image from "next/image";
 import InnerBanner from "@/components/common/InnerBanner";
 import useApi, { ApiResponse } from "@/utils/useApi";
 import { useRouter } from "next/navigation";
@@ -300,6 +301,23 @@ export default function SignUpPage() {
                   </div>
                 </div>
 
+                <div className="text-[#000000] text-justify">
+                  <p className="font-bold  mb-2 text-lg">PLEASE NOTE</p>
+                  <p>
+                    DISCLAIMER: This website is independent of the Naval Academy. Since its inception in 1980, has been owned and operated solely by Larry Thornton, Thornton Studios.
+                  </p>
+                  <p className="mt-1">
+                    Thornton Studios is an approved vendor of the Naval Academy, through the Naval Academy Business Services Division. NABSD,
+                  </p>
+                  <p className="mt-1">
+                    The information provided will never be sold or shared with anyone.
+                  </p>
+                </div>
+                <div className="flex justify-center mt-4 mb-4">
+                  <Link href="https://www.usnabsd.com/" target="_blank">
+                     <Image src="/images/logo-nabsd.png" alt="" width={200} height={200} />
+                  </Link>
+                </div>
                 <button
                   type="submit"
                   className="btn btn-primary w-full"

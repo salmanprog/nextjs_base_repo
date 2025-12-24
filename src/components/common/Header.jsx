@@ -124,7 +124,7 @@ export default function Header() {
                         <li><Link className="primary-nav-link" href="/">Photo Access</Link></li>
                         <li className="md-none">
                             <Link href="/">
-                                <Image src="/images/logo.png" alt="Logo" width={100} height={100} />
+                                <Image src="/images/logo.png" alt="Logo" width={100} height={100}/>
                             </Link>
                         </li>
                         <li><Link className="primary-nav-link" href="/about-us">About Us</Link></li>
