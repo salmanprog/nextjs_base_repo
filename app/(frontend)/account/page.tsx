@@ -26,7 +26,7 @@ export default function AccountPage() {
   const router = useRouter();
   const { user: currentUser, loadingUser, errorUser } = useCurrentUser();
   const user = currentUser as AccountUser | null;
-  const [activeTab, setActiveTab] = useState<"profile" | "password">("profile");
+  const [activeTab, setActiveTab] = useState<"profile" | "password" | "orders">("profile");
   const [isEditing, setIsEditing] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -285,6 +285,16 @@ export default function AccountPage() {
               >
                 Change Password
               </button>
+              <button
+                onClick={() => setActiveTab("orders")}
+                className={`px-6 py-3 font-semibold transition-colors ${
+                  activeTab === "orders"
+                    ? "text-[var(--primary-theme)] border-b-2 border-[var(--primary-theme)]"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                Order
+              </button>
             </div>
 
             {/* Success/Error Messages */}
@@ -534,6 +544,35 @@ export default function AccountPage() {
                     </Button>
                   </div>
                 </form>
+              </div>
+            )}
+
+            {/* Orders Tab */}
+            {activeTab === "orders" && (
+              <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Order</h2>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="border-b border-gray-100 text-gray-500 text-sm uppercase tracking-wider">
+                        <th className="py-4 font-semibold">Product</th>
+                        <th className="py-4 font-semibold text-center">Quantity</th>
+                        <th className="py-4 font-semibold text-right">Price</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {/* Placeholder order data */}
+                      <tr>
+                        <td className="py-6">
+                          <p className="font-bold text-gray-900">PhotoGraphs of Herndon Monument Climb</p>
+                        </td>
+                        <td className="py-6 text-center text-gray-800 font-medium">1</td>
+                        <td className="py-6 text-right font-bold text-gray-900">$29.95</td>
+                      </tr>
+                   
+                    </tbody>
+                  </table>
+                </div>
               </div>
             )}
           </div>
