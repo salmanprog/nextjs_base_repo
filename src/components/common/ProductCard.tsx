@@ -15,12 +15,15 @@ interface Product {
 }
 
 export default function ProductCard({ product }: { product: Product }) {
-    const addToCart = useCartStore((state) => state.addToCart);
+    const { cart, addToCart } = useCartStore();
 
     const handleAddToCart = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        addToCart(product);
+        addToCart({
+            ...product,
+            image: '/images/place-holder-img.png'
+        });
     };
 
     return (
@@ -43,20 +46,29 @@ export default function ProductCard({ product }: { product: Product }) {
                 
                 <div className="mt-auto space-y-4 pt-4 flex flex-col items-center">
                     <span className="text-sm font-semibold text-gray-700">To add to cart</span>
-                    <button 
-                        onClick={handleAddToCart}
-                        className="btn btn-primary bg-[#FFEB3B] hover:bg-[#FDD835] text-black w-full inline-flex items-center justify-center gap-2 py-2 px-6 rounded shadow-md transform active:scale-95 transition-all text-sm font-bold uppercase"
-                    >
-                         <div className="relative w-8 h-8 mr-2">
-                            <Image 
-                                src="/images/waldo-logo.png" 
-                                alt="cart" 
-                                fill
-                                className="object-contain"
-                            />
-                        </div>
-                        <span>Click Me</span>
-                    </button>
+                    {cart.some(item => item.id === product.id) ? (
+                        <Link
+                            href="/cart"
+                            className="w-full btn btn-primary py-3 text-center text-lg font-bold shadow-md hover:shadow-lg transition-all"
+                        >
+                            Edit to cart
+                        </Link>
+                    ) : (
+                        <button 
+                            onClick={handleAddToCart}
+                            className="btn btn-primary bg-[#FFEB3B] hover:bg-[#FDD835] text-black w-full inline-flex items-center justify-center gap-2 py-2 px-6 rounded shadow-md transform active:scale-95 transition-all text-sm font-bold uppercase"
+                        >
+                             <div className="relative w-8 h-8 mr-2">
+                                <Image 
+                                    src="/images/waldo-logo.png" 
+                                    alt="cart" 
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+                            <span>Click Me</span>
+                        </button>
+                    )}
 
                     <Link 
                         href={`/products/${product.slug}/gallery`} 

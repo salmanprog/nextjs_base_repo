@@ -162,10 +162,10 @@ export default function Header() {
                                 <Link className="btn btn-primary" href="/signup">Signup</Link>
                             </>
                         )}
-                        <Link href="/cart" className="relative p-2 text-white hover:text-gray-300 transition-colors">
+                        <Link href="/cart" className="relative p-2 text-white hover:text-[#061246] transition-colors">
                             <FaShoppingCart className="text-[32px]" />
                             {cartCount > 0 && (
-                                <span className="absolute -top-1 -right-1 bg-yellow-400 text-black font-bold rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                <span className="absolute -top-1 -right-1 bg-[#f1e712] text-black font-bold rounded-full w-5 h-5 flex items-center justify-center text-xs">
                                     {cartCount}
                                 </span>
                             )}

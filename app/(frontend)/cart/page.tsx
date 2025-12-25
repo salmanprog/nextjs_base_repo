@@ -1,9 +1,8 @@
 "use client";
 
 import { useCartStore } from "@/zustand/cart";
-import Image from "next/image";
 import Link from "next/link";
-import { FaTrash, FaMinus, FaPlus } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import InnerBanner from "@/components/common/InnerBanner";
 
 export default function CartPage() {
@@ -29,18 +28,14 @@ export default function CartPage() {
                             <div className="lg:w-2/3">
                                 <div className="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
                                     <div className="p-6 border-b border-gray-100 hidden md:grid grid-cols-12 gap-4 font-semibold text-gray-500 text-sm uppercase tracking-wider">
-                                        <div className="col-span-6">Product</div>
-                                        <div className="col-span-2 text-center">Price</div>
+                                        <div className="col-span-8">Product</div>
                                         <div className="col-span-2 text-center">Quantity</div>
-                                        <div className="col-span-2 text-center">Total</div>
+                                        <div className="col-span-2 text-right">Price</div>
                                     </div>
                                     <div className="divide-y divide-gray-100">
                                         {cart.map((item) => (
                                             <div key={item.id} className="p-6 flex flex-col md:grid md:grid-cols-12 gap-4 items-center">
-                                                <div className="col-span-6 w-full flex items-center gap-4">
-                                                    <div className="w-20 h-20 flex-shrink-0 rounded-md overflow-hidden bg-gray-100 relative">
-                                                        <Image src={item.image} fill className="object-cover" alt={item.title} />
-                                                    </div>
+                                                <div className="col-span-8 w-full">
                                                     <div className="flex-grow">
                                                         <h3 className="font-bold text-gray-900 mb-1">{item.title}</h3>
                                                         <button 
@@ -51,29 +46,11 @@ export default function CartPage() {
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div className="col-span-2 font-medium text-gray-800 text-center md:text-left">
+                                                <div className="col-span-2 text-center font-medium text-gray-800">
+                                                    {item.quantity}
+                                                </div>
+                                                <div className="col-span-2 font-bold text-gray-900 text-right w-full">
                                                     {item.price}
-                                                </div>
-                                                <div className="col-span-2 flex items-center justify-center">
-                                                     <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                                        <button 
-                                                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                                                            className="p-2 hover:bg-gray-100 transition-colors text-gray-600 outline-none"
-                                                            disabled={item.quantity <= 1}
-                                                        >
-                                                            <FaMinus className="text-xs" />
-                                                        </button>
-                                                        <span className="w-8 text-center font-medium text-gray-900 border-l border-r border-gray-300 py-1 bg-gray-50">{item.quantity}</span>
-                                                        <button 
-                                                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                                                            className="p-2 hover:bg-gray-100 transition-colors text-gray-600 outline-none"
-                                                        >
-                                                            <FaPlus className="text-xs" />
-                                                        </button>
-                                                     </div>
-                                                </div>
-                                                <div className="col-span-2 text-right md:text-center font-bold text-gray-900">
-                                                    ${(parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity).toFixed(2)}
                                                 </div>
                                             </div>
                                         ))}
@@ -90,10 +67,7 @@ export default function CartPage() {
                                             <span>Subtotal</span>
                                             <span className="font-medium text-gray-900">${cartTotal.toFixed(2)}</span>
                                         </div>
-                                        <div className="flex justify-between text-gray-600">
-                                            <span>Shipping</span>
-                                            <span className="text-green-600 font-medium">Free</span>
-                                        </div>
+                                        
                                         <div className="border-t border-gray-100 pt-4 flex justify-between text-lg font-bold">
                                             <span>Total</span>
                                             <span>${cartTotal.toFixed(2)}</span>

@@ -43,7 +43,7 @@ export default function ProductDescriptionPage({ params }: ProductDescriptionPro
         requiresAuth: false,
     });
 
-    const addToCart = useCartStore((state) => state.addToCart);
+    const { cart, addToCart } = useCartStore();
 
     const handleAddToCart = (event: Event) => {
         addToCart({
@@ -51,7 +51,7 @@ export default function ProductDescriptionPage({ params }: ProductDescriptionPro
             slug: event.slug,
             title: event.name,
             price: event.price ? `$${event.price.toFixed(2)}` : '$0.00',
-            image: event.imageUrl || '/images/waldo-logo.png', // Fallback image if null
+            image: '/images/place-holder-img.png',
         });
     };
     
@@ -122,15 +122,24 @@ export default function ProductDescriptionPage({ params }: ProductDescriptionPro
                                             {event.description}
                                         </p>
                                     )}
-                                    <span className="">To add to cart</span>
+                                    <span className="">Add to cart</span>
                                     <div className="mt-6">
-                                        <button
-                                            onClick={() => handleAddToCart(event)}
-                                            className="btn btn-primary inline-flex items-center gap-2"
-                                        >
-                                            <Image src="/images/waldo-logo.png" alt="cart" width={40} height={40} className="object-contain" />
-                                            <span>Click Me</span>
-                                        </button>
+                                        {cart.some(item => item.id === event.id) ? (
+                                            <Link
+                                                href="/cart"
+                                                className="w-full btn btn-primary py-3 text-center text-lg font-bold shadow-md hover:shadow-lg transition-all"
+                                            >
+                                                Edit to cart
+                                            </Link>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleAddToCart(event)}
+                                                className="btn btn-primary inline-flex items-center gap-2"
+                                            >
+                                                <Image src="/images/waldo-logo.png" alt="cart" width={40} height={40} className="object-contain" />
+                                                <span>Click Me</span>
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             ))}
