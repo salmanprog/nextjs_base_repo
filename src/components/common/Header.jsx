@@ -6,6 +6,9 @@ import { useCurrentUser } from "@/utils/currentUser";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import useApi from "@/utils/useApi";
+import { useCartStore } from "@/zustand/cart";
+import { FaShoppingCart } from "react-icons/fa";
+
 
 // Move productCategories outside component to prevent recreation
 const PRODUCT_CATEGORIES = [
@@ -30,6 +33,7 @@ export default function Header() {
         method: "GET",
         requiresAuth: false,
     });
+    const cartCount = useCartStore((state) => state.cart.reduce((total, item) => total + item.quantity, 0));
 
     // Update categories when data is received
     useEffect(() => {
@@ -158,6 +162,14 @@ export default function Header() {
                                 <Link className="btn btn-primary" href="/signup">Signup</Link>
                             </>
                         )}
+                        <Link href="/cart" className="relative p-2 text-white hover:text-gray-300 transition-colors">
+                            <FaShoppingCart className="text-[32px]" />
+                            {cartCount > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-yellow-400 text-black font-bold rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                                    {cartCount}
+                                </span>
+                            )}
+                        </Link>
                         <button className="menu-icon" onClick={toggleMenu}>
                             {isOpen ? <Icons.close className="text-[24px]" /> : <Icons.menu className="text-[24px]" />}
                         </button>

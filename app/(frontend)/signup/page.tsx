@@ -303,13 +303,13 @@ export default function SignUpPage() {
 
                 <div className="text-[#000000] text-justify">
                   <p className="font-bold  mb-2 text-lg">PLEASE NOTE</p>
-                  <p>
+                  <p className="text-sm">
                     DISCLAIMER: This website is independent of the Naval Academy. Since its inception in 1980, has been owned and operated solely by Larry Thornton, Thornton Studios.
                   </p>
-                  <p className="mt-1">
+                  <p className="mt-1 text-sm">
                     Thornton Studios is an approved vendor of the Naval Academy, through the Naval Academy Business Services Division. NABSD,
                   </p>
-                  <p className="mt-1">
+                  <p className="mt-1 text-sm">
                     The information provided will never be sold or shared with anyone.
                   </p>
                 </div>

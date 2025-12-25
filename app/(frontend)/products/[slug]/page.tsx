@@ -6,6 +6,7 @@ import Link from "next/link";
 import InnerBanner from "@/components/common/InnerBanner";
 import FaqList from "@/components/faq/FaqList";
 import useApi from "@/utils/useApi";
+import { useCartStore } from "@/zustand/cart";
 
 interface ProductDescriptionProps {
     params: Promise<{ slug: string }>;
@@ -42,6 +43,18 @@ export default function ProductDescriptionPage({ params }: ProductDescriptionPro
         requiresAuth: false,
     });
 
+    const addToCart = useCartStore((state) => state.addToCart);
+
+    const handleAddToCart = (event: Event) => {
+        addToCart({
+            id: event.id,
+            slug: event.slug,
+            title: event.name,
+            price: event.price ? `$${event.price.toFixed(2)}` : '$0.00',
+            image: event.imageUrl || '/images/waldo-logo.png', // Fallback image if null
+        });
+    };
+    
     // Set page title
     useEffect(() => {
         const pageTitle = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -111,13 +124,13 @@ export default function ProductDescriptionPage({ params }: ProductDescriptionPro
                                     )}
                                     <span className="">To add to cart</span>
                                     <div className="mt-6">
-                                        <Link
-                                            href="#"
+                                        <button
+                                            onClick={() => handleAddToCart(event)}
                                             className="btn btn-primary inline-flex items-center gap-2"
                                         >
-                                            <Image src="/images/waldo-logo.png" alt="cart" width={100} height={100} />
+                                            <Image src="/images/waldo-logo.png" alt="cart" width={40} height={40} className="object-contain" />
                                             <span>Click Me</span>
-                                        </Link>
+                                        </button>
                                     </div>
                                 </div>
                             ))}
