@@ -9,6 +9,8 @@ import Input from "@/components/form/input/InputField";
 import Label from "@/components/form/Label";
 import Button from "@/components/ui/button/Button";
 import Image from "next/image";
+import Link from "next/link";
+
 
 interface AccountUser {
   id: number;
@@ -558,6 +560,7 @@ export default function AccountPage() {
                         <th className="py-4 font-semibold">Product</th>
                         <th className="py-4 font-semibold text-center">Quantity</th>
                         <th className="py-4 font-semibold text-right">Price</th>
+                        <th className="py-4 font-semibold text-right">Action</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -568,6 +571,11 @@ export default function AccountPage() {
                         </td>
                         <td className="py-6 text-center text-gray-800 font-medium">1</td>
                         <td className="py-6 text-right font-bold text-gray-900">$29.95</td>
+                        <td className="py-6 text-right font-bold text-gray-900">
+                          <Link href="#">
+                            <Button variant="outline">View</Button>
+                          </Link>
+                        </td>
                       </tr>
                    
                     </tbody>
